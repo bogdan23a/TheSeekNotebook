@@ -4,6 +4,7 @@ import requests
 class ReadObject():
 
     def __init__(self):
+
         self.base_url = 'http://www.fairdomhub.org/'
             
         self.headers = {"Content-type": "application/vnd.api+json",
@@ -14,7 +15,7 @@ class ReadObject():
         self.session = requests.Session()
         self.session.headers.update(self.headers)
         self.session.auth = ("asda","asda")
-       
+        self.json = None
         self.data = object()
 
     def request(self, type, id):
@@ -22,20 +23,17 @@ class ReadObject():
         r = None
 
         try:
-
             r = self.session.get(self.base_url + type + "/" + id)
 
             if r.status_code != 200:
-                print("\nInternal Error(result ommited)\n", end='')
                 return False
+
+            self.json = r.json()
+            self.loadJSON(self, self.json['data'])
             
-            # r.raise_for_status()
-            callback = r.json()
-            self.loadJSON(self, callback['data'])
             return True
 
         except Exception as e:
-
             print(str(e))
 
     def loadJSON(self, layerName, layer):
@@ -73,7 +71,6 @@ class ReadObject():
         else:
             print("Search item unavailable. Try again later.")
 
-
     def printAttributes(self):
 
         print(self.data.attributes.title + "(id: " + self.data.id + " | type: " + self.data.type +")\n")
@@ -83,8 +80,6 @@ class ReadObject():
             print(self.data.attributes.description)
         else:
             print("missing")
-                
-
 
     def printRelationships(self):
 
@@ -105,81 +100,3 @@ class ReadObject():
         
         if hasNoRelationships:
             print("Object has no relationships")
-
-
-    def assayAttributes(self):
-
-        if self.data.type == 'assays':
-
-            if self.data.attributes.title != None:
-                print(self.data.attributes.title)
-
-            if self.data.attributes.assay_class != None and self.data.attributes.assay_type != None:
-                print(self.data.attributes.assay_class.title + " | " + self.data.attributes.assay_type.label)
-    
-            if self.data.attributes.description != None:
-                print("\n" + self.data.attributes.description)
-
-    def assayRelationships(self):
-        
-        print("\n\n STUDY:")
-        if hasattr(self.data.relationships.study, 'newData'):
-            self.data.relationships.study.newData.studyAttributes()
-        print("\n\n INVESTIGATION:")
-        if hasattr(self.data.relationships.investigation, 'newData'):
-           self.data.relationships.investigation.newData.investigationAttributes()
-        print("\n\n PROJECTS: ")
-        if hasattr(self.data.relationships.projects, 'newData'):
-            self.data.relationships.projects.newData.projectsAttributes()
-        print("\n\n")
-    
-    def assaySummary(self):
-        self.assayAttributes()
-        self.assayRelationships()
-
-    def studyAttributes(self):
-
-        if self.data.type == 'studies':
-
-            print(self.data.attributes.title)
-            print("\n" + self.data.attributes.description)
-    
-    def studyRelationships(self):
-
-        print("\n\n INVESTIGATION:")
-        self.data.relationships.investigation.investigationAttributes()
-        print("\n\n PROJECTS: ")
-        self.data.relationships.projects.projectsAttributes()
-        print("\n\n")
-    
-    def studySummary(self):
-        self.studyAttributes()
-        self.studyRelationships()
-
-    def investigationAttributes(self):
-
-        if self.data.type == 'investigations':
-
-            print(self.data.attributes.title)
-            print("\n" + self.data.attributes.description)
-    
-    def investigationRelationships(self):
-
-        print("\n\n PROJECTS: ")
-        self.data.relationships.projects.projectsAttributes()
-        print("\n\n")
-
-
-    def investigationSummary(self):
-        self.investigationAttributes()
-        self.investigationRelationships()
-
-
-    def projectsAttributes(self):
-
-        if self.data.type == 'projects':
-
-            print(self.data.attributes.title)
-            print(self.data.attributes.default_license + " | " + self.data.attributes.default_policy.access)
-            print("Web Page: " + self.data.attributes.web_page)
-            print("\n" + self.data.attributes.description)
