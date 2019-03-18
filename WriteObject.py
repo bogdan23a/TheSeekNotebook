@@ -1,8 +1,7 @@
 import json
 import requests
-from IPython.core.display import display, HTML
-from ReadObject import ReadObject
 import Helper
+from IPython.core.display import display, HTML
 
 class WriteObject():
 
