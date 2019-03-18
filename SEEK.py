@@ -241,7 +241,7 @@ class SEEK():
         r = self.session.get(self.base_url + 'search', headers=self.headers, params=payload)
         r.raise_for_status()
         self.json = r.json()
-        
+
     # Creates the list of requests by parsing a RAW Search Result JSON
     def createRequestList(self):
 
@@ -368,7 +368,6 @@ class SEEK():
         self.relationshipList = relations
 
         return len(relations)
-
     
     # Substitute the information from the relationship list back to the original search results
     # 1st param: the relationship list (without duplicates)
@@ -481,4 +480,3 @@ class SEEK():
                 results.append(request)
         
         return results
-
