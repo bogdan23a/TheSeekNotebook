@@ -17,17 +17,25 @@ class TestSEEK(unittest.TestCase):
         del self.auth
 
         del self.testObject
-        
-    # Testing the authentication
-    def test_AuthWorking(self):
-        
+    
+    # Testing object initialization with authentication
+    def test_InitWithAuth(self):
+
         self.assertEqual(self.testObject.session.auth,
                         (PROT_DEFAULT_AUTHENTICATION_STRING,
                         PROT_DEFAULT_AUTHENTICATION_STRING), 
                         "Request should have these credentials")
 
-    def test_AuthNotWorking(self):
+    # Testing object initialization without authentication
+    def test_InitWithoutAuth(self):
         
+        self.testObject = SEEK.module()
+
+        self.assertNotEqual(self.testObject.session.auth, None, 
+                            "Request should have these credentials")
+
+    # def test_AuthNotWorking(self):
+
     # Testing the request of an existent object
     def test_RequestReturnsTrue(self):
 

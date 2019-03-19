@@ -22,7 +22,8 @@ class module:
         if auth != None:
             self.session.auth = auth
         else:
-            self.session.auth = (input("Username: "), getpass.getpass("Password"))
+            self.session.auth = (input("Username: "), 
+                                 getpass.getpass("Password: "))
 
         self.json = None
         self.data = object()
