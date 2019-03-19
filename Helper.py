@@ -26,54 +26,28 @@ def relationFormat(JSON, type):
 def buttonClicked():
     isClicked = True
 
-def assayFormat():
+
+def assayFormat(assayKind, description, policy):
 
     JSON = {}
     JSON['data'] = {}
     JSON['data']['type'] = 'assays'
 
     JSON['data']['attributes'] = {}
-    JSON['data']['attributes']['description'] = input('Please specify the description: ')
-    JSON['data']['attributes']['other_creators'] = input('Please specify other creators: ')
-    # JSON['data']['attributes']['snapshots'] = input('Please specify the snapshots: ')
+    JSON['data']['attributes']['description'] = description
+    JSON['data']['attributes']['other_creators'] = input('Please list other creators: ')
+    JSON['data']['attributes']['policy'] = {}
+    JSON['data']['attributes']['policy']['access'] = policy
     JSON['data']['attributes']['title'] = input('Please specify the title: ')
 
     JSON['data']['attributes']['assay_class'] = {}
-    JSON['data']['attributes']['assay_class']['description'] = input('Please specify the assay class description: ')
-    select = widgets.Select(options=['EXP', 'MODEL'],
-                        value='EXP',
-                        rows=2,
-                        description='Assay Class Key',
-                        disabled=False)
-
-    display(select)
-    button = widgets.Button(
-                        description='Accept',
-                        disabled=False,
-                        button_style='', # 'success', 'info', 'warning', 'danger' or ''
-                        tooltip='Select',
-                        icon='check'
-                )
-    display(button)
-    while not isClicked:
-
-        button.on_click(buttonClicked)
-
-    JSON['data']['attributes']['assay_class']['key'] = select.value
-        # input('Please specify the assay class key(EXP / MODEL): ')
-    JSON['data']['attributes']['assay_class']['title'] = input('Please specify the assay class title(Experimental assay / Modelling Analysis): ')
+    JSON['data']['attributes']['assay_class']['key'] = assayKind
 
     JSON['data']['attributes']['assay_type'] = {}
-    JSON['data']['attributes']['assay_type']['label'] = input('Please specify the assay type label: ')
     JSON['data']['attributes']['assay_type']['uri'] = input('Please specify the assay type uri: ')
 
     JSON['data']['attributes']['technology_type'] = {}
-    JSON['data']['attributes']['technology_type']['label'] = input('Please specify the technology type label: ')
     JSON['data']['attributes']['technology_type']['uri'] = input('Please specify the technology type uri: ')
-
-    # JSON['data']['attributes']['other_creators'] = input('Please specify other creators: ')
-    # JSON['data']['attributes']['snapshots'] = input('Please specify the snapshots: ')
-    # JSON['data']['attributes']['title'] = input('Please specify the title: ')
 
     JSON['data']['relationships'] = {}
 
