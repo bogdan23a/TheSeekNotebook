@@ -1,5 +1,6 @@
 import unittest
 import SEEK
+import WriteObject
 
 PROT_DEFAULT_AUTHENTICATION_STRING = "DEFAULT"
 

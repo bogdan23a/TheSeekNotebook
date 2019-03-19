@@ -1,68 +1,65 @@
 import ipywidgets as widgets
 
-isClicked = False
 
 def relationsFormat(JSON, type, source):
-    numberOfRelations = int(input('Please specify how many ' + type + ' is this ' + source + ' related to: '))
+    numberOfRelations = int(input("Please specify how many " + type + " is this " + source + " related to: "))
 
     if numberOfRelations != 0:
-        JSON['data']['relationships'][type] = {}
-        JSON['data']['relationships'][type]['data'] = [{}]
+        JSON["data"]["relationships"][type] = {}
+        JSON["data"]["relationships"][type]["data"] = [{}]
         
         for index in range(1, numberOfRelations + 1):
             
-            id = int(input('Please specify the id of the ' + type[:-1] + ' number ' + str(index) + ': '))
-            JSON['data']['relationships'][type]['data'].pop(0)
-            JSON['data']['relationships'][type]['data'].append({'id' : id, 'type' : type})
+            id = int(input("Please specify the id of the " + type[:-1] + " number " + str(index) + ": "))
+            JSON["data"]["relationships"][type]["data"].pop(0)
+            JSON["data"]["relationships"][type]["data"].append({"id" : id, "type" : type})
 
 
 def relationFormat(JSON, type):
 
-    # JSON['data']['relationships'][type] = {}
-    id = input('Please specify the id of the ' + type[:-1] + ": ")
+    JSON["data"]["relationships"][type] = {}
+    id = input("Please specify the id of the " + type[:-1] + ": ")
     if id != '':
-        JSON['data']['relationships'][type]['data'] = {'id' : int(id), 'type' : type}
-
-def buttonClicked():
-    isClicked = True
+        JSON["data"]["relationships"][type]["data"] = {"id" : int(id), "type" : type}
 
 
-def assayFormat(assayKind, description, policy):
+def assayFormat(assayKind):
 
     JSON = {}
-    JSON['data'] = {}
-    JSON['data']['type'] = 'assays'
+    JSON["data"] = {}
+    JSON["data"]["type"] = "assays"
 
-    JSON['data']['attributes'] = {}
-    JSON['data']['attributes']['description'] = description
-    JSON['data']['attributes']['other_creators'] = input('Please list other creators: ')
-    JSON['data']['attributes']['policy'] = {}
-    JSON['data']['attributes']['policy']['access'] = policy
-    JSON['data']['attributes']['title'] = input('Please specify the title: ')
+    JSON["data"]["attributes"] = {}
+    # JSON["data"]["attributes"]["description"] = description
+    # JSON["data"]["attributes"]["other_creators"] = input("Please list other creators: ")
+    # JSON["data"]["attributes"]["policy"] = {}
+    # JSON["data"]["attributes"]["policy"]["access"] = policy
+    # JSON["data"]["attributes"]["policy"]["permissions"] = []
+    JSON["data"]["attributes"]["title"] = input("Please specify the title: ")
 
-    JSON['data']['attributes']['assay_class'] = {}
-    JSON['data']['attributes']['assay_class']['key'] = assayKind
+    JSON["data"]["attributes"]["assay_class"] = {}
+    JSON["data"]["attributes"]["assay_class"]["key"] = assayKind
 
-    JSON['data']['attributes']['assay_type'] = {}
-    JSON['data']['attributes']['assay_type']['uri'] = input('Please specify the assay type uri: ')
+    JSON["data"]["attributes"]["assay_type"] = {}
+    JSON["data"]["attributes"]["assay_type"]["uri"] = input("Please specify the assay type uri: ")
 
-    JSON['data']['attributes']['technology_type'] = {}
-    JSON['data']['attributes']['technology_type']['uri'] = input('Please specify the technology type uri: ')
+    JSON["data"]["attributes"]["technology_type"] = {}
+    JSON["data"]["attributes"]["technology_type"]["uri"] = input("Please specify the technology type uri: ")
 
-    JSON['data']['relationships'] = {}
+    JSON["data"]["relationships"] = {}
 
     
-    relationsFormat(JSON, 'creators', 'assay')
-    relationsFormat(JSON, 'data_files', 'assay')
-    relationsFormat(JSON, 'documents', 'assay')
-    relationFormat(JSON, 'investigations')
-    relationsFormat(JSON, 'models', 'assay')
-    relationsFormat(JSON, 'people', 'assay')
-    relationsFormat(JSON, 'projects', 'assay')
-    relationsFormat(JSON, 'publications', 'assay')
-    relationsFormat(JSON, 'sops', 'assay')
-    relationFormat(JSON, 'studies')
-    relationsFormat(JSON, 'submitters', 'assay')
+    # relationsFormat(JSON, "data_files", "assay")
+    # relationsFormat(JSON, "documents", "assay")
+    # JSON["data"]["relationships"]["investigation"] = {}
+    # JSON["data"]["relationships"]["investigation"]["data"] = {"id": input("Please specify the id of the investigation: "), "type":"investigations"}
+    # relationsFormat(JSON, "models", "assay")
+    # relationsFormat(JSON, "people", "assay")
+    # relationsFormat(JSON, "publications", "assay")
+    # relationsFormat(JSON, "sops", "assay")
+    JSON["data"]["relationships"]["study"] = {}
+    JSON["data"]["relationships"]["study"]["data"] = {"id": input("Please specify the id of the study: "), "type":"studies"}
+    # relationsFormat(JSON, "organisms", "assay")
 
     return JSON
 

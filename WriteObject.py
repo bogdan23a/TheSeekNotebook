@@ -4,7 +4,6 @@ import requests
 import Helper
 import getpass
 from IPython.core.display import display, HTML
-import SEEK
 
 PROT_TEXTAREA_LAYOUT = widgets.Layout(flex='0 1 auto', 
                                       height='120px', 
@@ -60,9 +59,7 @@ class WriteObject():
 
         
         if self.type.value == 'assays':
-            self.JSON = Helper.assayFormat(self.description.value, 
-                                           self.assayKind.value, 
-                                           self.policyAccess.value)
+            self.JSON = Helper.assayFormat(self.assayKind.value)
 
         elif self.type.value == 'investigations':
             self.JSON = Helper.investigationFormat()
