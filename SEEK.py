@@ -5,6 +5,11 @@ import getpass
 import time
 from IPython.core.display import display, HTML
 
+def auth():
+
+    return (input("Username: "),getpass.getpass("Password: "))
+
+
 class module:
 
     def __init__(self, auth = None):
@@ -22,7 +27,7 @@ class module:
         if auth != None:
             self.session.auth = auth
         else:
-            self.session.auth = (input("Username: "), 
+            self.session.auth = (input("Username: "),
                                  getpass.getpass("Password: "))
 
         self.json = None
@@ -63,7 +68,8 @@ class module:
 
         try:
             r = self.session.get(self.base_url + type + "/" + id)
-
+            
+            self.session.close()
             if r.status_code != 200:
                 return False
 
@@ -74,6 +80,7 @@ class module:
 
         except Exception as e:
             print(str(e))
+
 
     def loadJSON(self, layerName, layer):
 
@@ -477,3 +484,6 @@ class module:
                 results.append(request)
         
         return results
+
+    # def download(self):
+
