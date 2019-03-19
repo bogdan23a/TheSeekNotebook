@@ -5,11 +5,7 @@ import getpass
 import time
 from IPython.core.display import display, HTML
 
-def auth():
-
-    return (input("Username: "), getpass.getpass("Password: "))
-
-class SEEK():
+class module:
 
     def __init__(self, auth = None):
 
@@ -181,7 +177,7 @@ class SEEK():
         # 3rd param: the number of request per thread for the paralelization
         self.time['start'] = time.time()
         
-        ps = SEEK(self.session.auth)
+        ps = module(self.session.auth)
         ps.parallelRequest(self.requestList, requestPerThread=self.searchResultsPerThread)
 
         # Wait for the requests to finish in order to continue
@@ -202,7 +198,7 @@ class SEEK():
         # Create a paralelized request for each relationship in the search results 
         self.time['start'] = time.time()
 
-        PS = SEEK(self.session.auth)
+        PS = module(self.session.auth)
         PS.parallelRequest(ps.relationshipList, requestPerThread=self.relationshipsPerThread)
 
         # Wait for the requests to finish in order to continue
@@ -271,16 +267,16 @@ class SEEK():
     # Fills the 'requestList' attribute with the response
     def parallelRequest(self, requests, requestPerThread):
         
-        if len(requests) < 20:
-            requestPerThread = 1
-        elif len(requests) < 100:
-            requestPerThread = 2
-        elif len(requests) < 500:
-            requestPerThread = 10
-        elif len(requests) < 1500:
-            requestPerThread = 30
-        else:
-            requestPerThread = 40
+        # if len(requests) < 20:
+        #     requestPerThread = 1
+        # elif len(requests) < 100:
+        #     requestPerThread = 2
+        # elif len(requests) < 500:
+        #     requestPerThread = 10
+        # elif len(requests) < 1500:
+        #     requestPerThread = 30
+        # else:
+        #     requestPerThread = 40
 
         # Compute the number of threads 
         if len(requests) % requestPerThread == 0:
@@ -318,7 +314,7 @@ class SEEK():
 
             try:
                 # Create new request
-                request = SEEK(self.session.auth)
+                request = module(self.session.auth)
                 
                 # Check if it is successful
                 if request.request(type=r['type'], id=r['id']) == False:
