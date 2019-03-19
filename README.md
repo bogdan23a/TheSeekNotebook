@@ -1,3 +1,3 @@
 # TheSeekNotebook
 
-[Code Coverage](https://img.shields.io/badge/coverage-A-brightgreen.svg)
+[Code Coverage](<img src='https://img.shields.io/badge/coverage-A-brightgreen.svg'>)
