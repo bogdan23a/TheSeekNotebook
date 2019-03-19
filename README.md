@@ -1,3 +1,3 @@
 # TheSeekNotebook
 
-[https://img.shields.io/badge/coverage-A-brightgreen.svg]
+[Code Coverage](https://img.shields.io/badge/coverage-A-brightgreen.svg)
