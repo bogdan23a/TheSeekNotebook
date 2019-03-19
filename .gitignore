@@ -1,2 +1,6 @@
-.ipnyb_checkpoints
+.ipynb_checkpoints/
 __pycache__
+.vscode
+.pytest_cache
+htmlcov/
+.coverage
