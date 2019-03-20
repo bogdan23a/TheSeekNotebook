@@ -27,7 +27,7 @@ class module:
         if auth != None:
             self.session.auth = auth
         else:
-            self.session.auth = (input("Username: "),
+            self.session.auth = (self.get_input("Username: "),
                                  getpass.getpass("Password: "))
 
         self.json = None
@@ -62,6 +62,10 @@ class module:
 
         self.time = {'start': 0, 'end': 0}
 
+    def get_input(self, text):
+
+        return input(text)
+
     def request(self, type, id):
 
         r = None
@@ -86,21 +90,12 @@ class module:
 
         layerName = lambda: None
         
-        if hasattr(layer,'items'):
-            for key, value in layer.items():
-                
-                if hasattr(value, 'items') == True:
-                    setattr(layerName, key, self.loadJSON(key, value))
-                else:
-                    setattr(layerName, key, value)
-        else:
-            for item in layer:
-                for key, value in item.items():
-                        
-                    if hasattr(value, 'items') == True:
-                        setattr(layerName, key, self.loadJSON(key, value))
-                    else:
-                        setattr(layerName, key, value)
+        for key, value in layer.items():
+            
+            if hasattr(value, 'items') == True:
+                setattr(layerName, key, self.loadJSON(key, value))
+            else:
+                setattr(layerName, key, value)
 
         setattr(self,'data', layerName)
 
@@ -153,9 +148,15 @@ class module:
         print("Decide how fast will the search run\n")
         print("Search results are usually less and the search requires less to be requested at once.")
         print("Relationships are usually a lot more, therefore it requires more requests at once")
-        self.searchResultsPerThread = int(input("How many search results should be requested per thread: "))
-        self.relationshipsPerThread = int(input("How many relationships should be requested per thread: "))
+        
+        try:
 
+            self.searchResultsPerThread = int(self.get_input("How many search results should be requested per thread: "))
+            self.relationshipsPerThread = int(self.get_input("How many relationships should be requested per thread: "))
+        except Exception as e:
+
+            print(str(e))
+            
     # Simplified method for the user in order to operate a browsing in the SEEK API
     def search(self):
 
@@ -485,5 +486,27 @@ class module:
         
         return results
 
-    # def download(self):
+    def download(self):
+
+        self.link = self.data.attributes.content_blobs[0]['link'] + "/download"
+
+        r = None
+
+        try:
+            r = self.session.get(self.link)
+            
+            # self.session.close()
+            if r.status_code != 200:
+                return False
+
+            # self.json = r.json()
+            # self.loadJSON(self, self.json['data'])
+            
+            return True
+
+        except Exception as e:
+            print(str(e))
+
+
+
 

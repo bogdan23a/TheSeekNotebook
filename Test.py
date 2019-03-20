@@ -1,6 +1,8 @@
 import unittest
+from unittest.mock import patch
 import SEEK
 import WriteObject
+import getpass
 
 PROT_DEFAULT_AUTHENTICATION_STRING = "DEFAULT"
 
@@ -12,6 +14,7 @@ class TestSEEK(unittest.TestCase):
                      PROT_DEFAULT_AUTHENTICATION_STRING)
 
         self.testObject = SEEK.module(self.auth)
+        self.testSearch = SEEK.module(self.auth)
 
     def tearDown(self):
 
@@ -28,12 +31,18 @@ class TestSEEK(unittest.TestCase):
                         "Request should have these credentials")
 
     # Testing object initialization without authentication
-    def test_InitWithoutAuth(self):
+    @patch('SEEK.module.get_input', return_value=
+                                   PROT_DEFAULT_AUTHENTICATION_STRING)
+    @patch('getpass.getpass', return_value=PROT_DEFAULT_AUTHENTICATION_STRING)
+    def test_InitWithoutAuth(self ,username, password):
         
         self.testObject = SEEK.module()
 
-        self.assertNotEqual(self.testObject.session.auth, None, 
-                            "Request should have these credentials")
+        self.assertEqual(self.testObject.session.auth, 
+                        (PROT_DEFAULT_AUTHENTICATION_STRING,
+                         PROT_DEFAULT_AUTHENTICATION_STRING), 
+                            "Request should require user input")
+                            
 
     # def test_AuthNotWorking(self):
 
@@ -48,6 +57,28 @@ class TestSEEK(unittest.TestCase):
 
         self.assertFalse(self.testObject.request(type="assays", id="0"), 
                         "This request should return false")
+    
+    def test_RequestHasError(self):
+
+        self.testObject.base_url = "wrong.url.com"
+        self.assertRaises(Exception, self.testObject.request(type="assays", 
+                                                            id="576"),
+                          "This request should return error")
+
+    @patch('SEEK.module.get_input', return_value='1')
+    def testSearchAdvancedSetup(self, input):
+
+        self.testSearch.searchAdvancedSetup()
+        self.assertEqual(self.testSearch.searchResultsPerThread, 1)
+        self.assertEqual(self.testSearch.relationshipsPerThread, 1)
+
+    @patch('SEEK.module.get_input', return_value='what')
+    def testSearchAdvancedSetupWithWrongInput(self, input):
+
+        self.testSearch.searchAdvancedSetup()
+        self.assertRaises(Exception, self.testSearch.searchResultsPerThread)
+        self.assertRaises(Exception, self.testSearch.relationshipsPerThread)
+
 
 if __name__ == '__main__':
 
