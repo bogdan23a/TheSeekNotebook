@@ -43,8 +43,17 @@ class TestSEEK(unittest.TestCase):
                          PROT_DEFAULT_AUTHENTICATION_STRING), 
                             "Request should require user input")
                             
+    def test_LoadJOSNMethod(self):
 
-    # def test_AuthNotWorking(self):
+        r = self.testObject.session.get(self.testObject.base_url + "assays/576")
+            
+        self.testObject.session.close()
+
+        self.testObject.json = r.json()
+        self.testObject.loadJSON(self.testObject, self.testObject.json['data'])
+
+        for item in ['attributes','id','links','meta','relationships','type']:
+            self.assertIn(item, dir(self.testObject.data))
 
     # Testing the request of an existent object
     def test_RequestReturnsTrue(self):
@@ -58,26 +67,47 @@ class TestSEEK(unittest.TestCase):
         self.assertFalse(self.testObject.request(type="assays", id="0"), 
                         "This request should return false")
     
+    
     def test_RequestHasError(self):
 
-        self.testObject.base_url = "wrong.url.com"
+        self.testObject.base_url = "wrong.url.com/"
         self.assertRaises(Exception, self.testObject.request(type="assays", 
-                                                            id="576"),
-                          "This request should return error")
+                                                            id="576"))
 
     @patch('SEEK.module.get_input', return_value='1')
-    def testSearchAdvancedSetup(self, input):
+    def test_SearchAdvancedSetup(self, input):
 
         self.testSearch.searchAdvancedSetup()
         self.assertEqual(self.testSearch.searchResultsPerThread, 1)
         self.assertEqual(self.testSearch.relationshipsPerThread, 1)
 
     @patch('SEEK.module.get_input', return_value='what')
-    def testSearchAdvancedSetupWithWrongInput(self, input):
+    def test_SearchAdvancedSetupWithWrongInput(self, input):
 
         self.testSearch.searchAdvancedSetup()
         self.assertRaises(Exception, self.testSearch.searchResultsPerThread)
         self.assertRaises(Exception, self.testSearch.relationshipsPerThread)
+
+    @patch('SEEK.module.get_input', return_value=
+                                            PROT_DEFAULT_AUTHENTICATION_STRING)
+    @patch('SEEK.module.get_input', return_value=
+                                            PROT_DEFAULT_AUTHENTICATION_STRING)
+    def test_DemoSearchMethod(self, searchKey, searchType):
+
+        self.assertTrue(self.testSearch.demoSearch())
+
+
+    def test_SerializedRequestMethod(self):
+
+        requests = [{'id':'1','type':'assays'}]
+        self.testSearch.makeRequests(requests, 1)
+
+        for item in ['attributes','id','links','meta','relationships','type']:
+            self.assertIn(item, dir(self.testSearch.requestList[0].data))
+    
+    
+
+
 
 
 if __name__ == '__main__':

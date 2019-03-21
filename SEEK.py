@@ -88,38 +88,67 @@ class module:
 
     def loadJSON(self, layerName, layer):
 
-        layerName = lambda: None
-        
-        for key, value in layer.items():
+        try:
+            layerName = lambda: None
             
-            if hasattr(value, 'items') == True:
-                setattr(layerName, key, self.loadJSON(key, value))
+            if hasattr(layer, 'items'):
+
+                for key, value in layer.items():
+                    
+                    if hasattr(value, 'items'):
+
+                        setattr(layerName, key, self.loadJSON(key, value))
+                    else:
+
+                        setattr(layerName, key, value)
+
+                setattr(self,'data', layerName)
             else:
-                setattr(layerName, key, value)
 
-        setattr(self,'data', layerName)
+                for item in range(0, len(layer)):
 
-        return layerName
+                    for key, value in layer[item].items():
+
+                        if hasattr(value, 'items'):
+
+                            setattr(layerName, key, self.loadJSON(key, value))
+                        else:
+
+                            setattr(layerName, key, value)
+
+            return layerName
+        except Exception as e:
+
+            print(str(e))
+
 
     def print(self):
 
         if hasattr(self, 'data'):
+
             if hasattr(self.data, 'attributes'):
+
                 self.printAttributes()
                 print("\n")
+
             if hasattr(self.data, 'relationships'):
+
                 self.printRelationships()
         else:
+
             print("Search item unavailable. Try again later.")
 
     def printAttributes(self):
 
-        print(self.data.attributes.title + "(id: " + self.data.id + " | type: " + self.data.type +")\n")
+        print(self.data.attributes.title + "(id: " + self.data.id + 
+             " | type: " + self.data.type +")\n")
 
         print("Description: ", end="")
         if hasattr(self.data.attributes, 'description') and self.data.attributes.description != None:
+
             print(self.data.attributes.description)
         else:
+
             print("missing")
 
     def printRelationships(self):
@@ -151,8 +180,10 @@ class module:
         
         try:
 
-            self.searchResultsPerThread = int(self.get_input("How many search results should be requested per thread: "))
-            self.relationshipsPerThread = int(self.get_input("How many relationships should be requested per thread: "))
+            self.searchResultsPerThread = int(self.get_input(
+                "How many search results should be requested per thread: "))
+            self.relationshipsPerThread = int(self.get_input(
+                "How many relationships should be requested per thread: "))
         except Exception as e:
 
             print(str(e))
@@ -161,12 +192,13 @@ class module:
     def search(self):
 
         # Begin the search by inputing the search term
-        self.searchTerm = input("Enter your search: \n")
+        self.searchTerm = self.get_input("Enter your search: \n")
         
         # Choose the category of search
         choice = None
         while choice not in self.searchChoices:
-            choice = input("Please enter one of: " + ', '.join(self.searchChoices) + ": ")
+            choice = self.get_input("Please enter one of: " + 
+                                    ', '.join(self.searchChoices) + ": ")
         self.searchType = choice
 
         # Process the request and retrieve the JSON
@@ -233,19 +265,24 @@ class module:
     def demoSearch(self):
 
         # Begin the search by inputing the search term
-        self.searchTerm = input("Enter your search: \n")
+        self.searchTerm = self.get_input("Enter your search: \n")
         
         # Choose the category of search
         choice = None
         while choice not in self.searchChoices:
-            choice = input("Please enter one of: " + ', '.join(self.searchChoices))
+            choice = self.get_input("Please enter one of: " + ', '.join(self.searchChoices))
         self.searchType = choice
 
         # Process the request and retrieve the JSON
         payload = {'q': self.searchTerm, 'search_type': self.searchType}
         r = self.session.get(self.base_url + 'search', headers=self.headers, params=payload)
-        r.raise_for_status()
+
+        if r.status_code != 200:
+            return False
+
         self.json = r.json()
+
+        return True
 
     # Creates the list of requests by parsing a RAW Search Result JSON
     def createRequestList(self):
@@ -321,32 +358,28 @@ class module:
 
         for r in requestsList:
 
-            try:
-                # Create new request
-                request = module(self.session.auth)
-                
-                # Check if it is successful
-                if request.request(type=r['type'], id=r['id']) == False:
-                    self.requestFails = self.requestFails + 1
+            # Create new request
+            request = module(self.session.auth)
+            
+            # Check if it is successful
+            if request.request(type=r['type'], id=r['id']) == False:
+                self.requestFails = self.requestFails + 1
+
+            else:
+                # Compute percentace for user info
+                p = self.percentageLoaded / total * 100
+
+                if p >= (100 - (1 / total) * 100):
+                    print("Loading " + str(round(p,2)) + "%\r", end='')
+                    print("\rLoading Completed\n", end='')
 
                 else:
-                    # Compute percentace for user info
-                    p = self.percentageLoaded / total * 100
+                    print("Loading " + str(round(p,2)) + "%\r", end='')
 
-                    if p >= (100 - (1 / total) * 100):
-                        print("Loading " + str(round(p,2)) + "%\r", end='')
-                        print("\rLoading Completed\n", end='')
+                self.requestList.append(request)
 
-                    else:
-                        print("Loading " + str(round(p,2)) + "%\r", end='')
+            self.percentageLoaded = self.percentageLoaded + 1
 
-                    self.requestList.append(request)
-
-                self.percentageLoaded = self.percentageLoaded + 1
-
-            except Exception as e:
-
-                print(str(e))
 
     # Create the relationship list by parsing the search result list
     # return: number of relations found
