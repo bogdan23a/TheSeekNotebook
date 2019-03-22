@@ -101,28 +101,37 @@ def studyFormat():
 
 def investigationFormat():
 
+    containing_project_id = 33
     JSON = {}
     JSON['data'] = {}
     JSON['data']['type'] = 'investigations'
-
     JSON['data']['attributes'] = {}
-    JSON['data']['attributes']['description'] = input('Please specify the description: ')
-    JSON['data']['attributes']['other_creators'] = input('Please specify other creators: ')
-    JSON['data']['attributes']['snapshots'] = input('Please specify the snapshots: ')
-    JSON['data']['attributes']['title'] = input('Please specify the title: ')
-
+    JSON['data']['attributes']['title'] = input('Please enter the name for the investigation: ')
     JSON['data']['relationships'] = {}
+    JSON['data']['relationships']['projects'] = {}
+    JSON['data']['relationships']['projects']['data'] = [{'id' : containing_project_id, 'type' : 'projects'}]
+#     JSON = {}
+#     JSON['data'] = {}
+#     JSON['data']['type'] = 'investigations'
 
-    relationsFormat(JSON, 'assays', 'investigation')
-    relationsFormat(JSON, 'creators', 'investigation')
-    relationsFormat(JSON, 'data_files', 'investigation')
-    relationsFormat(JSON, 'documents', 'investigation')
-    relationsFormat(JSON, 'models', 'investigation')
-    relationsFormat(JSON, 'people', 'investigation')
-    relationsFormat(JSON, 'projects', 'investigation')
-    relationsFormat(JSON, 'publications', 'investigation')
-    relationsFormat(JSON, 'sops', 'investigation')
-    relationsFormat(JSON, 'studies', 'investigation')
-    relationsFormat(JSON, 'submitters', 'investigation')
+#     JSON['data']['attributes'] = {}
+#     JSON['data']['attributes']['description'] = input('Please specify the description: ')
+#     JSON['data']['attributes']['other_creators'] = input('Please specify other creators: ')
+#     JSON['data']['attributes']['snapshots'] = input('Please specify the snapshots: ')
+#     JSON['data']['attributes']['title'] = input('Please specify the title: ')
+
+#     JSON['data']['relationships'] = {}
+
+#     relationsFormat(JSON, 'assays', 'investigation')
+#     relationsFormat(JSON, 'creators', 'investigation')
+#     relationsFormat(JSON, 'data_files', 'investigation')
+#     relationsFormat(JSON, 'documents', 'investigation')
+#     relationsFormat(JSON, 'models', 'investigation')
+#     relationsFormat(JSON, 'people', 'investigation')
+#     relationsFormat(JSON, 'projects', 'investigation')
+#     relationsFormat(JSON, 'publications', 'investigation')
+#     relationsFormat(JSON, 'sops', 'investigation')
+#     relationsFormat(JSON, 'studies', 'investigation')
+#     relationsFormat(JSON, 'submitters', 'investigation')
 
     return JSON

@@ -4,11 +4,12 @@ import threading
 import getpass
 import time
 from IPython.core.display import display, HTML
+import ipywidgets as widgets
+from IPython.display import display
 
 def auth():
 
     return (input("Username: "),getpass.getpass("Password: "))
-
 
 class module:
 
@@ -33,7 +34,8 @@ class module:
         self.json = None
         self.data = object()
 
-        self.searchChoices = ["assays",
+        self.searchChoices = [
+        "assays",
         "data_files",
         "events",
         "institutions",
@@ -48,7 +50,8 @@ class module:
         "sample_types",
         "sops",
         "studies",
-        "all"]       
+        "all"]
+        
 
         self.requestList = []
         self.relationshipList = []
@@ -62,29 +65,41 @@ class module:
 
         self.time = {'start': 0, 'end': 0}
 
+    def on_value_change(self, change):
+        
+        self.isNotChanged = False
+
+    def get_search_choice(self):
+
+        self.searchType = widgets.Dropdown(options=["assays",
+                                                    "data_files",
+                                                    "events",
+                                                    "institutions",
+                                                    "investigations",
+                                                    "models",
+                                                    "organisms",
+                                                    "people",
+                                                    "presentations",
+                                                    "programmes",
+                                                    "projects",
+                                                    "publications",
+                                                    "sample_types",
+                                                    "sops",
+                                                    "studies",
+                                                    "all"],
+                                                value="all", disabled=False)
+
+
+        return widgets.HBox([widgets.Label(value="Please enter one of: "), 
+                self.searchType])
+
     def get_input(self, text):
 
         return input(text)
 
-    def request(self, type, id):
+    def get_input_testing(self,text):
 
-        r = None
-
-        try:
-            r = self.session.get(self.base_url + type + "/" + id)
-            
-            self.session.close()
-            if r.status_code != 200:
-                return False
-
-            self.json = r.json()
-            self.loadJSON(self, self.json['data'])
-            
-            return True
-
-        except Exception as e:
-            print(str(e))
-
+        return input(text)
 
     def loadJSON(self, layerName, layer):
 
@@ -120,23 +135,25 @@ class module:
         except Exception as e:
 
             print(str(e))
+    
+    def request(self, type, id):
 
+        r = None
 
-    def print(self):
+        try:
+            r = self.session.get(self.base_url + type + "/" + id)
+            
+            self.session.close()
+            if r.status_code != 200:
+                return False
 
-        if hasattr(self, 'data'):
+            self.json = r.json()
+            self.loadJSON(self, self.json['data'])
+            
+            return True
 
-            if hasattr(self.data, 'attributes'):
-
-                self.printAttributes()
-                print("\n")
-
-            if hasattr(self.data, 'relationships'):
-
-                self.printRelationships()
-        else:
-
-            print("Search item unavailable. Try again later.")
+        except Exception as e:
+            print(str(e))
 
     def printAttributes(self):
 
@@ -166,9 +183,25 @@ class module:
                     for data in r.newData:
                         hasNoRelationships = False
                         print(data.data.attributes.title)
-            
+
         if hasNoRelationships:
             print("Object has no relationships")
+
+    def print(self):
+
+        if hasattr(self, 'data'):
+
+            if hasattr(self.data, 'attributes'):
+
+                self.printAttributes()
+                print("\n")
+
+            if hasattr(self.data, 'relationships'):
+
+                self.printRelationships()
+        else:
+
+            print("Search item unavailable. Try again later.")
 
     # Set up the multithreading amount
     def searchAdvancedSetup(self):
@@ -187,94 +220,36 @@ class module:
         except Exception as e:
 
             print(str(e))
-            
-    # Simplified method for the user in order to operate a browsing in the SEEK API
-    def search(self):
-
-        # Begin the search by inputing the search term
-        self.searchTerm = self.get_input("Enter your search: \n")
-        
-        # Choose the category of search
-        choice = None
-        while choice not in self.searchChoices:
-            choice = self.get_input("Please enter one of: " + 
-                                    ', '.join(self.searchChoices) + ": ")
-        self.searchType = choice
-
-        # Process the request and retrieve the JSON
-        payload = {'q': self.searchTerm, 'search_type': self.searchType}
-        r = self.session.get(self.base_url + 'search', headers=self.headers, params=payload)
-        r.raise_for_status()
-        self.json = r.json()
-
-        # Create the request list of the form [{'id':'x', 'type':'y'}]
-        self.createRequestList()
-
-        print("\n" + str(len(self.requestList)) + " results found",end='')
-
-        # Create a paralelized request for each search result
-        # 1st param: the search results to be requested
-        # 2nd param: the total amount of request 
-        # 3rd param: the number of request per thread for the paralelization
-        self.time['start'] = time.time()
-        
-        ps = module(self.session.auth)
-        ps.parallelRequest(self.requestList, requestPerThread=self.searchResultsPerThread)
-
-        # Wait for the requests to finish in order to continue
-        for thread in ps.threadList:
-            thread.join()
-
-        self.time['end'] = time.time()
-         
-        print("\n" + str(ps.requestFails) + " ommited results (" + str(int(self.time['end'] - self.time['start'])) + " s elapsed)")
-
-        # Get the total number of places where there is a relationship
-        totalNumberRelationships = ps.createRelationshipList()
-
-        ps.removeDuplicateRelationships()
-
-        print("\n" + str(len(ps.relationshipList)) + " relationships found",end='')       
-
-        # Create a paralelized request for each relationship in the search results 
-        self.time['start'] = time.time()
-
-        PS = module(self.session.auth)
-        PS.parallelRequest(ps.relationshipList, requestPerThread=self.relationshipsPerThread)
-
-        # Wait for the requests to finish in order to continue
-        for thread in PS.threadList:
-            thread.join()
-        
-        self.time['end'] = time.time()
-
-        print("\n" + str(PS.requestFails) + " ommited results (" + str(int(self.time['end'] - self.time['start'])) + " s elapsed)")
-
-        ps.substituteRelationships(PS.requestList, totalNumberRelationships)
-
-        self.requestList = ps.requestList
-        print("\n\n                                        --SEARCH RESULTS--\n\n")
-        for request in ps.requestList:
-
-            request.print()
-            print('\n____________________________________________________________________________\n')
     
     # Used for Demo Presentation
     # Searches without sofisticated interpretaion
     # Process the request and retrieve the JSON
-    def demoSearch(self):
+    def APISearch(self):
 
         # Begin the search by inputing the search term
         self.searchTerm = self.get_input("Enter your search: \n")
         
         # Choose the category of search
         choice = None
-        while choice not in self.searchChoices:
-            choice = self.get_input("Please enter one of: " + ', '.join(self.searchChoices))
-        self.searchType = choice
+        # while choice not in self.searchChoices:
+        choice = self.get_input_testing("Please enter one of: " + 
+                                        ', '.join(self.searchChoices) + ": ")
+        
+        if choice not in self.searchChoices:
+            print("\nNot a choice! Try again!" + choice)
+            return False
+        
+        # widget = self.get_search_choice()
+        # display(widget)
+        
+        # self.isNotChanged = True
+ 
+        # while self.isNotChanged:
+        #     widget.observe(self.on_value_change, names=["values"])
+        
 
         # Process the request and retrieve the JSON
-        payload = {'q': self.searchTerm, 'search_type': self.searchType}
+        payload = {'q': self.searchTerm, 'search_type': choice}
         r = self.session.get(self.base_url + 'search', headers=self.headers, params=payload)
 
         if r.status_code != 200:
@@ -303,7 +278,37 @@ class module:
                 
             requestList.append({'id':ID, 'type':TYPE})
         
-        self.requestList = requestList       
+        self.requestList = requestList
+
+    # Each thread executes this method
+    # Loops through each batch of requests received and executes them in turn, serialized
+    # 1st param: the request batch
+    # 2nd param: the total number of requests
+    def makeRequests(self, requestsList, total):
+
+        for r in requestsList:
+
+            # Create new request
+            request = module(self.session.auth)
+            
+            # Check if it is successful
+            if request.request(type=r['type'], id=r['id']) == False:
+                self.requestFails = self.requestFails + 1
+
+            else:
+                # Compute percentace for user info
+                p = self.percentageLoaded / total * 100
+
+                if p >= (100 - (1 / total) * 100):
+                    print("Loading " + str(round(p,2)) + "%\r", end='')
+                    print("\rLoading Completed\n", end='')
+
+                else:
+                    print("Loading " + str(round(p,2)) + "%\r", end='')
+
+                self.requestList.append(request)
+
+            self.percentageLoaded = self.percentageLoaded + 1
 
     # Uses multithreading to read a number of request and retrieve results from the API
     # 1st param: the list of requests
@@ -349,37 +354,6 @@ class module:
 
             # Add the thread to the list of threads
             self.threadList.append(newThread)
-    
-    # Each thread executes this method
-    # Loops through each batch of requests received and executes them in turn, serialized
-    # 1st param: the request batch
-    # 2nd param: the total number of requests
-    def makeRequests(self, requestsList, total):
-
-        for r in requestsList:
-
-            # Create new request
-            request = module(self.session.auth)
-            
-            # Check if it is successful
-            if request.request(type=r['type'], id=r['id']) == False:
-                self.requestFails = self.requestFails + 1
-
-            else:
-                # Compute percentace for user info
-                p = self.percentageLoaded / total * 100
-
-                if p >= (100 - (1 / total) * 100):
-                    print("Loading " + str(round(p,2)) + "%\r", end='')
-                    print("\rLoading Completed\n", end='')
-
-                else:
-                    print("Loading " + str(round(p,2)) + "%\r", end='')
-
-                self.requestList.append(request)
-
-            self.percentageLoaded = self.percentageLoaded + 1
-
 
     # Create the relationship list by parsing the search result list
     # return: number of relations found
@@ -406,7 +380,18 @@ class module:
         self.relationshipList = relations
 
         return len(relations)
-    
+
+    def removeDuplicateRelationships(self):
+        
+        noDuplicates = []
+        for relation in self.relationshipList:
+            
+            if relation not in noDuplicates:
+                
+                noDuplicates.append(relation)
+
+        self.relationshipList = noDuplicates
+
     # Substitute the information from the relationship list back to the original search results
     # 1st param: the relationship list (without duplicates)
     # 2nd param: the total number of relations in the search results that need to be filled out
@@ -497,17 +482,63 @@ class module:
 
                                         # Don't look anymore
                                         break
-    
-    def removeDuplicateRelationships(self):
-        
-        noDuplicates = []
-        for relation in self.relationshipList:
-            
-            if relation not in noDuplicates:
-                
-                noDuplicates.append(relation)
 
-        self.relationshipList = noDuplicates
+    # Simplified method for the user in order to operate a browsing in the SEEK API
+    def search(self):
+
+        self.APISearch()
+
+        # Create the request list of the form [{'id':'x', 'type':'y'}]
+        self.createRequestList()
+
+        print("\n" + str(len(self.requestList)) + " results found",end='')
+
+        # Create a paralelized request for each search result
+        # 1st param: the search results to be requested
+        # 2nd param: the total amount of request 
+        # 3rd param: the number of request per thread for the paralelization
+        self.time['start'] = time.time()
+        
+        ps = module(self.session.auth)
+        ps.parallelRequest(self.requestList, requestPerThread=self.searchResultsPerThread)
+
+        # Wait for the requests to finish in order to continue
+        for thread in ps.threadList:
+            thread.join()
+
+        self.time['end'] = time.time()
+         
+        print("\n" + str(ps.requestFails) + " ommited results (" + str(int(self.time['end'] - self.time['start'])) + " s elapsed)")
+
+        # Get the total number of places where there is a relationship
+        totalNumberRelationships = ps.createRelationshipList()
+
+        ps.removeDuplicateRelationships()
+
+        print("\n" + str(len(ps.relationshipList)) + " relationships found",end='')       
+
+        # Create a paralelized request for each relationship in the search results 
+        self.time['start'] = time.time()
+
+        PS = module(self.session.auth)
+        PS.parallelRequest(ps.relationshipList, requestPerThread=self.relationshipsPerThread)
+
+        # Wait for the requests to finish in order to continue
+        for thread in PS.threadList:
+            thread.join()
+        
+        self.time['end'] = time.time()
+
+        print("\n" + str(PS.requestFails) + " ommited results (" + str(int(self.time['end'] - self.time['start'])) + " s elapsed)")
+
+        ps.substituteRelationships(PS.requestList, totalNumberRelationships)
+
+        self.requestList = ps.requestList
+        print("\n\n                                        --SEARCH RESULTS--\n\n")
+        for request in ps.requestList:
+
+            request.print()
+            print('\n____________________________________________________________________________\n')
 
     def find(self, string):
 
