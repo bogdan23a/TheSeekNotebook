@@ -215,7 +215,7 @@ class module:
 
             self.searchResultsPerThread = int(self.get_input(
                 "How many search results should be requested per thread: "))
-            self.relationshipsPerThread = int(self.get_input(
+            self.relationshipsPerThread = int(self.get_input_testing(
                 "How many relationships should be requested per thread: "))
         except Exception as e:
 
@@ -286,29 +286,34 @@ class module:
     # 2nd param: the total number of requests
     def makeRequests(self, requestsList, total):
 
-        for r in requestsList:
+        try:
 
-            # Create new request
-            request = module(self.session.auth)
-            
-            # Check if it is successful
-            if request.request(type=r['type'], id=r['id']) == False:
-                self.requestFails = self.requestFails + 1
+            for r in requestsList:
 
-            else:
-                # Compute percentace for user info
-                p = self.percentageLoaded / total * 100
-
-                if p >= (100 - (1 / total) * 100):
-                    print("Loading " + str(round(p,2)) + "%\r", end='')
-                    print("\rLoading Completed\n", end='')
+                # Create new request
+                request = module(self.session.auth)
+                
+                # Check if it is successful
+                if request.request(type=r['type'], id=r['id']) == False:
+                    self.requestFails = self.requestFails + 1
 
                 else:
-                    print("Loading " + str(round(p,2)) + "%\r", end='')
+                    # Compute percentace for user info
+                    p = self.percentageLoaded / total * 100
 
-                self.requestList.append(request)
+                    if p >= (100 - (1 / total) * 100):
+                        print("Loading " + str(round(p,2)) + "%\r", end='')
+                        print("\rLoading Completed\n", end='')
 
-            self.percentageLoaded = self.percentageLoaded + 1
+                    else:
+                        print("Loading " + str(round(p,2)) + "%\r", end='')
+
+                    self.requestList.append(request)
+
+                self.percentageLoaded = self.percentageLoaded + 1
+        except Exception as e:
+
+            print(str(e))
 
     # Uses multithreading to read a number of request and retrieve results from the API
     # 1st param: the list of requests
@@ -318,27 +323,22 @@ class module:
     # Fills the 'requestList' attribute with the response
     def parallelRequest(self, requests, requestPerThread):
         
-        # if len(requests) < 20:
-        #     requestPerThread = 1
-        # elif len(requests) < 100:
-        #     requestPerThread = 2
-        # elif len(requests) < 500:
-        #     requestPerThread = 10
-        # elif len(requests) < 1500:
-        #     requestPerThread = 30
-        # else:
-        #     requestPerThread = 40
-
+        self.requestList = []
         # Compute the number of threads 
-        if len(requests) % requestPerThread == 0:
-            numberOfThreads = len(requests) // requestPerThread
-        else: 
-            numberOfThreads = len(requests) // requestPerThread + 1
+        numberOfThreads = 1
+        try:
+            if len(requests) % requestPerThread == 0:
+                numberOfThreads = len(requests) // requestPerThread
+            else: 
+                numberOfThreads = len(requests) // requestPerThread + 1
 
-        if requestPerThread > 10:
-            print("(" + str(numberOfThreads * 5) + ' s estimated)')
-        else:
-            print("(" + str(numberOfThreads) + ' s estimated)')
+            if requestPerThread > 10:
+                print("(" + str(numberOfThreads * 5) + ' s estimated)')
+            else:
+                print("(" + str(numberOfThreads) + ' s estimated)')
+        except Exception as e:
+
+            print(str(e))
 
         for currentThread in range(0, numberOfThreads):
 
