@@ -59,7 +59,8 @@ class WriteObject():
 
         
         if self.type.value == 'assays':
-            self.JSON = Helper.assayFormat(self.assayKind.value)
+            self.JSON = Helper.assayFormat(self.assayKind.value,
+                                           self.description.value)
 
         elif self.type.value == 'investigations':
             self.JSON = Helper.investigationFormat()
@@ -116,3 +117,6 @@ class WriteObject():
     def request(self):
         r = self.session.post(self.base_url + '/' + self.type.value, json=self.JSON)
         r.raise_for_status()
+        self.json = r.json()
+        r.close()
+        self.session.close()
