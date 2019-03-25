@@ -83,45 +83,36 @@ def assayFormat(assayKind, description, policy):
 
     return JSON
 
-def studyFormat():
+def studyFormat(description, policy):
 
-    # investigation_id = 41
     JSON = {}
     JSON['data'] = {}
     JSON['data']['type'] = 'studies'
     JSON['data']['attributes'] = {}
     JSON['data']['attributes']['title'] = input('Enter the title: ')
-    JSON['data']['attributes']['description'] = input('Description: ')
-    JSON['data']['attributes']['policy'] = {'access':'view', 'permissions': [{'resource': {'id': int(input("What is your user ID? ")),'type': 'people'},'access': 'manage'}]}
+    JSON['data']['attributes']['description'] = description
+    JSON['data']['attributes']['policy'] = {'access': policy, 'permissions': [{'resource': {'id': int(input("What is your user ID? ")),'type': 'people'},'access': 'manage'}]}
     JSON['data']['relationships'] = {}
     JSON['data']['relationships']['investigation'] = {}
     JSON['data']['relationships']['investigation']['data'] = {'id' : int(input("Please enter the investigation id: ")), 'type' : 'investigations'}
 
-    # JSON['data']['attributes']['description'] = input('Please specify the description: ')
-    # JSON['data']['attributes']['other_creators'] = input('Please specify other creators: ')
-    # JSON['data']['attributes']['snapshots'] = input('Please specify the snapshots: ')
-    # JSON['data']['attributes']['title'] = input('Please specify the title: ')
+    other = ""
+    other = input("Please list other creators: ")
+    if other != "":
+        JSON["data"]["attributes"]["other_creators"] = other
 
-    # JSON['data']['attributes']['experimentalists'] = input('Please specify the experimentalists: ')
-    # JSON['data']['attributes']['person_responsible_id'] = input('Please specify the id of the person responsible: ')
+    JSON['data']['attributes']['experimentalists'] = input('Please specify the experimentalists: ')
+    JSON['data']['attributes']['person_responsible_id'] = input('Please specify the id of the person responsible: ')
 
-    # JSON['data']['attributes']['other_creators'] = input('Please specify other creators: ')
-    # JSON['data']['attributes']['snapshots'] = input('Please specify the snapshots: ')
-    # JSON['data']['attributes']['title'] = input('Please specify the title: ')
-
-    # JSON['data']['relationships'] = {}
-
-    
-    # relationsFormat(JSON, 'assays', 'study')
-    # relationsFormat(JSON, 'creators', 'study')
-    # relationsFormat(JSON, 'data_files', 'study')
-    # relationsFormat(JSON, 'documents', 'study')
-    # relationsFormat(JSON, 'models', 'study')
-    # relationsFormat(JSON, 'people', 'study')
-    # relationsFormat(JSON, 'projects', 'study')
-    # relationsFormat(JSON, 'publications', 'study')
-    # relationsFormat(JSON, 'sops', 'study')
-    # relationsFormat(JSON, 'submitters', 'study')
+    relationsFormat(JSON, 'assays', 'study')
+    relationsFormat(JSON, 'creators', 'study')
+    relationsFormat(JSON, 'data_files', 'study')
+    relationsFormat(JSON, 'documents', 'study')
+    relationsFormat(JSON, 'models', 'study')
+    relationsFormat(JSON, 'people', 'study')
+    relationsFormat(JSON, 'projects', 'study')
+    relationsFormat(JSON, 'publications', 'study')
+    relationsFormat(JSON, 'sops', 'study')
 
     return JSON
 
@@ -147,4 +138,41 @@ def investigationFormat():
     relationsFormat(JSON, 'studies', 'investigation')
     relationsFormat(JSON, 'submitters', 'investigation')
 
+    return JSON
+    
+def data_fileFormat(description, policy):
+    
+    JSON = {}
+    JSON['data'] = {}
+    JSON['data']['type'] = 'data_files'
+    JSON['data']['attributes'] = {}
+    JSON['data']['attributes']['title'] = input('Enter the title: ')
+
+    numberOfRelations = int(input("Please specify the number of tags: "))
+
+    if numberOfRelations != 0:
+        JSON["data"]["attributes"]["tags"] = []
+        
+        for index in range(1, numberOfRelations + 1):
+            
+            tag = input("Tag #" + str(index) + ": ")
+            JSON["data"]["attributes"]["tags"].append(tag)
+
+    JSON['data']['attributes']['license'] = 'CC-BY-4.0'
+    JSON['data']['attributes']['description'] = description
+    JSON['data']['attributes']['policy'] = {'access': policy}
+
+    remote_blob = {'url' : input('Provide the url/ null if uploading local file'), 'original_filename': input('File name: ')}
+    JSON['data']['attributes']['content_blobs'] = [remote_blob]
+
+
+    JSON['data']['relationships'] = {}
+    # JSON['data']['relationships']['projects'] = {}
+    # JSON['data']['relationships']['projects']['data'] = [{'id' : containing_project_id, 'type' : 'projects'}]
+    relationsFormat(JSON, 'projects', 'data file')
+    relationsFormat(JSON, 'creators', 'data file')
+    relationsFormat(JSON, 'assays', 'data file')
+    relationsFormat(JSON, 'publications', 'data file')
+    relationsFormat(JSON, 'events', 'data file')
+    
     return JSON

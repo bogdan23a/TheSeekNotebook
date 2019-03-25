@@ -3,6 +3,8 @@ import json
 import requests
 import Helper
 import getpass
+import pandas as pd
+from pandas.io.json import json_normalize
 from IPython.core.display import display, HTML
 
 PROT_TEXTAREA_LAYOUT = widgets.Layout(flex='0 1 auto', 
@@ -66,7 +68,11 @@ class WriteObject():
         elif self.type.value == 'investigations':
             self.JSON = Helper.investigationFormat()
         elif self.type.value == 'studies':
-            self.JSON = Helper.studyFormat()
+            self.JSON = Helper.studyFormat(self.description.value, 
+                                           self.policyAccess.value)
+        elif self.type.value == 'data_files':
+            self.JSON = Helper.data_fileFormat(self.description.value,
+                                               self.policyAccess.value)
 
         print(self.JSON)
 

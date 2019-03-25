@@ -1,12 +1,12 @@
-import json
+import getpass
 from io import StringIO
+import json
 import sys
+import SEEK
 import unittest
 from unittest import TestCase
 from unittest.mock import patch
-import SEEK
-# import WriteObject
-import getpass
+
 
 PROT_DEFAULT_AUTHENTICATION_STRING = "DEFAULT"
 
@@ -17,7 +17,7 @@ class TestSEEK(TestCase):
         self.auth = (PROT_DEFAULT_AUTHENTICATION_STRING,
                     PROT_DEFAULT_AUTHENTICATION_STRING)
 
-        self.testOBJ = SEEK.module(self.auth)
+        self.testOBJ = SEEK.read(self.auth)
 
         self.goodFormat_RequestList = [{'id':'281','type':'investigations'},
                                        {'id':'953','type':'assays'}]
@@ -41,12 +41,12 @@ class TestSEEK(TestCase):
 
 
 
-    # @patch("SEEK.module.get_input", "some input")
+    # @patch("SEEK.read.get_input", "some input")
     # def test_get_input_Method(self):
         
     #     self.assertEqual(self.testOBJ.get_input("Prompt:"), "some input")
 
-    # @patch("SEEK.module.get_input_testing", "some other input")
+    # @patch("SEEK.read.get_input_testing", "some other input")
     # def test_get_input_testing_Method(self):
         
     #     self.assertEqual(self.testOBJ.get_input_testing("Prompt:"), 'some other input')
@@ -57,12 +57,12 @@ class TestSEEK(TestCase):
                         (PROT_DEFAULT_AUTHENTICATION_STRING,
                         PROT_DEFAULT_AUTHENTICATION_STRING))
 
-    @patch('SEEK.module.get_input', return_value=
+    @patch('SEEK.read.get_input', return_value=
                                    PROT_DEFAULT_AUTHENTICATION_STRING)
     @patch('getpass.getpass', return_value=PROT_DEFAULT_AUTHENTICATION_STRING)
     def test_init_WithoutAuth(self, username, password):
 
-        self.testOBJ = SEEK.module()
+        self.testOBJ = SEEK.read()
 
         self.assertEqual(self.testOBJ.session.auth,
                          (PROT_DEFAULT_AUTHENTICATION_STRING,
@@ -122,16 +122,16 @@ class TestSEEK(TestCase):
         self.assertEqual(capturedOutput.getvalue(), 
                                             "Object has no relationships\n")
 
-    @patch("SEEK.module.get_input", return_value='3')
-    @patch("SEEK.module.get_input_testing", return_value='10')
+    @patch("SEEK.read.get_input", return_value='3')
+    @patch("SEEK.read.get_input_testing", return_value='10')
     def test_searchAdvancedSettings_Method(self, srpt, rpt):
         
         self.testOBJ.searchAdvancedSetup()
         self.assertEqual(self.testOBJ.searchResultsPerThread, 3)
         self.assertEqual(self.testOBJ.relationshipsPerThread, 10)
 
-    # @patch("SEEK.module.get_input", return_value='douazecisitrei')
-    # @patch("SEEK.module.get_input_testing", return_value='august')
+    # @patch("SEEK.read.get_input", return_value='douazecisitrei')
+    # @patch("SEEK.read.get_input_testing", return_value='august')
     # def test_searchAdvancedSettings_Method_BadInput(self, srpt, rpt):
         
     #     self.assertRaises(Exception, self.testOBJ.searchAdvancedSetup)
@@ -151,20 +151,20 @@ class TestSEEK(TestCase):
         self.assertEqual(capturedOutput.getvalue(), 
         "PGK 70C model(id: 576 | type: assays)\n\nDescription: PGK 70C model\n\n\nObject has no relationships\n")
     
-    @patch("SEEK.module.get_input", return_value="liver")
-    @patch("SEEK.module.get_input_testing", return_value="assays")
+    @patch("SEEK.read.get_input", return_value="liver")
+    @patch("SEEK.read.get_input_testing", return_value="assays")
     def test_APISearch_Method(self, keyword, type):
         
         self.assertTrue(self.testOBJ.APISearch())
 
-    @patch("SEEK.module.get_input", return_value="liver")
-    @patch("SEEK.module.get_input_testing", return_value="wrong type")
+    @patch("SEEK.read.get_input", return_value="liver")
+    @patch("SEEK.read.get_input_testing", return_value="wrong type")
     def test_APISearch_Method_BadRequest(self, keyword, type):
         
         self.assertFalse(self.testOBJ.APISearch())
 
-    @patch("SEEK.module.get_input", return_value="liver")
-    @patch("SEEK.module.get_input_testing", return_value="assays")
+    @patch("SEEK.read.get_input", return_value="liver")
+    @patch("SEEK.read.get_input_testing", return_value="assays")
     def test_createRequestList_Method(self, keyword, type):
         
         self.testOBJ.APISearch()
