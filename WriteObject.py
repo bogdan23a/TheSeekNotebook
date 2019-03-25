@@ -60,7 +60,8 @@ class WriteObject():
         
         if self.type.value == 'assays':
             self.JSON = Helper.assayFormat(self.assayKind.value,
-                                           self.description.value)
+                                           self.description.value,
+                                           self.policyAccess.value)
 
         elif self.type.value == 'investigations':
             self.JSON = Helper.investigationFormat()
@@ -114,7 +115,7 @@ class WriteObject():
                 value="Please select the policy access:"), 
                 self.policyAccess])
     
-    def request(self):
+    def post(self):
         r = self.session.post(self.base_url + '/' + self.type.value, json=self.JSON)
         r.raise_for_status()
         self.json = r.json()

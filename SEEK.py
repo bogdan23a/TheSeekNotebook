@@ -144,6 +144,7 @@ class module:
             r = self.session.get(self.base_url + type + "/" + id)
             
             self.session.close()
+            r.close()
             if r.status_code != 200:
                 return False
 
@@ -552,13 +553,17 @@ class module:
 
     def download(self):
 
+        if hasattr(self.data.attributes, 'content_blobs') == False:
+            return "This method can be called from data files only"
+
         self.link = self.data.attributes.content_blobs[0]['link'] + "/download"
 
         r = None
 
         try:
+            # headers = { "Accept": "text/csv" }
             r = self.session.get(self.link)
-            
+            r.raise_for_status()
             # self.session.close()
             if r.status_code != 200:
                 return False
