@@ -17,6 +17,14 @@ def auth():
 
     return (input("Username: "),getpass.getpass("Password: "))
 
+def get_input(text):
+
+    return input(text)
+
+def get_input_testing(text):
+
+    return input(text)
+
 class read:
 
     def __init__(self, auth = None):
@@ -34,7 +42,7 @@ class read:
         if auth != None:
             self.session.auth = auth
         else:
-            self.session.auth = (self.get_input("Username: "),
+            self.session.auth = (get_input("Username: "),
                                  getpass.getpass("Password: "))
 
         self.json = None
@@ -99,13 +107,7 @@ class read:
         return widgets.HBox([widgets.Label(value="Please enter one of: "), 
                 self.searchType])
 
-    def get_input(self, text):
-
-        return input(text)
-
-    def get_input_testing(self,text):
-
-        return input(text)
+    
 
     def loadJSON(self, layerName, layer):
 
@@ -220,9 +222,9 @@ class read:
         
         try:
 
-            self.searchResultsPerThread = int(self.get_input(
+            self.searchResultsPerThread = int(get_input(
                 "How many search results should be requested per thread: "))
-            self.relationshipsPerThread = int(self.get_input_testing(
+            self.relationshipsPerThread = int(get_input_testing(
                 "How many relationships should be requested per thread: "))
         except Exception as e:
 
@@ -234,12 +236,12 @@ class read:
     def APISearch(self):
 
         # Begin the search by inputing the search term
-        self.searchTerm = self.get_input("Enter your search: \n")
+        self.searchTerm = get_input("Enter your search: \n")
         
         # Choose the category of search
         choice = None
         # while choice not in self.searchChoices:
-        choice = self.get_input_testing("Please enter one of: " + 
+        choice = get_input_testing("Please enter one of: " + 
                                         ', '.join(self.searchChoices) + ": ")
         
         if choice not in self.searchChoices:
@@ -586,7 +588,7 @@ class read:
 
 class write:
 
-    def __init__(self):
+    def __init__(self, auth = None):
 
         self.base_url = 'https://testing.sysmo-db.org'
             
@@ -599,7 +601,13 @@ class write:
         self.JSON = None
         self.session = requests.Session()
         self.session.headers.update(self.headers)
-        self.session.auth = (input("Username: "),getpass.getpass("Password: "))
+        
+        if auth != None:
+            self.session.auth = auth
+        else:
+            self.session.auth = (get_input("Username: "),
+                                 getpass.getpass("Password: "))
+
         self.dropdown = None
         self.data = object()
 
@@ -694,13 +702,23 @@ class write:
                 self.policyAccess])
     
     def post(self):
-        r = self.session.post(self.base_url + '/' + self.type.value, json=self.JSON)
-        r.raise_for_status()
-        self.json = r.json()
-        r.close()
-        self.session.close()
+        r = None
 
+        try:
+            r = self.session.post(self.base_url + '/' + self.type.value, json=self.JSON)
+            
+            self.session.close()
+            r.close()
+            if r.status_code != 200:
+                return False
 
+            self.json = r.json()
+            # self.loadJSON(self, self.json['data'])
+            
+            return True
+
+        except Exception as e:
+            print(str(e))
 
 
 def relationsFormat(JSON, type, source):
