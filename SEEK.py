@@ -1,5 +1,7 @@
+import io
 import json
 import requests
+import tabulate
 import threading
 import getpass
 import time
@@ -7,6 +9,7 @@ from IPython.core.display import display, HTML
 import ipywidgets as widgets
 import pandas as pd
 from pandas.io.json import json_normalize
+
 
 PROT_TEXTAREA_LAYOUT = widgets.Layout(flex='0 1 auto', 
                                       height='120px', 
@@ -74,8 +77,8 @@ class read:
         self.threadList = []
 
         self.requestList = []
-        self.searchResultsPerThread = 4
-        self.relationshipsPerThread = 10
+        self.searchResultsPerThread = 5
+        self.relationshipsPerThread = 5
 
         self.time = {'start': 0, 'end': 0}
 
@@ -158,6 +161,7 @@ class read:
 
             self.json = r.json()
             self.loadJSON(self, self.json['data'])
+            self.requestList = []
             
             return True
 
@@ -177,26 +181,68 @@ class read:
 
             print("missing")
 
-    def printRelationships(self):
+
+    def printRelationshipsSearch(self):
 
         hasNoRelationships = True
 
+        displayHTML = []
+        index = 0
+
         for relation in dir(self.data.relationships):
+            
             if relation[:2] != "__":
 
                 r = getattr(self.data.relationships, relation)
             
                 if r.data != [] and hasattr(r, 'newData'):
                         
-                    print(relation.upper())
-                    for data in r.newData:
-                        hasNoRelationships = False
-                        print(data.data.attributes.title)
+                    displayHTML.append([])
 
+                    displayHTML[index].append(relation.upper())
+
+                    for d in r.newData:
+                        hasNoRelationships = False
+                        displayHTML[index].append(d.data.attributes.title)
+                    
+                    index = index + 1
+
+        display(HTML(tabulate.tabulate(displayHTML, tablefmt='html')))
         if hasNoRelationships:
             print("Object has no relationships")
 
-    def print(self):
+    def printRelationshipsBrowse(self):
+
+        hasNoRelationships = True
+
+        displayHTML = []
+        index = 0
+
+        for relation in dir(self.data.relationships):
+            
+            if relation[:2] != "__":
+
+                r = getattr(self.data.relationships, relation)
+            
+                if r.data != [] and hasattr(r, 'newData'):
+                        
+                    displayHTML.append([])
+
+                    displayHTML[index].append(relation.upper())
+
+                    for data in r.newData:
+                        hasNoRelationships = False
+                        displayHTML[index].append(data.data.attributes.title)
+
+                    index = index + 1
+
+        display(HTML(tabulate.tabulate(displayHTML, tablefmt='html')))
+
+
+        if hasNoRelationships:
+            print("Object has no relationships")
+    
+    def printSearch(self):
 
         if hasattr(self, 'data'):
 
@@ -207,7 +253,24 @@ class read:
 
             if hasattr(self.data, 'relationships'):
 
-                self.printRelationships()
+                self.printRelationshipsSearch()
+        else:
+
+            print("Search item unavailable. Try again later.")
+
+    
+    def printBrowse(self):
+
+        if hasattr(self, 'data'):
+
+            if hasattr(self.data, 'attributes'):
+
+                self.printAttributes()
+                print("\n")
+
+            if hasattr(self.data, 'relationships'):
+
+                self.printRelationshipsBrowse()
         else:
 
             print("Search item unavailable. Try again later.")
@@ -364,15 +427,11 @@ class read:
             # Add the thread to the list of threads
             self.threadList.append(newThread)
 
-    # Create the relationship list by parsing the search result list
-    # return: number of relations found
-    def createRelationshipList(self):
+    def getRelationshipsFrom(self, request):
 
         relations = []
 
-        for request in self.requestList:
-            
-            if hasattr(request.data, 'relationships'):
+        if hasattr(request.data, 'relationships'):
 
                 for relationship in dir(request.data.relationships):
                 
@@ -385,6 +444,18 @@ class read:
 
                         elif relation.data != []:
                             relations.append({'id':relation.data.id,'type':relation.data.type})
+        
+        return relations
+    # Create the relationship list by parsing the search result list
+    # return: number of relations found
+    def createRelationshipList(self):
+
+        relations = []
+
+        for request in self.requestList:
+            
+            relations.extend(self.getRelationshipsFrom(request))
+            
 
         self.relationshipList = relations
 
@@ -401,99 +472,120 @@ class read:
 
         self.relationshipList = noDuplicates
 
+    def substituteRelationships(self, relationshipsList, total):
+
+        self.percentageLoaded = 0
+        if hasattr(self.data, 'relationships'):
+            for r in range(0, len(dir(self.data.relationships))):
+                
+                if dir(self.data.relationships)[r][:2] != '__':
+                    relation = getattr(self.data.relationships, dir(self.data.relationships)[r]) 
+                    
+                    
+                    if type(relation.data) == type([{'id':'x','type':'y'}]) and relation.data != []:
+                        
+                        for k in relation.data:
+                            
+                            ID = 0
+                            TYPE = ''
+                            for key, value in k.items():
+                                if key == 'id':
+                                    ID = value
+                                if key == 'type':
+                                    TYPE = value
+                            
+                            # Search to match relation
+                            for item in relationshipsList:
+
+                                # Check if relation in search results matches the one in the list
+                                if item.data.id == ID and item.data.type == TYPE:
+
+                                    # Compute percentace for user info
+                                    p = round(self.percentageLoaded / total * 100, 2)
+                                    
+                                    if p >= (100 - (1 / total) * 100):    
+                                        print("Loading " + str(p) + "%\r", end='')
+                                        print("\nLoading Completed\r")
+                                    else:
+                                        print("Loading " + str(p) + "%\r", end='')
+
+                                    self.percentageLoaded = self.percentageLoaded + 1
+                                    
+                                    if hasattr(relation, 'newData'):
+                                        relation.newData.append(item)
+
+                                    else:
+
+                                        relation.newData = []
+                                        relation.newData.append(item)
+
+                                    # Don't look anymore
+                                    break
+
+                    elif relation.data != []:
+
+                        # Search to match relation
+                        for item in relationshipsList:
+
+                            # Check if relation in search result matches the one in the list                 
+                            if type(item.data) != type(object()) and item.data.id == relation.data.id and item.data.type == relation.data.type:
+                                
+                                # Compute percentace for user info
+                                p = round(self.percentageLoaded / total * 100, 2)
+
+                                if p >= (100 - (1 / total) * 100):    
+                                    print("Loading " + str(p) + "%\r", end='')
+                                    print("\nLoading Completed\r")
+                                else:
+                                    print("Loading " + str(p) + "%\r", end='')   
+                                
+                                self.percentageLoaded = self.percentageLoaded + 1
+
+                                if hasattr(relation, 'newData'):
+                                    relation.newData.append(item)
+
+                                else:
+                                    # print('ba')
+                                    relation.newData = []
+                                    relation.newData.append(item)
+
+                                # Don't look anymore
+                                break
+
+    def search(self, TYPE, ID):
+
+        r = read(self.session.auth)
+        r.request(type=TYPE, id=ID)
+
+        relations = r.getRelationshipsFrom(r)
+
+        ps = read(self.session.auth)
+        ps.parallelRequest(relations, 1)
+
+        for thread in ps.threadList:
+            thread.join()
+        
+        r.substituteRelationships(ps.requestList, len(ps.requestList))
+        # print(str(ps.requestList))
+        self.data = r.data
+
     # Substitute the information from the relationship list back to the original search results
     # 1st param: the relationship list (without duplicates)
     # 2nd param: the total number of relations in the search results that need to be filled out
     # return: none
     # Adds a 'newData' attribute in each search result relation
-    def substituteRelationships(self, relationshipsList, total):
+    def substituteRelationshipsForSearchResults(self, relationshipsList, total):
         
         print("\nSubstituting relationships into original search results: ")
         self.percentageLoaded = 0
 
         for i in self.requestList:
 
-            if hasattr(i.data, 'relationships'):
-                for r in range(0, len(dir(i.data.relationships))):
-                    
-                    if dir(i.data.relationships)[r][:2] != '__':
-                        relation = getattr(i.data.relationships, dir(i.data.relationships)[r]) 
-
-                        if type(relation.data) == type([{'id':'x','type':'y'}]) and relation.data != []:
-
-                            for k in relation.data:
-                                
-                                ID = 0
-                                TYPE = ''
-                                for key, value in k.items():
-                                    if key == 'id':
-                                        ID = value
-                                    if key == 'type':
-                                        TYPE = value
-
-                                # Search to match relation
-                                for item in relationshipsList:
-
-                                    # Check if relation in search results matches the one in the list
-                                    if type(item.data) != type(object()) and item.data.id == ID and item.data.type == TYPE:
-                                        
-                                        # Compute percentace for user info
-                                        p = round(self.percentageLoaded / total * 100, 2)
-                                        
-                                        if p >= (100 - (1 / total) * 100):    
-                                            print("Loading " + str(p) + "%\r", end='')
-                                            print("\nLoading Completed\r")
-                                        else:
-                                            print("Loading " + str(p) + "%\r", end='')
-
-                                        self.percentageLoaded = self.percentageLoaded + 1
-                                        
-                                        if hasattr(relation, 'newData'):
-                                            relation.newData.append(item)
-
-                                            # Don't look anymore
-                                            break
-                                        else:
-                                            relation.newData = []
-                                            relation.newData.append(item)
-
-                                            # Don't look anymore
-                                            break
-
-                        elif relation.data != []:
-
-                            # Search to match relation
-                            for item in relationshipsList:
-
-                                # Check if relation in search result matches the one in the list                 
-                                if type(item.data) != type(object()) and item.data.id == relation.data.id and item.data.type == relation.data.type:
-                                    
-                                    # Compute percentace for user info
-                                    p = round(self.percentageLoaded / total * 100, 2)
-
-                                    if p >= (100 - (1 / total) * 100):    
-                                        print("Loading " + str(p) + "%\r", end='')
-                                        print("\nLoading Completed\r")
-                                    else:
-                                        print("Loading " + str(p) + "%\r", end='')   
-                                    
-                                    self.percentageLoaded = self.percentageLoaded + 1
-
-                                    if hasattr(relation, 'newData'):
-                                        relation.newData.append(item)
-
-                                        # Don't look anymore 
-                                        break
-                                    else:
-                                        
-                                        relation.newData = []
-                                        relation.newData.append(item)
-
-                                        # Don't look anymore
-                                        break
+            i.substituteRelationships(relationshipsList, total)
+            
 
     # Simplified method for the user in order to operate a browsing in the SEEK API
-    def search(self):
+    def browse(self):
 
         self.APISearch()
 
@@ -540,13 +632,13 @@ class read:
 
         print("\n" + str(PS.requestFails) + " ommited results (" + str(int(self.time['end'] - self.time['start'])) + " s elapsed)")
 
-        ps.substituteRelationships(PS.requestList, totalNumberRelationships)
+        ps.substituteRelationshipsForSearchResults(PS.requestList, totalNumberRelationships)
 
         self.requestList = ps.requestList
         print("\n\n                                        --SEARCH RESULTS--\n\n")
         for request in ps.requestList:
 
-            request.print()
+            request.printBrowse()
             print('\n____________________________________________________________________________\n')
 
     def find(self, string):
@@ -570,13 +662,13 @@ class read:
         r = None
 
         try:
-            # headers = { "Accept": "text/csv" }
             r = self.session.get(self.link)
             r.raise_for_status()
             # self.session.close()
             if r.status_code != 200:
                 return False
 
+            self.file = r
             # self.json = r.json()
             # self.loadJSON(self, self.json['data'])
             open(self.fileName, 'wb').write(r.content)
@@ -585,6 +677,11 @@ class read:
 
         except Exception as e:
             print(str(e))
+    
+    def view(self, columnForHeader, page):
+
+        csv = pd.read_excel(self.fileName, header=header, sheet_name=page)
+        return csv
 
 class write:
 
