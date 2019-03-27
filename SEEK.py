@@ -82,10 +82,6 @@ class read:
 
         self.time = {'start': 0, 'end': 0}
 
-    def on_value_change(self, change):
-        
-        self.isNotChanged = False
-
     def get_search_choice(self):
 
         self.searchType = widgets.Dropdown(options=["assays",
@@ -108,9 +104,7 @@ class read:
 
 
         return widgets.HBox([widgets.Label(value="Please enter one of: "), 
-                self.searchType])
-
-    
+                self.searchType])   
 
     def loadJSON(self, layerName, layer):
 
@@ -180,7 +174,6 @@ class read:
         else:
 
             print("missing")
-
 
     def printRelationshipsSearch(self):
 
@@ -258,7 +251,6 @@ class read:
 
             print("Search item unavailable. Try again later.")
 
-    
     def printBrowse(self):
 
         if hasattr(self, 'data'):
@@ -446,6 +438,7 @@ class read:
                             relations.append({'id':relation.data.id,'type':relation.data.type})
         
         return relations
+    
     # Create the relationship list by parsing the search result list
     # return: number of relations found
     def createRelationshipList(self):
@@ -503,11 +496,11 @@ class read:
                                     # Compute percentace for user info
                                     p = round(self.percentageLoaded / total * 100, 2)
                                     
-                                    if p >= (100 - (1 / total) * 100):    
-                                        print("Loading " + str(p) + "%\r", end='')
-                                        print("\nLoading Completed\r")
-                                    else:
-                                        print("Loading " + str(p) + "%\r", end='')
+                                    # if p >= (100 - (1 / total) * 100):    
+                                        # print("Loading " + str(p) + "%\r", end='')
+                                        # print("\nLoading Completed\r")
+                                    # else:
+                                        # print("Loading " + str(p) + "%\r", end='')
 
                                     self.percentageLoaded = self.percentageLoaded + 1
                                     
@@ -533,11 +526,11 @@ class read:
                                 # Compute percentace for user info
                                 p = round(self.percentageLoaded / total * 100, 2)
 
-                                if p >= (100 - (1 / total) * 100):    
-                                    print("Loading " + str(p) + "%\r", end='')
-                                    print("\nLoading Completed\r")
-                                else:
-                                    print("Loading " + str(p) + "%\r", end='')   
+                                # if p >= (100 - (1 / total) * 100):    
+                                    # print("Loading " + str(p) + "%\r", end='')
+                                    # print("\nLoading Completed\r")
+                                # else:
+                                    # print("Loading " + str(p) + "%\r", end='')   
                                 
                                 self.percentageLoaded = self.percentageLoaded + 1
 
@@ -583,7 +576,6 @@ class read:
 
             i.substituteRelationships(relationshipsList, total)
             
-
     # Simplified method for the user in order to operate a browsing in the SEEK API
     def browse(self):
 
@@ -639,7 +631,7 @@ class read:
         for request in ps.requestList:
 
             request.printBrowse()
-            print('\n____________________________________________________________________________\n')
+            print('\n___________________________________________________________________________________________________________\n')
 
     def find(self, string):
 
@@ -680,8 +672,9 @@ class read:
     
     def view(self, columnForHeader, page):
 
-        csv = pd.read_excel(self.fileName, header=header, sheet_name=page)
+        csv = pd.read_excel(self.fileName, header=columnForHeader, sheet_name=page)
         return csv
+
 
 class write:
 
@@ -707,9 +700,6 @@ class write:
 
         self.dropdown = None
         self.data = object()
-
-    
-
 
     def selectResearchType(self):
 
@@ -751,7 +741,7 @@ class write:
             self.JSON = data_fileFormat(self.description.value,
                                                self.policyAccess.value)
 
-        print(self.JSON)
+
 
     def fillDescription(self):
 
@@ -804,6 +794,7 @@ class write:
         try:
             r = self.session.post(self.base_url + '/' + self.type.value, json=self.JSON)
             
+            r.raise_for_status()
             self.session.close()
             r.close()
             if r.status_code != 200:
@@ -900,6 +891,7 @@ def assayFormat(assayKind, description, policy):
 
     return JSON
 
+
 def studyFormat(description, policy):
 
     JSON = {}
@@ -932,6 +924,7 @@ def studyFormat(description, policy):
     relationsFormat(JSON, 'sops', 'study')
 
     return JSON
+
 
 def investigationFormat():
 
