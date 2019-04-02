@@ -1,3 +1,18 @@
+"""
+Package SEEK - THE SEEK NOTEBOOK
+
+This package provides methods and functions implementing the SEEK API to be used
+in bioinformatic context. 
+
+Build for intuitive usage, this package allows the user to retreive data from
+the web-based cataloguing platform The Fairdom Hub powered by SEEK in order to
+be used in the Jupyter Notebook web app, supporting widgets for user interfacing.
+___________________
+
+Third Year Project, Bogdan Gherasim, The University of Manchester, 2019
+
+"""
+
 import io
 import json
 import requests
@@ -18,18 +33,57 @@ PROT_TEXTAREA_LAYOUT = widgets.Layout(flex='0 1 auto',
 
 
 def auth():
+    """
+    Method used externally to get FairdomHub credentials from user
+
+    :returns: (username, password)
+    :rtype: tuple
+    """
 
     return (input("Username: "),getpass.getpass("Password: "))
 
-def get_input(text):
+def _get_input(prompt):
+    """
+    Method used internally to register user input. This is used for easier 
+    testing.
 
-    return input(text)
+    :param prompt: Prompt printed for user 
+    :type prompt: str
+    :returns: input()
+    :rtype: str
+    """
 
-def get_input_testing(text):
+    return input(prompt)
 
-    return input(text)
+def _get_input_testing(prompt):
+    """
+    Method used internally to register user input. This is used for easier 
+    testing
 
-def relationsFormat(JSON, type, source):
+    :param prompt: Prompt printed for user 
+    :type prompt: str
+    :returns: input()
+    :rtype: str
+    """
+
+    return input(prompt)
+
+def _relationsFormat(JSON, type, source):
+    """
+    Method used internally with the general purpose of filling up a relationship
+    field when building a JSON file that needs to be uploaded in the writing
+    process 
+
+    :param JSON: the given JSON that needs to be filled
+    :param type: relationship type; a new field in the JSON is created with this
+    :param source: 
+    :type JSON: str
+    :type type: str
+    :type source: str
+    :returns: void
+    :rtype: None
+    """
+
     numberOfRelations = int(input("Please specify how many " + type + " is this " + source + " related to: "))
 
     if numberOfRelations != 0:
@@ -37,18 +91,22 @@ def relationsFormat(JSON, type, source):
         JSON["data"]["relationships"][type]["data"] = []
         
         for index in range(1, numberOfRelations + 1):
-            
             id = int(input("Please specify the id of the " + type[:-1] + " number " + str(index) + ": "))
             JSON["data"]["relationships"][type]["data"].append({"id" : id, "type" : type})
 
-def relationFormat(JSON, type):
+def _assayFormat(assayKind, description, policy):
+    """
+    Method used in internally to create the JSON for an assay
 
-    JSON["data"]["relationships"][type] = {}
-    id = input("Please specify the id of the " + type + ": ")
-    if id != '':
-        JSON["data"]["relationships"][type]["data"] = {"id" : int(id), "type" : type}
-
-def assayFormat(assayKind, description, policy):
+    :param assayKind: 
+    :param description: 
+    :param policy: 
+    :type assayKind: str
+    :type description: str
+    :type policy: str
+    :returns: JSON
+    :rtype: str
+    """
 
     JSON = {}
     JSON['data'] = {}
@@ -85,8 +143,8 @@ def assayFormat(assayKind, description, policy):
     JSON["data"]["relationships"] = {}
 
     
-    relationsFormat(JSON, "data_files", "assay")
-    relationsFormat(JSON, "documents", "assay")
+    _relationsFormat(JSON, "data_files", "assay")
+    _relationsFormat(JSON, "documents", "assay")
 
     invID = ""
     invID = input("Please specify the id of the investigation: ")
@@ -94,10 +152,10 @@ def assayFormat(assayKind, description, policy):
         JSON["data"]["relationships"]["investigation"] = {}
         JSON["data"]["relationships"]["investigation"]["data"] = {"id": invID, "type":"investigations"}
 
-    relationsFormat(JSON, "models", "assay")
-    relationsFormat(JSON, "people", "assay")
-    relationsFormat(JSON, "publications", "assay")
-    relationsFormat(JSON, "sops", "assay")
+    _relationsFormat(JSON, "models", "assay")
+    _relationsFormat(JSON, "people", "assay")
+    _relationsFormat(JSON, "publications", "assay")
+    _relationsFormat(JSON, "sops", "assay")
 
     studyID = ""
     studyID = input("Please specify the id of the study: ")
@@ -105,11 +163,21 @@ def assayFormat(assayKind, description, policy):
         JSON["data"]["relationships"]["study"] = {}
         JSON["data"]["relationships"]["study"]["data"] = {"id": studyID, "type":"studies"}
 
-    relationsFormat(JSON, "organisms", "assay")
+    _relationsFormat(JSON, "organisms", "assay")
 
     return JSON
 
-def studyFormat(description, policy):
+def _studyFormat(description, policy):
+    """
+    Method used in internally to create the JSON for a study
+
+    :param description: 
+    :param policy: 
+    :type description: str
+    :type policy: str
+    :returns: JSON
+    :rtype: str
+    """
 
     JSON = {}
     JSON['data'] = {}
@@ -130,20 +198,25 @@ def studyFormat(description, policy):
     JSON['data']['attributes']['experimentalists'] = input('Please specify the experimentalists: ')
     JSON['data']['attributes']['person_responsible_id'] = input('Please specify the id of the person responsible: ')
 
-    relationsFormat(JSON, 'assays', 'study')
-    relationsFormat(JSON, 'creators', 'study')
-    relationsFormat(JSON, 'data_files', 'study')
-    relationsFormat(JSON, 'documents', 'study')
-    relationsFormat(JSON, 'models', 'study')
-    relationsFormat(JSON, 'people', 'study')
-    relationsFormat(JSON, 'projects', 'study')
-    relationsFormat(JSON, 'publications', 'study')
-    relationsFormat(JSON, 'sops', 'study')
+    _relationsFormat(JSON, 'assays', 'study')
+    _relationsFormat(JSON, 'creators', 'study')
+    _relationsFormat(JSON, 'data_files', 'study')
+    _relationsFormat(JSON, 'documents', 'study')
+    _relationsFormat(JSON, 'models', 'study')
+    _relationsFormat(JSON, 'people', 'study')
+    _relationsFormat(JSON, 'projects', 'study')
+    _relationsFormat(JSON, 'publications', 'study')
+    _relationsFormat(JSON, 'sops', 'study')
 
     return JSON
 
-def investigationFormat():
+def _investigationFormat():
+    """
+    Method used in internally to create the JSON for an investigation
 
+    :returns: JSON
+    :rtype: str
+    """
     JSON = {}
     JSON['data'] = {}
     JSON['data']['type'] = 'investigations'
@@ -152,22 +225,31 @@ def investigationFormat():
     JSON['data']['attributes']['description'] = input('Please enter the description: ')
     JSON['data']['relationships'] = {}
 
-    relationsFormat(JSON, 'assays', 'investigation')
-    relationsFormat(JSON, 'creators', 'investigation')
-    relationsFormat(JSON, 'data_files', 'investigation')
-    relationsFormat(JSON, 'documents', 'investigation')
-    relationsFormat(JSON, 'models', 'investigation')
-    relationsFormat(JSON, 'people', 'investigation')
-    relationsFormat(JSON, 'projects', 'investigation')
-    relationsFormat(JSON, 'publications', 'investigation')
-    relationsFormat(JSON, 'sops', 'investigation')
-    relationsFormat(JSON, 'studies', 'investigation')
-    relationsFormat(JSON, 'submitters', 'investigation')
+    _relationsFormat(JSON, 'assays', 'investigation')
+    _relationsFormat(JSON, 'creators', 'investigation')
+    _relationsFormat(JSON, 'data_files', 'investigation')
+    _relationsFormat(JSON, 'documents', 'investigation')
+    _relationsFormat(JSON, 'models', 'investigation')
+    _relationsFormat(JSON, 'people', 'investigation')
+    _relationsFormat(JSON, 'projects', 'investigation')
+    _relationsFormat(JSON, 'publications', 'investigation')
+    _relationsFormat(JSON, 'sops', 'investigation')
+    _relationsFormat(JSON, 'studies', 'investigation')
+    _relationsFormat(JSON, 'submitters', 'investigation')
 
     return JSON
     
-def data_fileFormat( description, policy):
-    
+def _data_fileFormat(description, policy):
+    """
+    Method used in internally to create the JSON for a data file
+
+    :param description: 
+    :param policy: 
+    :type description: str
+    :type policy: str
+    :returns: JSON
+    :rtype: str
+    """
     JSON = {}
     JSON['data'] = {}
     JSON['data']['type'] = 'data_files'
@@ -193,18 +275,22 @@ def data_fileFormat( description, policy):
 
 
     JSON['data']['relationships'] = {}
-    relationsFormat(JSON, 'projects', 'data file')
-    relationsFormat(JSON, 'creators', 'data file')
-    relationsFormat(JSON, 'assays', 'data file')
-    relationsFormat(JSON, 'publications', 'data file')
-    relationsFormat(JSON, 'events', 'data file')
+    _relationsFormat(JSON, 'projects', 'data file')
+    _relationsFormat(JSON, 'creators', 'data file')
+    _relationsFormat(JSON, 'assays', 'data file')
+    _relationsFormat(JSON, 'publications', 'data file')
+    _relationsFormat(JSON, 'events', 'data file')
     
     return JSON
 
 
-class read:
+class read(object):
     """
-        
+    This class provides methods and functions for reading and browsing the SEEK
+
+    :param auth: FairdomHub credentials; can be left empty 
+    :type auth: SEEK.auth()
+
     """
 
     def __init__(self, auth = None):
@@ -222,7 +308,7 @@ class read:
         if auth != None:
             self.session.auth = auth
         else:
-            self.session.auth = (get_input("Username: "),
+            self.session.auth = (_get_input("Username: "),
                                  getpass.getpass("Password: "))
 
         self.json = None
@@ -259,15 +345,16 @@ class read:
 
         self.time = {'start': 0, 'end': 0}
 
-    def loadJSON(self, layerName, layer):
+    def _loadJSON(self, layerName, layer):
 
-        """Recursively builds a parsed version of json that each request returns
+        """Parses the json that each request returns
 
-        Elaboration
+        Recursively creates an attribute for the read object with the request 
+        JSON. The attribute contains the structured object with the parsed JSON
 
         :param layerName: the field that will contain the structure
         :param layer: the json that needs to be parsed
-        :type layerName: string
+        :type layerName: str
         :type layer: obj
         :returns: void 
         :rtype: None
@@ -277,46 +364,67 @@ class read:
         >>> import SEEK as S
         >>> request = S.read()
         >>> request.request('assays',100)
-        >>> request.loadJSON(request, request.json['data'])
+        >>> request._loadJSON(request, request.json['data'])
         >>> request.data
-        <function SEEK.read.loadJSON.<locals>.<lambda>()>
-
-        .. note: can be used to create any json parsing to object variable
-        .. note: private method
+        <function SEEK.read._loadJSON.<locals>.<lambda>()>
+        >>> request.data.attributes.description
+        Proton fluxes ensue a change in the membrane potential to which the potassium uptake responds. The membrane potential changes depend on the extrusion of protons, buffering capacities of the media and experimental parametes.
         """
-
+       
         try:
             layerName = lambda: None
             
-            if hasattr(layer, 'items'):
+            # if hasattr(layer, 'items'):
 
-                for key, value in layer.items():
+            for key, value in layer.items():
+                
+                
+                if hasattr(value, 'items'):
                     
-                    if hasattr(value, 'items'):
+                    # print(str(key))
+                    setattr(layerName, key, self._loadJSON(key, value))
+                else:
+                    # print(str(key))
+                    setattr(layerName, key, value)
 
-                        setattr(layerName, key, self.__loadJSON(key, value))
-                    else:
+            setattr(self,'data', layerName)
 
-                        setattr(layerName, key, value)
+            # else:
+            #     for item in range(0, len(layer)):
 
-                setattr(self,'data', layerName)
+            #         for key, value in layer[item].items():
+                        
+            #             if hasattr(value, 'items'):
 
-            else:
-                for item in range(0, len(layer)):
+            #                 setattr(layerName, key, self.loadJSON(key, value))
+            #             else:
 
-                    for key, value in layer[item].items():
-
-                        if hasattr(value, 'items'):
-
-                            setattr(layerName, key, self.__loadJSON(key, value))
-                        else:
-
-                            setattr(layerName, key, value)
-
+            #                 setattr(layerName, key, value)
+            return layerName
         except Exception as e:
             print(str(e))
 
-    def request(self, type, id):
+    def _request(self, type, id):
+        """Uses python requests to query the SEEK API, then parses the JSON 
+        using the loadJSON method.
+
+        :param type: type of the element eg: assays/studie/data_files
+        :param id: id of the element
+        :type type: str
+        :type id: str
+        :returns: True if request fulfils or False otherwise
+        :rtype: bool
+
+        :Example:
+
+        >>> import SEEK as S
+        >>> request = S.read()
+        >>> request._request('assays',100)
+        >>> request.data
+        <function SEEK.read._loadJSON.<locals>.<lambda>()>
+        >>> request.data.attributes.description
+        Proton fluxes ensue a change in the membrane potential to which the potassium uptake responds. The membrane potential changes depend on the extrusion of protons, buffering capacities of the media and experimental parametes.
+        """
 
         r = None
 
@@ -329,7 +437,7 @@ class read:
                 return False
 
             self.json = r.json()
-            self.__loadJSON(self, self.json['data'])
+            self._loadJSON(self, self.json['data'])
             self.requestList = []
             
             return True
@@ -442,8 +550,30 @@ class read:
 
             print("Search item unavailable. Try again later.")
 
-    # Set up the multithreading amount
     def searchAdvancedSetup(self):
+
+        """Used to set up how fast the multithreading runs
+
+        The method prompts how many requests there will be in each thread, eg:
+        if there are 100 requests and you run this with 1 requests/thread, there
+        will be loads of multithreading(100 threads) and therefore the process will run really
+        fast... or at least will try to. If you run it with 50 requests/thread
+        it will run slow(2 threads).
+
+        :Example:
+
+        >>> import SEEK as S
+        >>> search = S.read(auth)
+        >>> search.searchAdvancedSetup()
+        Search multithreading
+        Decide how fast will the search run
+        Search results are usually less and the search requires less to be requested at once.
+        Relationships are usually a lot more, therefore it requires more requests at once
+        How many search results should be requested per thread:
+        >>> 1
+        How many relationships should be requested per thread: 
+        >>> 1
+        """
 
         display(HTML('<h3>Search multithreading</h3>'))
         print("Decide how fast will the search run\n")
@@ -452,26 +582,41 @@ class read:
         
         try:
 
-            self.searchResultsPerThread = int(get_input(
+            self.searchResultsPerThread = int(_get_input(
                 "How many search results should be requested per thread: "))
-            self.relationshipsPerThread = int(get_input_testing(
+            self.relationshipsPerThread = int(_get_input_testing(
                 "How many relationships should be requested per thread: "))
         except Exception as e:
 
             print(str(e))
     
-    # Used for Demo Presentation
-    # Searches without sofisticated interpretaion
-    # Process the request and retrieve the JSON
     def APISearch(self):
 
+        """Used for Demo Presentation. Searches without sofisticated 
+        interpretaion. Process the request and retrieve the JSON
+        
+        :Example:
+
+        >>> import SEEK as S
+        >>> search = S.read(auth)
+        >>> search.searchAdvancedSetup()
+        Search multithreading
+        Decide how fast will the search run
+        Search results are usually less and the search requires less to be requested at once.
+        Relationships are usually a lot more, therefore it requires more requests at once
+        How many search results should be requested per thread:
+        >>> 1
+        How many relationships should be requested per thread: 
+        >>> 1
+        """
+        
         # Begin the search by inputing the search term
-        self.searchTerm = get_input("Enter your search: \n")
+        self.searchTerm = _get_input("Enter your search: \n")
         
         # Choose the category of search
         choice = None
         # while choice not in self.searchChoices:
-        choice = get_input_testing("Please enter one of: " + 
+        choice = _get_input_testing("Please enter one of: " + 
                                         ', '.join(self.searchChoices) + ": ")
         
         if choice not in self.searchChoices:
@@ -533,7 +678,7 @@ class read:
                 request = read(self.session.auth)
                 
                 # Check if it is successful
-                if request.request(type=r['type'], id=r['id']) == False:
+                if request._request(type=r['type'], id=r['id']) == False:
                     self.requestFails = self.requestFails + 1
 
                 else:
@@ -723,7 +868,7 @@ class read:
     def search(self, TYPE, ID):
 
         r = read(self.session.auth)
-        r.request(type=TYPE, id=ID)
+        r._request(type=TYPE, id=ID)
 
         relations = r.getRelationshipsFrom(r)
 
@@ -837,7 +982,7 @@ class read:
 
             self.file = r
             # self.json = r.json()
-            # self.loadJSON(self, self.json['data'])
+            # self._loadJSON(self, self.json['data'])
             open(self.fileName, 'wb').write(r.content)
 
             return True
@@ -870,7 +1015,7 @@ class write:
         if auth != None:
             self.session.auth = auth
         else:
-            self.session.auth = (get_input("Username: "),
+            self.session.auth = (_get_input("Username: "),
                                  getpass.getpass("Password: "))
 
         self.dropdown = None
@@ -903,17 +1048,17 @@ class write:
 
         
         if self.type.value == 'assays':
-            self.JSON = assayFormat(self.assayKind.value,
+            self.JSON = _assayFormat(self.assayKind.value,
                                            self.description.value,
                                            self.policyAccess.value)
 
         elif self.type.value == 'investigations':
-            self.JSON = investigationFormat()
+            self.JSON = _investigationFormat()
         elif self.type.value == 'studies':
-            self.JSON = studyFormat(self.description.value, 
+            self.JSON = _studyFormat(self.description.value, 
                                            self.policyAccess.value)
         elif self.type.value == 'data_files':
-            self.JSON = data_fileFormat(self.description.value,
+            self.JSON = _data_fileFormat(self.description.value,
                                                self.policyAccess.value)
 
     def fillDescription(self):
@@ -974,7 +1119,7 @@ class write:
                 return False
 
             self.json = r.json()
-            # self.loadJSON(self, self.json['data'])
+            # self._loadJSON(self, self.json['data'])
             
             return True
 
