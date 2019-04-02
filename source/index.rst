@@ -5,11 +5,6 @@
 
 Welcome to SEEK's documentation!
 ================================
-Library for Jupyter-Notebook implementing SEEK API
-
-
-READ 
-++++++++++++++++++++++++++++++++
 
 .. automodule:: SEEK
     :members:
