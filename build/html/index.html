@@ -29,45 +29,72 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <div class="section" id="welcome-to-seek-s-documentation">
-<h1>Welcome to SEEK’s documentation!<a class="headerlink" href="#welcome-to-seek-s-documentation" title="Permalink to this headline">¶</a></h1>
-<p>Library for Jupyter-Notebook implementing SEEK API</p>
-<div class="section" id="module-SEEK">
-<span id="read"></span><h2>READ<a class="headerlink" href="#module-SEEK" title="Permalink to this headline">¶</a></h2>
-<dl class="class">
-<dt id="SEEK.read">
-<em class="property">class </em><code class="descclassname">SEEK.</code><code class="descname">read</code><span class="sig-paren">(</span><em>auth=None</em><span class="sig-paren">)</span><a class="headerlink" href="#SEEK.read" title="Permalink to this definition">¶</a></dt>
-<dd><dl class="method">
-<dt id="SEEK.read.loadJSON">
-<code class="descname">loadJSON</code><span class="sig-paren">(</span><em>layerName</em>, <em>layer</em><span class="sig-paren">)</span><a class="headerlink" href="#SEEK.read.loadJSON" title="Permalink to this definition">¶</a></dt>
-<dd><p>Recursively builds a parsed version of json that each request returns</p>
-<p>Elaboration</p>
+  <div class="section" id="module-SEEK">
+<span id="welcome-to-seek-s-documentation"></span><h1>Welcome to SEEK’s documentation!<a class="headerlink" href="#module-SEEK" title="Permalink to this headline">¶</a></h1>
+<p>Package SEEK - THE SEEK NOTEBOOK</p>
+<p>This package provides methods and functions implementing the SEEK API to be used
+in bioinformatic context.</p>
+<p>Build for intuitive usage, this package allows the user to retreive data from
+the web-based cataloguing platform The Fairdom Hub powered by SEEK in order to
+be used in the Jupyter Notebook web app, supporting widgets for user interfacing.
+___________________</p>
+<p>Third Year Project, Bogdan Gherasim, The University of Manchester, 2019</p>
+<dl class="function">
+<dt id="SEEK.auth">
+<code class="descclassname">SEEK.</code><code class="descname">auth</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#SEEK.auth" title="Permalink to this definition">¶</a></dt>
+<dd><p>Method used externally to get FairdomHub credentials from user</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>layerName</strong> (<em>string</em>) – the field that will contain the structure</li>
-<li><strong>layer</strong> (<em>obj</em>) – the json that needs to be parsed</li>
-</ul>
-</td>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">(username, password)</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">void</p>
-</td>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">tuple</td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first">None</p>
-</td>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="class">
+<dt id="SEEK.read">
+<em class="property">class </em><code class="descclassname">SEEK.</code><code class="descname">read</code><span class="sig-paren">(</span><em>auth=None</em><span class="sig-paren">)</span><a class="headerlink" href="#SEEK.read" title="Permalink to this definition">¶</a></dt>
+<dd><p>This class provides methods and functions for reading and browsing the SEEK</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>auth</strong> (<em>SEEK.auth</em><em>(</em><em>)</em>) – FairdomHub credentials; can be left empty</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Example:</th><td class="field-body"></td>
+</tbody>
+</table>
+<dl class="method">
+<dt id="SEEK.read.searchAdvancedSetup">
+<code class="descname">searchAdvancedSetup</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#SEEK.read.searchAdvancedSetup" title="Permalink to this definition">¶</a></dt>
+<dd><p>Used to set up how fast the multithreading runs</p>
+<p>The method prompts how many requests there will be in each thread, eg:
+if there are 100 requests and you run this with 1 requests/thread, there
+will be loads of multithreading(100 threads) and therefore the process will run really
+fast… or at least will try to. If you run it with 50 requests/thread
+it will run slow(2 threads).</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Example:</th><td class="field-body"></td>
 </tr>
 </tbody>
 </table>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">SEEK</span> <span class="k">as</span> <span class="nn">S</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">request</span> <span class="o">=</span> <span class="n">S</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">request</span><span class="o">.</span><span class="n">request</span><span class="p">(</span><span class="s1">&#39;assays&#39;</span><span class="p">,</span><span class="mi">100</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">request</span><span class="o">.</span><span class="n">loadJSON</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">request</span><span class="o">.</span><span class="n">json</span><span class="p">[</span><span class="s1">&#39;data&#39;</span><span class="p">])</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">request</span><span class="o">.</span><span class="n">data</span>
-<span class="go">&lt;function SEEK.read.loadJSON.&lt;locals&gt;.&lt;lambda&gt;()&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">search</span> <span class="o">=</span> <span class="n">S</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">auth</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">search</span><span class="o">.</span><span class="n">searchAdvancedSetup</span><span class="p">()</span>
+<span class="go">Search multithreading</span>
+<span class="go">Decide how fast will the search run</span>
+<span class="go">Search results are usually less and the search requires less to be requested at once.</span>
+<span class="go">Relationships are usually a lot more, therefore it requires more requests at once</span>
+<span class="go">How many search results should be requested per thread:</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="mi">1</span>
+<span class="go">How many relationships should be requested per thread: </span>
+<span class="gp">&gt;&gt;&gt; </span><span class="mi">1</span>
 </pre></div>
 </div>
 </dd></dl>
@@ -75,7 +102,6 @@
 </dd></dl>
 
 <div class="toctree-wrapper compound">
-</div>
 </div>
 </div>
 <div class="section" id="indices-and-tables">
@@ -95,10 +121,7 @@
         <div class="sphinxsidebarwrapper">
   <h3><a href="#">Table Of Contents</a></h3>
   <ul>
-<li><a class="reference internal" href="#">Welcome to SEEK’s documentation!</a><ul>
-<li><a class="reference internal" href="#module-SEEK">READ</a></li>
-</ul>
-</li>
+<li><a class="reference internal" href="#">Welcome to SEEK’s documentation!</a></li>
 <li><a class="reference internal" href="#indices-and-tables">Indices and tables</a></li>
 </ul>
 <div class="relations">
