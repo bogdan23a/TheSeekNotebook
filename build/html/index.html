@@ -68,6 +68,64 @@ ___________________</p>
 </tbody>
 </table>
 <dl class="method">
+<dt id="SEEK.read.APISearch">
+<code class="descname">APISearch</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#SEEK.read.APISearch" title="Permalink to this definition">¶</a></dt>
+<dd><p>Used for Demo Presentation. Searches without sofisticated 
+interpretaion. Process the request and retrieve the JSON</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Example:</th><td class="field-body"></td>
+</tr>
+</tbody>
+</table>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">SEEK</span> <span class="k">as</span> <span class="nn">S</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">search</span> <span class="o">=</span> <span class="n">S</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">auth</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">search</span><span class="o">.</span><span class="n">searchAdvancedSetup</span><span class="p">()</span>
+<span class="go">Search multithreading</span>
+<span class="go">Decide how fast will the search run</span>
+<span class="go">Search results are usually less and the search requires less to be requested at once.</span>
+<span class="go">Relationships are usually a lot more, therefore it requires more requests at once</span>
+<span class="go">How many search results should be requested per thread:</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="mi">1</span>
+<span class="go">How many relationships should be requested per thread: </span>
+<span class="gp">&gt;&gt;&gt; </span><span class="mi">1</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="SEEK.read.createRequestList">
+<code class="descname">createRequestList</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#SEEK.read.createRequestList" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates a list from the JSON returned by the API Search by searching 
+for each pair of (id, type) present in the string.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">list of pairs of {id, type} form</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">list</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Example:</th><td class="field-body"></td>
+</tr>
+</tbody>
+</table>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">SEEK</span> <span class="k">as</span> <span class="nn">S</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">search</span> <span class="o">=</span> <span class="n">S</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">auth</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">search</span><span class="o">.</span><span class="n">APISearch</span><span class="p">()</span>
+<span class="gp">...</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">search</span><span class="o">.</span><span class="n">createRequestList</span><span class="p">()</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">requestList</span><span class="p">)))</span>
+<span class="go">132 </span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="method">
 <dt id="SEEK.read.searchAdvancedSetup">
 <code class="descname">searchAdvancedSetup</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#SEEK.read.searchAdvancedSetup" title="Permalink to this definition">¶</a></dt>
 <dd><p>Used to set up how fast the multithreading runs</p>

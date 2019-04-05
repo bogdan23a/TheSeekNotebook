@@ -270,7 +270,9 @@ def _data_fileFormat(description, policy):
     JSON['data']['attributes']['description'] = description
     JSON['data']['attributes']['policy'] = {'access': policy}
 
-    remote_blob = {'url' : input('Provide the url/ null if uploading local file'), 'original_filename': input('File name: ')}
+    remote_blob = {'url' :
+                         input('Provide the url/ null if uploading local file'), 
+                                    'original_filename': input('File name: ')}
     JSON['data']['attributes']['content_blobs'] = [remote_blob]
 
 
@@ -368,7 +370,10 @@ class read(object):
         >>> request.data
         <function SEEK.read._loadJSON.<locals>.<lambda>()>
         >>> request.data.attributes.description
-        Proton fluxes ensue a change in the membrane potential to which the potassium uptake responds. The membrane potential changes depend on the extrusion of protons, buffering capacities of the media and experimental parametes.
+        Proton fluxes ensue a change in the membrane potential to which the 
+        potassium uptake responds. The membrane potential changes depend on the 
+        extrusion of protons, buffering capacities of the media and experimental 
+        parametes.
         """
        
         try:
@@ -423,7 +428,10 @@ class read(object):
         >>> request.data
         <function SEEK.read._loadJSON.<locals>.<lambda>()>
         >>> request.data.attributes.description
-        Proton fluxes ensue a change in the membrane potential to which the potassium uptake responds. The membrane potential changes depend on the extrusion of protons, buffering capacities of the media and experimental parametes.
+        Proton fluxes ensue a change in the membrane potential to which the 
+        potassium uptake responds. The membrane potential changes depend on the 
+        extrusion of protons, buffering capacities of the media and experimental 
+        parametes.
         """
 
         r = None
@@ -556,7 +564,8 @@ class read(object):
 
         The method prompts how many requests there will be in each thread, eg:
         if there are 100 requests and you run this with 1 requests/thread, there
-        will be loads of multithreading(100 threads) and therefore the process will run really
+        will be loads of multithreading(100 threads) and therefore the process 
+        will run really
         fast... or at least will try to. If you run it with 50 requests/thread
         it will run slow(2 threads).
 
@@ -567,8 +576,10 @@ class read(object):
         >>> search.searchAdvancedSetup()
         Search multithreading
         Decide how fast will the search run
-        Search results are usually less and the search requires less to be requested at once.
-        Relationships are usually a lot more, therefore it requires more requests at once
+        Search results are usually less and the search requires less to be 
+        requested at once.
+        Relationships are usually a lot more, therefore it requires more 
+        requests at once
         How many search results should be requested per thread:
         >>> 1
         How many relationships should be requested per thread: 
@@ -602,8 +613,10 @@ class read(object):
         >>> search.searchAdvancedSetup()
         Search multithreading
         Decide how fast will the search run
-        Search results are usually less and the search requires less to be requested at once.
-        Relationships are usually a lot more, therefore it requires more requests at once
+        Search results are usually less and the search requires less to be 
+        requested at once.
+        Relationships are usually a lot more, therefore it requires more 
+        requests at once
         How many search results should be requested per thread:
         >>> 1
         How many relationships should be requested per thread: 
@@ -621,20 +634,12 @@ class read(object):
         
         if choice not in self.searchChoices:
             print("\nNot a choice! Try again!" + choice)
-            return False
-        
-        # widget = self.get_search_choice()
-        # display(widget)
-        
-        # self.isNotChanged = True
- 
-        # while self.isNotChanged:
-        #     widget.observe(self.on_value_change, names=["values"])
-        
+            return False        
 
         # Process the request and retrieve the JSON
         payload = {'q': self.searchTerm, 'search_type': choice}
-        r = self.session.get(self.base_url + 'search', headers=self.headers, params=payload)
+        r = self.session.get(self.base_url + 'search', headers=self.headers, 
+                                                                params=payload)
 
         if r.status_code != 200:
             return False
@@ -643,8 +648,25 @@ class read(object):
 
         return True
 
-    # Creates the list of requests by parsing a RAW Search Result JSON
+    # 
     def createRequestList(self):
+
+        """Creates the list of requests by parsing a RAW Search Result JSON by searching 
+        for each pair of (id, type) present in the string.
+        
+        :returns: list of pairs of {id, type} form
+        :rtype: list
+        
+        :Example:
+
+        >>> import SEEK as S
+        >>> search = S.read(auth)
+        >>> search.APISearch()
+        ...
+        >>> search.createRequestList()
+        >>> print(str(len(s.requestList)))
+        132 
+        """
 
         requestList = []
 
