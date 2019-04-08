@@ -40,7 +40,7 @@ def auth():
     :rtype: tuple
     """
 
-    return (input("Username: "),getpass.getpass("Password: "))
+    return (_get_input("Username: "),getpass.getpass("Password: "))
 
 def _get_input(prompt):
     """
@@ -84,14 +84,14 @@ def _relationsFormat(JSON, type, source):
     :rtype: None
     """
 
-    numberOfRelations = int(input("Please specify how many " + type + " is this " + source + " related to: "))
+    numberOfRelations = int(_get_input("Please specify how many " + type + " is this " + source + " related to: "))
 
     if numberOfRelations != 0:
         JSON["data"]["relationships"][type] = {}
         JSON["data"]["relationships"][type]["data"] = []
         
         for index in range(1, numberOfRelations + 1):
-            id = int(input("Please specify the id of the " + type[:-1] + " number " + str(index) + ": "))
+            id = int(_get_input_testing("Please specify the id of the " + type[:-1] + " number " + str(index) + ": "))
             JSON["data"]["relationships"][type]["data"].append({"id" : id, "type" : type})
 
 def _assayFormat(assayKind, description, policy):
@@ -112,12 +112,12 @@ def _assayFormat(assayKind, description, policy):
     JSON['data'] = {}
     JSON['data']['type'] = 'assays'
     JSON['data']['attributes'] = {}
-    JSON['data']['attributes']['title'] = input('Enter the title: ')
+    JSON['data']['attributes']['title'] = _get_input('Enter the title: ')
     JSON['data']['attributes']['description'] = description
     JSON['data']['attributes']['policy'] = {'access':policy, 'permissions': []}
 
     other = ""
-    other = input("Please list other creators: ")
+    other = _get_input("Please list other creators: ")
     if other != "":
         JSON["data"]["attributes"]["other_creators"] = other
 
@@ -127,7 +127,7 @@ def _assayFormat(assayKind, description, policy):
     
 
     assayTypeUri = ""
-    assayTypeUri = input("Please specify the assay type uri: ")
+    assayTypeUri = _get_input("Please specify the assay type uri: ")
     if assayTypeUri != "":
         JSON["data"]["attributes"]["assay_type"] = {}
         JSON["data"]["attributes"]["assay_type"]["uri"] = assayTypeUri
@@ -135,7 +135,7 @@ def _assayFormat(assayKind, description, policy):
     
 
     techTypeUri = ""
-    techTypeUri = input("Please specify the technology type uri: ")
+    techTypeUri = _get_input("Please specify the technology type uri: ")
     if techTypeUri != "":
         JSON["data"]["attributes"]["technology_type"] = {}
         JSON["data"]["attributes"]["technology_type"]["uri"] = techTypeUri
@@ -147,7 +147,7 @@ def _assayFormat(assayKind, description, policy):
     _relationsFormat(JSON, "documents", "assay")
 
     invID = ""
-    invID = input("Please specify the id of the investigation: ")
+    invID = _get_input("Please specify the id of the investigation: ")
     if invID != "":
         JSON["data"]["relationships"]["investigation"] = {}
         JSON["data"]["relationships"]["investigation"]["data"] = {"id": invID, "type":"investigations"}
@@ -158,7 +158,7 @@ def _assayFormat(assayKind, description, policy):
     _relationsFormat(JSON, "sops", "assay")
 
     studyID = ""
-    studyID = input("Please specify the id of the study: ")
+    studyID = _get_input("Please specify the id of the study: ")
     if studyID != "":
         JSON["data"]["relationships"]["study"] = {}
         JSON["data"]["relationships"]["study"]["data"] = {"id": studyID, "type":"studies"}
@@ -491,7 +491,9 @@ class read(object):
                     
                     index = index + 1
 
-        display(HTML(tabulate.tabulate(displayHTML, tablefmt='html')))
+        if not hasNoRelationships:
+            display(HTML(tabulate.tabulate(displayHTML, tablefmt='html')))
+
         if hasNoRelationships:
             print("Object has no relationships")
 
@@ -521,7 +523,6 @@ class read(object):
                     index = index + 1
 
         display(HTML(tabulate.tabulate(displayHTML, tablefmt='html')))
-
 
         if hasNoRelationships:
             print("Object has no relationships")
@@ -591,15 +592,15 @@ class read(object):
         print("Search results are usually less and the search requires less to be requested at once.")
         print("Relationships are usually a lot more, therefore it requires more requests at once")
         
-        try:
+        # try:
 
-            self.searchResultsPerThread = int(_get_input(
+        self.searchResultsPerThread = int(_get_input(
                 "How many search results should be requested per thread: "))
-            self.relationshipsPerThread = int(_get_input_testing(
+        self.relationshipsPerThread = int(_get_input_testing(
                 "How many relationships should be requested per thread: "))
-        except Exception as e:
+        # except Exception as e:
 
-            print(str(e))
+            # print(str(e))
     
     def APISearch(self):
 
@@ -648,7 +649,6 @@ class read(object):
 
         return True
 
-    # 
     def createRequestList(self):
 
         """Creates the list of requests by parsing a RAW Search Result JSON by searching 
@@ -904,6 +904,8 @@ class read(object):
         # print(str(ps.requestList))
         self.data = r.data
 
+        return True
+
     # Substitute the information from the relationship list back to the original search results
     # 1st param: the relationship list (without duplicates)
     # 2nd param: the total number of relations in the search results that need to be filled out
@@ -974,6 +976,8 @@ class read(object):
 
             request.printBrowse()
             print('\n___________________________________________________________________________________________________________\n')
+        
+        return True
 
     def find(self, string):
 
@@ -988,7 +992,8 @@ class read(object):
     def download(self):
 
         if hasattr(self.data.attributes, 'content_blobs') == False:
-            return "This method can be called from data files only"
+            print("This method can be called from data files only")
+            return False
 
         self.link = self.data.attributes.content_blobs[0]['link'] + "/download"
         self.fileName = self.data.attributes.content_blobs[0]['original_filename']
