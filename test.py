@@ -98,7 +98,26 @@ class TestSEEK(TestCase):
         self.assertEqual(JSON['data']['relationships']['creators']['data'], 
                                         result)
 
-    # def test_assayFormat(self,)
+    @patch('SEEK._get_input', return_value='10')
+    def test_studyFormat(self, val):
+
+        JSON = SEEK._studyFormat("Descpription", "download")
+        
+    @patch('SEEK._get_input', return_value='10')
+    def test_investigationFormat(self, val):
+
+        JSON = SEEK._investigationFormat()
+    
+    @patch('SEEK._get_input', return_value='10')
+    def test_assayFormat(self, val):
+
+        JSON = SEEK._assayFormat("EXP","Descpription", "download")
+
+    @patch('SEEK._get_input', return_value='10')
+    def test_dataFileFormat(self, val):
+
+        JSON = SEEK._data_fileFormat("Descpription", "download")
+
     def test_loadJSON_Method(self):
         
         r = self.testOBJ.session.get(self.testOBJ.base_url + "assays/576")

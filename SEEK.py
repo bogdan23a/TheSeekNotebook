@@ -15,6 +15,7 @@ Third Year Project, Bogdan Gherasim, The University of Manchester, 2019
 
 import io
 import json
+# from misc import _get_input, _get_input_testing
 import requests
 import tabulate
 import threading
@@ -30,7 +31,6 @@ PROT_TEXTAREA_LAYOUT = widgets.Layout(flex='0 1 auto',
                                       height='120px', 
                                       min_height='40px', 
                                       width='500px')
-
 
 def auth():
     """
@@ -91,7 +91,7 @@ def _relationsFormat(JSON, type, source):
         JSON["data"]["relationships"][type]["data"] = []
         
         for index in range(1, numberOfRelations + 1):
-            id = int(_get_input_testing("Please specify the id of the " + type[:-1] + " number " + str(index) + ": "))
+            id = int(_get_input("Please specify the id of the " + type[:-1] + " number " + str(index) + ": "))
             JSON["data"]["relationships"][type]["data"].append({"id" : id, "type" : type})
 
 def _assayFormat(assayKind, description, policy):
@@ -183,20 +183,20 @@ def _studyFormat(description, policy):
     JSON['data'] = {}
     JSON['data']['type'] = 'studies'
     JSON['data']['attributes'] = {}
-    JSON['data']['attributes']['title'] = input('Enter the title: ')
+    JSON['data']['attributes']['title'] = _get_input('Enter the title: ')
     JSON['data']['attributes']['description'] = description
-    JSON['data']['attributes']['policy'] = {'access': policy, 'permissions': [{'resource': {'id': int(input("What is your user ID? ")),'type': 'people'},'access': 'manage'}]}
+    JSON['data']['attributes']['policy'] = {'access': policy, 'permissions': [{'resource': {'id': int(_get_input("What is your user ID? ")),'type': 'people'},'access': 'manage'}]}
     JSON['data']['relationships'] = {}
     JSON['data']['relationships']['investigation'] = {}
-    JSON['data']['relationships']['investigation']['data'] = {'id' : int(input("Please enter the investigation id: ")), 'type' : 'investigations'}
+    JSON['data']['relationships']['investigation']['data'] = {'id' : int(_get_input("Please enter the investigation id: ")), 'type' : 'investigations'}
 
     other = ""
-    other = input("Please list other creators: ")
+    other = _get_input("Please list other creators: ")
     if other != "":
         JSON["data"]["attributes"]["other_creators"] = other
 
-    JSON['data']['attributes']['experimentalists'] = input('Please specify the experimentalists: ')
-    JSON['data']['attributes']['person_responsible_id'] = input('Please specify the id of the person responsible: ')
+    JSON['data']['attributes']['experimentalists'] = _get_input('Please specify the experimentalists: ')
+    JSON['data']['attributes']['person_responsible_id'] = _get_input('Please specify the id of the person responsible: ')
 
     _relationsFormat(JSON, 'assays', 'study')
     _relationsFormat(JSON, 'creators', 'study')
@@ -221,8 +221,8 @@ def _investigationFormat():
     JSON['data'] = {}
     JSON['data']['type'] = 'investigations'
     JSON['data']['attributes'] = {}
-    JSON['data']['attributes']['title'] = input('Please enter the title: ')
-    JSON['data']['attributes']['description'] = input('Please enter the description: ')
+    JSON['data']['attributes']['title'] = _get_input('Please enter the title: ')
+    JSON['data']['attributes']['description'] = _get_input('Please enter the description: ')
     JSON['data']['relationships'] = {}
 
     _relationsFormat(JSON, 'assays', 'investigation')
@@ -254,16 +254,16 @@ def _data_fileFormat(description, policy):
     JSON['data'] = {}
     JSON['data']['type'] = 'data_files'
     JSON['data']['attributes'] = {}
-    JSON['data']['attributes']['title'] = input('Enter the title: ')
+    JSON['data']['attributes']['title'] = _get_input('Enter the title: ')
 
-    numberOfRelations = int(input("Please specify the number of tags: "))
+    numberOfRelations = int(_get_input("Please specify the number of tags: "))
 
     if numberOfRelations != 0:
         JSON["data"]["attributes"]["tags"] = []
         
         for index in range(1, numberOfRelations + 1):
             
-            tag = input("Tag #" + str(index) + ": ")
+            tag = _get_input("Tag #" + str(index) + ": ")
             JSON["data"]["attributes"]["tags"].append(tag)
 
     JSON['data']['attributes']['license'] = 'CC-BY-4.0'
@@ -271,8 +271,8 @@ def _data_fileFormat(description, policy):
     JSON['data']['attributes']['policy'] = {'access': policy}
 
     remote_blob = {'url' :
-                         input('Provide the url/ null if uploading local file'), 
-                                    'original_filename': input('File name: ')}
+                         _get_input('Provide the url/ null if uploading local file'), 
+                                    'original_filename': _get_input('File name: ')}
     JSON['data']['attributes']['content_blobs'] = [remote_blob]
 
 
@@ -284,8 +284,90 @@ def _data_fileFormat(description, policy):
     _relationsFormat(JSON, 'events', 'data file')
     
     return JSON
+def selectResearchType(self):
 
+    display(HTML('<h3>SEEK FORM</h3>'))
+    print('\nYou need to complete the following form in order to succesfully upload your information to SEEK')
 
+    self.type = widgets.Dropdown(
+        options=[
+            "assays",
+            "data_files",
+            "studies",
+            "investigations",
+            "models",
+            "sops",
+            "publications"
+        ],
+        value='assays',
+        disabled=False,
+    )
+
+    return widgets.HBox([widgets.Label(
+                        value="What is it that you want to post?"), 
+                        self.type])
+
+def fillSEEKForm(self):
+
+    
+    if self.type.value == 'assays':
+        self.JSON = _assayFormat(self.assayKind.value,
+                                        self.description.value,
+                                        self.policyAccess.value)
+
+    elif self.type.value == 'investigations':
+        self.JSON = _investigationFormat()
+    elif self.type.value == 'studies':
+        self.JSON = _studyFormat(self.description.value, 
+                                        self.policyAccess.value)
+    elif self.type.value == 'data_files':
+        self.JSON = _data_fileFormat(self.description.value,
+                                            self.policyAccess.value)
+
+def fillDescription(self):
+
+    self.description = widgets.Textarea(disabled=False,
+                                        layout=PROT_TEXTAREA_LAYOUT)
+    
+
+    return widgets.HBox([widgets.Label(
+                        value="Please provide your description:"), 
+                        self.description])
+
+def selectAssayKind(self):
+
+    self.assayKind = widgets.Dropdown(
+        options=[
+            "EXP",
+            "MOD"
+        ],
+        value='EXP',
+        disabled=False,
+    )
+    
+
+    return widgets.HBox([widgets.Label(
+            value="Please select the class of Assay you wish to create:"), 
+            self.assayKind])
+
+def selectPolicyAccess(self):
+
+    self.policyAccess = widgets.Dropdown(
+        options=[
+            "no_access",
+            "view",
+            "download",
+            "edit",
+            "manage"
+        ],
+        value='no_access',
+        disabled=False,
+    )
+    
+
+    return widgets.HBox([widgets.Label(
+            value="Please select the policy access:"), 
+            self.policyAccess])
 class read(object):
     """
     This class provides methods and functions for reading and browsing the SEEK
@@ -1047,91 +1129,6 @@ class write:
 
         self.dropdown = None
         self.data = object()
-
-    def selectResearchType(self):
-
-        display(HTML('<h3>SEEK FORM</h3>'))
-        print('\nYou need to complete the following form in order to succesfully upload your information to SEEK')
-
-        self.type = widgets.Dropdown(
-            options=[
-                "assays",
-                "data_files",
-                "studies",
-                "investigations",
-                "models",
-                "sops",
-                "publications"
-            ],
-            value='assays',
-            disabled=False,
-        )
-
-        return widgets.HBox([widgets.Label(
-                            value="What is it that you want to post?"), 
-                            self.type])
-
-    def fillSEEKForm(self):
-
-        
-        if self.type.value == 'assays':
-            self.JSON = _assayFormat(self.assayKind.value,
-                                           self.description.value,
-                                           self.policyAccess.value)
-
-        elif self.type.value == 'investigations':
-            self.JSON = _investigationFormat()
-        elif self.type.value == 'studies':
-            self.JSON = _studyFormat(self.description.value, 
-                                           self.policyAccess.value)
-        elif self.type.value == 'data_files':
-            self.JSON = _data_fileFormat(self.description.value,
-                                               self.policyAccess.value)
-
-    def fillDescription(self):
-
-        self.description = widgets.Textarea(disabled=False,
-                                            layout=PROT_TEXTAREA_LAYOUT)
-        
-
-        return widgets.HBox([widgets.Label(
-                            value="Please provide your description:"), 
-                            self.description])
-
-    def selectAssayKind(self):
-
-        self.assayKind = widgets.Dropdown(
-            options=[
-                "EXP",
-                "MOD"
-            ],
-            value='EXP',
-            disabled=False,
-        )
-        
-
-        return widgets.HBox([widgets.Label(
-                value="Please select the class of Assay you wish to create:"), 
-                self.assayKind])
-
-    def selectPolicyAccess(self):
-
-        self.policyAccess = widgets.Dropdown(
-            options=[
-                "no_access",
-                "view",
-                "download",
-                "edit",
-                "manage"
-            ],
-            value='no_access',
-            disabled=False,
-        )
-        
-
-        return widgets.HBox([widgets.Label(
-                value="Please select the policy access:"), 
-                self.policyAccess])
     
     def post(self):
         r = None
