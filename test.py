@@ -1,6 +1,13 @@
+"""
+TESTING THE
+Package SEEK - THE SEEK NOTEBOOK
+___________________
+
+Third Year Project, Bogdan Gherasim, The University of Manchester, 2019
+"""
 import getpass
 from io import StringIO
-import json
+import ipywidgets as widgets
 import os
 import pandas
 import sys
@@ -78,45 +85,153 @@ class TestSEEK(TestCase):
                           PROT_DEFAULT_AUTHENTICATION_STRING))
     
     @patch('SEEK._get_input', return_value="1")
-    @patch('SEEK._get_input_testing', return_value="10")
-    def test_relationsFormat(self, relNumber, relID):
+    def test_relationsFormat(self, relNumber):
 
-        JSON = {} 
-
-        JSON['data'] = {} 
-        JSON['data']['type'] = 'assays' 
-        JSON['data']['attributes'] = {} 
-        JSON['data']['attributes']['title'] = 'title'
-        JSON['data']['attributes']['description'] = "description" 
-        JSON['data']['attributes']['policy'] = {'access':"policy", 
-                                                        'permissions': []} 
+        JSON = {}
+        JSON['data'] = {}
         JSON["data"]["relationships"] = {} 
 
         SEEK._relationsFormat(JSON, 'creators', 'assay')
         
-        result = [{'id': 10, 'type': 'creators'}]
+        result = [{'id': 1, 'type': 'creators'}]
         self.assertEqual(JSON['data']['relationships']['creators']['data'], 
                                         result)
 
-    @patch('SEEK._get_input', return_value='10')
+    @patch('SEEK._get_input', return_value='1')
     def test_studyFormat(self, val):
 
-        JSON = SEEK._studyFormat("Descpription", "download")
-        
-    @patch('SEEK._get_input', return_value='10')
+        JSON = {}
+        JSON['data'] = {}
+        JSON['data']['type'] = 'studies'
+        JSON['data']['attributes'] = {}
+        JSON['data']['attributes']['title'] = '1'
+        JSON['data']['attributes']['description'] = '1'
+        JSON['data']['attributes']['policy'] = {'access': '1', 'permissions': [{'resource': {'id': '1','type': 'people'},'access': 'manage'}]}
+        JSON['data']['relationships'] = {}
+        JSON['data']['relationships']['investigation'] = {}
+        JSON['data']['relationships']['investigation']['data'] = {'id' : '1', 'type' : 'investigations'}
+
+        JSON["data"]["attributes"]["other_creators"] = '1'
+
+        JSON['data']['attributes']['experimentalists'] = '1'
+        JSON['data']['attributes']['person_responsible_id'] = '1'
+
+        SEEK._relationsFormat(JSON, 'assays', 'study')
+        SEEK._relationsFormat(JSON, 'creators', 'study')
+        SEEK._relationsFormat(JSON, 'data_files', 'study')
+        SEEK._relationsFormat(JSON, 'documents', 'study')
+        SEEK._relationsFormat(JSON, 'models', 'study')
+        SEEK._relationsFormat(JSON, 'people', 'study')
+        SEEK._relationsFormat(JSON, 'projects', 'study')
+        SEEK._relationsFormat(JSON, 'publications', 'study')
+        SEEK._relationsFormat(JSON, 'sops', 'study')
+
+        studyJSON = SEEK._studyFormat('1', '1')
+        self.assertEqual(JSON, studyJSON)
+
+    @patch('SEEK._get_input', return_value='1')
     def test_investigationFormat(self, val):
 
-        JSON = SEEK._investigationFormat()
+        JSON = {}
+        JSON['data'] = {}
+        JSON['data']['type'] = '1'
+        JSON['data']['attributes'] = {}
+        JSON['data']['attributes']['title'] = '1'
+        JSON['data']['attributes']['description'] = '1'
+        JSON['data']['relationships'] = {}
+
+        
+
+        SEEK._relationsFormat(JSON, 'assays', 'study')
+        SEEK._relationsFormat(JSON, 'creators', 'study')
+        SEEK._relationsFormat(JSON, 'data_files', 'study')
+        SEEK._relationsFormat(JSON, 'documents', 'study')
+        SEEK._relationsFormat(JSON, 'models', 'study')
+        SEEK._relationsFormat(JSON, 'people', 'study')
+        SEEK._relationsFormat(JSON, 'projects', 'study')
+        SEEK._relationsFormat(JSON, 'publications', 'study')
+        SEEK._relationsFormat(JSON, 'sops', 'study')
+        SEEK._relationsFormat(JSON, 'studies', 'investigation')
+        SEEK._relationsFormat(JSON, 'submitters', 'investigation')
+
+        investigationJSON = SEEK._investigationFormat()
+        self.assertEqual(JSON, investigationJSON)
     
     @patch('SEEK._get_input', return_value='10')
     def test_assayFormat(self, val):
 
-        JSON = SEEK._assayFormat("EXP","Descpription", "download")
+        JSON = {}
+        JSON['data'] = {}
+        JSON['data']['type'] = 'assays'
+        JSON['data']['attributes'] = {}
+        JSON['data']['attributes']['title'] = '1'
+        JSON['data']['attributes']['description'] = '1'
+        JSON['data']['attributes']['policy'] = {'access':'1', 'permissions': []}
+        JSON["data"]["attributes"]["other_creators"] = '1'
+
+        JSON["data"]["attributes"]["assay_class"] = {}
+        JSON["data"]["attributes"]["assay_class"]["key"] = '1'
+
+        JSON["data"]["attributes"]["assay_type"] = {}
+        JSON["data"]["attributes"]["assay_type"]["uri"] = '1'    
+
+        JSON["data"]["attributes"]["technology_type"] = {}
+        JSON["data"]["attributes"]["technology_type"]["uri"] = '1'
+
+        JSON["data"]["relationships"] = {}
+
+        
+        SEEK._relationsFormat(JSON, "data_files", "assay")
+        SEEK._relationsFormat(JSON, "documents", "assay")
+
+        JSON["data"]["relationships"]["investigation"] = {}
+        JSON["data"]["relationships"]["investigation"]["data"] = {"id": '1', "type":"investigations"}
+
+        SEEK._relationsFormat(JSON, "models", "assay")
+        SEEK._relationsFormat(JSON, "people", "assay")
+        SEEK._relationsFormat(JSON, "publications", "assay")
+        SEEK._relationsFormat(JSON, "sops", "assay")
+
+        JSON["data"]["relationships"]["study"] = {}
+        JSON["data"]["relationships"]["study"]["data"] = {"id": '1', "type":"studies"}
+
+        SEEK._relationsFormat(JSON, "organisms", "assay")
+
+        assayJSON = SEEK._assayFormat("1","1", "1")
+        self.assertEqual(JSON, assayJSON)
 
     @patch('SEEK._get_input', return_value='10')
     def test_dataFileFormat(self, val):
 
-        JSON = SEEK._data_fileFormat("Descpription", "download")
+        JSON = {}
+        JSON['data'] = {}
+        JSON['data']['type'] = 'data_files'
+        JSON['data']['attributes'] = {}
+        JSON['data']['attributes']['title'] = '1'
+
+        JSON["data"]["attributes"]["tags"] = []
+            
+        JSON["data"]["attributes"]["tags"].append('1')
+
+        JSON['data']['attributes']['license'] = '1'
+        JSON['data']['attributes']['description'] = '1'
+        JSON['data']['attributes']['policy'] = {'access': '1'}
+
+        remote_blob = {'url' :'1', 'original_filename': '1'}
+
+        JSON['data']['attributes']['content_blobs'] = [remote_blob]
+
+
+        JSON['data']['relationships'] = {}
+        SEEK._relationsFormat(JSON, 'projects', 'data file')
+        SEEK._relationsFormat(JSON, 'creators', 'data file')
+        SEEK._relationsFormat(JSON, 'assays', 'data file')
+        SEEK._relationsFormat(JSON, 'publications', 'data file')
+        SEEK._relationsFormat(JSON, 'events', 'data file')
+
+        fileJSON = SEEK._data_fileFormat('1', '1')
+
+        self.assertEqual(JSON, fileJSON)
 
     def test_loadJSON_Method(self):
         
@@ -380,12 +495,6 @@ class TestSEEK(TestCase):
                     self.assertNotEquals(self.testOBJ.relationshipList[i], 
                                          self.testOBJ.relationshipList[j])
 
-    def test_removeDuplicateRelationships_Method_ZeroRelationships(self):
-        pass
-
-    def test_removeDuplicateRelationships_Method_BadRequestList(self):
-        pass
-
     def test_substituteRelationships_Method(self):
         
         self.testOBJ.parallelRequest(self.goodFormat_RequestList,1)
@@ -397,22 +506,10 @@ class TestSEEK(TestCase):
                                             len(self.testOBJ.relationshipList))
         self.assertEqual(1,1)
 
-    def test_substituteRelationships_Method_EmptyRequestList(self):
-        pass
-
-    def test_substituteRelationshipsForSearchResults_Method(self):
-        pass
-
-    def test_search_Method(self):
-        pass
-
     @patch('SEEK._get_input', return_value="liver")
     @patch('SEEK._get_input_testing', return_value="assays")
     def test_browse_Method(self, name, key):
         self.assertTrue(self.testOBJ.browse())
-
-    def test_find_Method(self):
-        pass
 
     def test_download_Method(self):
         
@@ -454,8 +551,24 @@ class TestSEEK(TestCase):
                          (PROT_DEFAULT_AUTHENTICATION_STRING,
                           PROT_DEFAULT_AUTHENTICATION_STRING))
 
-    def test_post_Method(self):
-        pass
+    @patch('SEEK._get_input', return_value='1')
+    def test_post_Method(self, rofl):
+
+        self.type = widgets.Dropdown(
+            options=[
+                "assays",
+                "data_files",
+                "studies",
+                "investigations",
+                "models",
+                "sops",
+                "publications"
+            ],
+            value='studies',
+            disabled=False,
+        )
+        self.testWriteOBJ.JSON = SEEK._studyFormat('1','1')
+        self.assertTrue(self.testWriteOBJ.post())
         
 if __name__ == '__main__':
     unittest.main()

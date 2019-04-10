@@ -10,22 +10,19 @@ be used in the Jupyter Notebook web app, supporting widgets for user interfacing
 ___________________
 
 Third Year Project, Bogdan Gherasim, The University of Manchester, 2019
-
 """
-
-import io
-import json
-# from misc import _get_input, _get_input_testing
-import requests
-import tabulate
-import threading
 import getpass
-import time
+import io
 from IPython.core.display import display, HTML
 import ipywidgets as widgets
+import json
 import pandas as pd
 from pandas.io.json import json_normalize
 import pydoc
+import requests
+import tabulate
+import threading
+import time
 
 PROT_TEXTAREA_LAYOUT = widgets.Layout(flex='0 1 auto', 
                                       height='120px', 
@@ -96,7 +93,7 @@ def _relationsFormat(JSON, type, source):
 
 def _assayFormat(assayKind, description, policy):
     """
-    Method used in internally to create the JSON for an assay
+    Method used internally to create the JSON for an assay
 
     :param assayKind: 
     :param description: 
@@ -124,15 +121,12 @@ def _assayFormat(assayKind, description, policy):
     JSON["data"]["attributes"]["assay_class"] = {}
     JSON["data"]["attributes"]["assay_class"]["key"] = assayKind
 
-    
 
     assayTypeUri = ""
     assayTypeUri = _get_input("Please specify the assay type uri: ")
     if assayTypeUri != "":
         JSON["data"]["attributes"]["assay_type"] = {}
-        JSON["data"]["attributes"]["assay_type"]["uri"] = assayTypeUri
-
-    
+        JSON["data"]["attributes"]["assay_type"]["uri"] = assayTypeUri    
 
     techTypeUri = ""
     techTypeUri = _get_input("Please specify the technology type uri: ")
@@ -141,7 +135,6 @@ def _assayFormat(assayKind, description, policy):
         JSON["data"]["attributes"]["technology_type"]["uri"] = techTypeUri
 
     JSON["data"]["relationships"] = {}
-
     
     _relationsFormat(JSON, "data_files", "assay")
     _relationsFormat(JSON, "documents", "assay")
@@ -169,7 +162,7 @@ def _assayFormat(assayKind, description, policy):
 
 def _studyFormat(description, policy):
     """
-    Method used in internally to create the JSON for a study
+    Method used internally to create the JSON for a study
 
     :param description: 
     :param policy: 
@@ -284,90 +277,7 @@ def _data_fileFormat(description, policy):
     _relationsFormat(JSON, 'events', 'data file')
     
     return JSON
-def selectResearchType(self):
 
-    display(HTML('<h3>SEEK FORM</h3>'))
-    print('\nYou need to complete the following form in order to succesfully upload your information to SEEK')
-
-    self.type = widgets.Dropdown(
-        options=[
-            "assays",
-            "data_files",
-            "studies",
-            "investigations",
-            "models",
-            "sops",
-            "publications"
-        ],
-        value='assays',
-        disabled=False,
-    )
-
-    return widgets.HBox([widgets.Label(
-                        value="What is it that you want to post?"), 
-                        self.type])
-
-def fillSEEKForm(self):
-
-    
-    if self.type.value == 'assays':
-        self.JSON = _assayFormat(self.assayKind.value,
-                                        self.description.value,
-                                        self.policyAccess.value)
-
-    elif self.type.value == 'investigations':
-        self.JSON = _investigationFormat()
-    elif self.type.value == 'studies':
-        self.JSON = _studyFormat(self.description.value, 
-                                        self.policyAccess.value)
-    elif self.type.value == 'data_files':
-        self.JSON = _data_fileFormat(self.description.value,
-                                            self.policyAccess.value)
-
-def fillDescription(self):
-
-    self.description = widgets.Textarea(disabled=False,
-                                        layout=PROT_TEXTAREA_LAYOUT)
-    
-
-    return widgets.HBox([widgets.Label(
-                        value="Please provide your description:"), 
-                        self.description])
-
-def selectAssayKind(self):
-
-    self.assayKind = widgets.Dropdown(
-        options=[
-            "EXP",
-            "MOD"
-        ],
-        value='EXP',
-        disabled=False,
-    )
-    
-
-    return widgets.HBox([widgets.Label(
-            value="Please select the class of Assay you wish to create:"), 
-            self.assayKind])
-
-def selectPolicyAccess(self):
-
-    self.policyAccess = widgets.Dropdown(
-        options=[
-            "no_access",
-            "view",
-            "download",
-            "edit",
-            "manage"
-        ],
-        value='no_access',
-        disabled=False,
-    )
-    
-
-    return widgets.HBox([widgets.Label(
-            value="Please select the policy access:"), 
-            self.policyAccess])
 class read(object):
     """
     This class provides methods and functions for reading and browsing the SEEK
@@ -1129,14 +1039,100 @@ class write:
 
         self.dropdown = None
         self.data = object()
+        self.type = widgets.Dropdown(
+            options=[
+                "assays",
+                "data_files",
+                "studies",
+                "investigations",
+                "models",
+                "sops",
+                "publications"
+            ],
+            value='assays',
+            disabled=False,
+        )
     
+    def selectResearchType(self):
+
+        display(HTML('<h3>SEEK FORM</h3>'))
+        print('\nYou need to complete the following form in order to succesfully upload your information to SEEK')
+
+        
+
+        return widgets.HBox([widgets.Label(
+                            value="What is it that you want to post?"), 
+                            self.type])
+
+    def fillSEEKForm(self):
+
+        
+        if self.type.value == 'assays':
+            self.JSON = _assayFormat(self.assayKind.value,
+                                            self.description.value,
+                                            self.policyAccess.value)
+
+        elif self.type.value == 'investigations':
+            self.JSON = _investigationFormat()
+        elif self.type.value == 'studies':
+            self.JSON = _studyFormat(self.description.value, 
+                                            self.policyAccess.value)
+        elif self.type.value == 'data_files':
+            self.JSON = _data_fileFormat(self.description.value,
+                                                self.policyAccess.value)
+
+    def fillDescription(self):
+
+        self.description = widgets.Textarea(disabled=False,
+                                            layout=PROT_TEXTAREA_LAYOUT)
+        
+
+        return widgets.HBox([widgets.Label(
+                            value="Please provide your description:"), 
+                            self.description])
+
+    def selectAssayKind(self):
+
+        self.assayKind = widgets.Dropdown(
+            options=[
+                "EXP",
+                "MOD"
+            ],
+            value='EXP',
+            disabled=False,
+        )
+        
+
+        return widgets.HBox([widgets.Label(
+                value="Please select the class of Assay you wish to create:"), 
+                self.assayKind])
+
+    def selectPolicyAccess(self):
+
+        self.policyAccess = widgets.Dropdown(
+            options=[
+                "no_access",
+                "view",
+                "download",
+                "edit",
+                "manage"
+            ],
+            value='no_access',
+            disabled=False,
+        )
+        
+
+        return widgets.HBox([widgets.Label(
+                value="Please select the policy access:"), 
+                self.policyAccess])
+
+
     def post(self):
         r = None
 
         try:
             r = self.session.post(self.base_url + '/' + self.type.value, json=self.JSON)
             
-            r.raise_for_status()
             self.session.close()
             r.close()
             if r.status_code != 200:

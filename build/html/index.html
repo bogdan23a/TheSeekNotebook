@@ -85,8 +85,10 @@ interpretaion. Process the request and retrieve the JSON</p>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">search</span><span class="o">.</span><span class="n">searchAdvancedSetup</span><span class="p">()</span>
 <span class="go">Search multithreading</span>
 <span class="go">Decide how fast will the search run</span>
-<span class="go">Search results are usually less and the search requires less to be requested at once.</span>
-<span class="go">Relationships are usually a lot more, therefore it requires more requests at once</span>
+<span class="go">Search results are usually less and the search requires less to be </span>
+<span class="go">requested at once.</span>
+<span class="go">Relationships are usually a lot more, therefore it requires more </span>
+<span class="go">requests at once</span>
 <span class="go">How many search results should be requested per thread:</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="mi">1</span>
 <span class="go">How many relationships should be requested per thread: </span>
@@ -98,7 +100,7 @@ interpretaion. Process the request and retrieve the JSON</p>
 <dl class="method">
 <dt id="SEEK.read.createRequestList">
 <code class="descname">createRequestList</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#SEEK.read.createRequestList" title="Permalink to this definition">¶</a></dt>
-<dd><p>Creates a list from the JSON returned by the API Search by searching 
+<dd><p>Creates the list of requests by parsing a RAW Search Result JSON by searching 
 for each pair of (id, type) present in the string.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -117,9 +119,7 @@ for each pair of (id, type) present in the string.</p>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">search</span><span class="o">.</span><span class="n">APISearch</span><span class="p">()</span>
 <span class="gp">...</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">search</span><span class="o">.</span><span class="n">createRequestList</span><span class="p">()</span>
-</pre></div>
-</div>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">requestList</span><span class="p">)))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">requestList</span><span class="p">)))</span>
 <span class="go">132 </span>
 </pre></div>
 </div>
@@ -131,7 +131,8 @@ for each pair of (id, type) present in the string.</p>
 <dd><p>Used to set up how fast the multithreading runs</p>
 <p>The method prompts how many requests there will be in each thread, eg:
 if there are 100 requests and you run this with 1 requests/thread, there
-will be loads of multithreading(100 threads) and therefore the process will run really
+will be loads of multithreading(100 threads) and therefore the process 
+will run really
 fast… or at least will try to. If you run it with 50 requests/thread
 it will run slow(2 threads).</p>
 <table class="docutils field-list" frame="void" rules="none">
@@ -147,8 +148,10 @@ it will run slow(2 threads).</p>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">search</span><span class="o">.</span><span class="n">searchAdvancedSetup</span><span class="p">()</span>
 <span class="go">Search multithreading</span>
 <span class="go">Decide how fast will the search run</span>
-<span class="go">Search results are usually less and the search requires less to be requested at once.</span>
-<span class="go">Relationships are usually a lot more, therefore it requires more requests at once</span>
+<span class="go">Search results are usually less and the search requires less to be </span>
+<span class="go">requested at once.</span>
+<span class="go">Relationships are usually a lot more, therefore it requires more </span>
+<span class="go">requests at once</span>
 <span class="go">How many search results should be requested per thread:</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="mi">1</span>
 <span class="go">How many relationships should be requested per thread: </span>
