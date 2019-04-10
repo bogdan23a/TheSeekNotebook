@@ -22,3 +22,4 @@ View coverage via coverage.py with the following command(root dir):
 View documentation via sphinx.py with the following command(root dir):
 
     make clean html 
+
