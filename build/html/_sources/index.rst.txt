@@ -7,7 +7,8 @@ Welcome to SEEK's documentation!
 ================================
 
 .. automodule:: SEEK
-    :members:
+    :members: 
+
 
 .. toctree::
    :maxdepth: 2

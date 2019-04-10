@@ -233,6 +233,7 @@ def _investigationFormat():
     return JSON
     
 def _data_fileFormat(description, policy):
+
     """
     Method used in internally to create the JSON for a data file
 
@@ -243,6 +244,7 @@ def _data_fileFormat(description, policy):
     :returns: JSON
     :rtype: str
     """
+
     JSON = {}
     JSON['data'] = {}
     JSON['data']['type'] = 'data_files'
@@ -279,12 +281,12 @@ def _data_fileFormat(description, policy):
     return JSON
 
 class read(object):
+
     """
     This class provides methods and functions for reading and browsing the SEEK
 
     :param auth: FairdomHub credentials; can be left empty 
     :type auth: SEEK.auth()
-
     """
 
     def __init__(self, auth = None):
@@ -402,6 +404,7 @@ class read(object):
             print(str(e))
 
     def _request(self, type, id):
+
         """Uses python requests to query the SEEK API, then parses the JSON 
         using the loadJSON method.
 
@@ -445,7 +448,9 @@ class read(object):
         except Exception as e:
             print(str(e))
 
-    def printAttributes(self):
+    def _printAttributes(self):
+
+        """Prints the attributes of an requested object"""
 
         print(self.data.attributes.title + "(id: " + self.data.id + 
              " | type: " + self.data.type +")\n")
@@ -458,7 +463,9 @@ class read(object):
 
             print("missing")
 
-    def printRelationshipsSearch(self):
+    def _printRelationshipsSearch(self):
+
+        """Prints the relationships of an requested object via the search method"""
 
         hasNoRelationships = True
 
@@ -489,7 +496,9 @@ class read(object):
         if hasNoRelationships:
             print("Object has no relationships")
 
-    def printRelationshipsBrowse(self):
+    def _printRelationshipsBrowse(self):
+
+        """Prints the relationships of an requested object via the browse method"""
 
         hasNoRelationships = True
 
@@ -521,32 +530,36 @@ class read(object):
     
     def printSearch(self):
 
+        """Prints a search result"""
+
         if hasattr(self, 'data'):
 
             if hasattr(self.data, 'attributes'):
 
-                self.printAttributes()
+                self._printAttributes()
                 print("\n")
 
             if hasattr(self.data, 'relationships'):
 
-                self.printRelationshipsSearch()
+                self._printRelationshipsSearch()
         else:
 
             print("Search item unavailable. Try again later.")
 
     def printBrowse(self):
 
+        """Prints the results of a browse"""
+
         if hasattr(self, 'data'):
 
             if hasattr(self.data, 'attributes'):
 
-                self.printAttributes()
+                self._printAttributes()
                 print("\n")
 
             if hasattr(self.data, 'relationships'):
 
-                self.printRelationshipsBrowse()
+                self._printRelationshipsBrowse()
         else:
 
             print("Search item unavailable. Try again later.")
@@ -646,7 +659,7 @@ class read(object):
         """Creates the list of requests by parsing a RAW Search Result JSON by searching 
         for each pair of (id, type) present in the string.
         
-        :returns: list of pairs of {id, type} form
+        :returns: list of tuples
         :rtype: list
         
         :Example:
@@ -682,7 +695,18 @@ class read(object):
     # Loops through each batch of requests received and executes them in turn, serialized
     # 1st param: the request batch
     # 2nd param: the total number of requests
-    def makeRequests(self, requestsList, total):
+    def _makeRequests(self, requestsList, total):
+
+        """Method executed by each thread
+
+        Loops through each batch of requests received and executes them in turn,
+        serialized
+
+        :param requestList: list of request to process
+        :param total: total number of requests; used to compute the loading 
+        :type type: list
+        :type id: int
+        """
 
         try:
 
@@ -721,6 +745,16 @@ class read(object):
     # Fills the 'requestList' attribute with the response
     def parallelRequest(self, requests, requestPerThread):
         
+        """Creates a list of processed request from an unprocessed list
+
+        Uses multithreading to read a number of request and retrieve results 
+        from the API
+
+        :param requests: list of request to process
+        :param requestPerThread: specifies how many requests each thread is supposed to handle and, therefore, how many threads are there going to be created 
+        :type requests: list
+        :type requestPerThread: int
+        """
         self.requestList = []
         # Compute the number of threads 
         numberOfThreads = 1
@@ -747,7 +781,7 @@ class read(object):
                 rightArrayBound = (currentThread + 1) * requestPerThread
 
             # Create the thread with the specified number of requests
-            newThread = threading.Thread(name="Thread number " + str(currentThread), target=self.makeRequests, args=(requests[currentThread * requestPerThread : rightArrayBound], len(requests),))
+            newThread = threading.Thread(name="Thread number " + str(currentThread), target=self._makeRequests, args=(requests[currentThread * requestPerThread : rightArrayBound], len(requests),))
             newThread.start()
 
             # Add the thread to the list of threads
@@ -755,6 +789,13 @@ class read(object):
 
     def getRelationshipsFrom(self, request):
 
+        """Creates the relationships list by parsing the data attribute of the specified object
+
+        :param request: object to extract relationships from
+        :type request: SEEK.read
+        :returns: unprocessed relationships
+        :rtype: list of tuples
+        """
         relations = []
 
         if hasattr(request.data, 'relationships'):
@@ -773,9 +814,15 @@ class read(object):
         
         return relations
     
-    # Create the relationship list by parsing the search result list
-    # return: number of relations found
     def createRelationshipList(self):
+
+        """Create the relationship list by parsing the search result list
+
+        This method fills the relationshipList array attribute before returning
+
+        :returns: number of relationships found
+        :rtype: int
+        """
 
         relations = []
 
@@ -790,6 +837,8 @@ class read(object):
 
     def removeDuplicateRelationships(self):
         
+        """Loops through the relationshipList array attribute and removes the duplicated entries for further modifications"""
+
         noDuplicates = []
         for relation in self.relationshipList:
             
@@ -799,8 +848,15 @@ class read(object):
 
         self.relationshipList = noDuplicates
 
-    def substituteRelationships(self, relationshipsList, total):
+    def substituteRelationships(self, relationshipsList):
 
+        """Loops through the search results and substitutes the raw relationships with requested objects
+
+        This method relaces the relationships from the data.relationships attribute with objects from the first parameter
+        
+        :param relationshipsList: the processed relationships used to substitute the raw ones
+        :type relationshipsList: list
+        """
         self.percentageLoaded = 0
         if hasattr(self.data, 'relationships'):
             for r in range(0, len(dir(self.data.relationships))):
@@ -828,13 +884,13 @@ class read(object):
                                 if item.data.id == ID and item.data.type == TYPE:
 
                                     # Compute percentace for user info
-                                    p = round(self.percentageLoaded / total * 100, 2)
+                                    p = round(self.percentageLoaded / len(relationshipsList) * 100, 2)
                                     
-                                    # if p >= (100 - (1 / total) * 100):    
-                                        # print("Loading " + str(p) + "%\r", end='')
-                                        # print("\nLoading Completed\r")
-                                    # else:
-                                        # print("Loading " + str(p) + "%\r", end='')
+                                    if p >= (100 - (1 / len(relationshipsList)) * 100):    
+                                        print("Loading " + str(p) + "%\r", end='')
+                                        print("\nLoading Completed\r")
+                                    else:
+                                        print("Loading " + str(p) + "%\r", end='')
 
                                     self.percentageLoaded = self.percentageLoaded + 1
                                     
@@ -858,13 +914,13 @@ class read(object):
                             if type(item.data) != type(object()) and item.data.id == relation.data.id and item.data.type == relation.data.type:
                                 
                                 # Compute percentace for user info
-                                p = round(self.percentageLoaded / total * 100, 2)
+                                p = round(self.percentageLoaded / len(relationshipsList) * 100, 2)
 
-                                # if p >= (100 - (1 / total) * 100):    
-                                    # print("Loading " + str(p) + "%\r", end='')
-                                    # print("\nLoading Completed\r")
-                                # else:
-                                    # print("Loading " + str(p) + "%\r", end='')   
+                                if p >= (100 - (1 / len(relationshipsList)) * 100):    
+                                    print("Loading " + str(p) + "%\r", end='')
+                                    print("\nLoading Completed\r")
+                                else:
+                                    print("Loading " + str(p) + "%\r", end='')   
                                 
                                 self.percentageLoaded = self.percentageLoaded + 1
 
@@ -881,6 +937,16 @@ class read(object):
 
     def search(self, TYPE, ID):
 
+        """Searches and retrieves a specific object from the API along with it's relationships
+
+        :param TYPE: eg: assays / studies / investigations etc.
+        :param ID: identification number
+        :type TYPE: string
+        :type ID: int
+        :returns: whether the search is successful or not
+        :rtype: bool
+        """
+
         r = read(self.session.auth)
         r._request(type=TYPE, id=ID)
 
@@ -892,7 +958,7 @@ class read(object):
         for thread in ps.threadList:
             thread.join()
         
-        r.substituteRelationships(ps.requestList, len(ps.requestList))
+        r.substituteRelationships(ps.requestList)
         # print(str(ps.requestList))
         self.data = r.data
 
@@ -903,18 +969,25 @@ class read(object):
     # 2nd param: the total number of relations in the search results that need to be filled out
     # return: none
     # Adds a 'newData' attribute in each search result relation
-    def substituteRelationshipsForSearchResults(self, relationshipsList, total):
+    def substituteRelationshipsForSearchResults(self, relationshipsList):
         
         print("\nSubstituting relationships into original search results: ")
         self.percentageLoaded = 0
 
         for i in self.requestList:
 
-            i.substituteRelationships(relationshipsList, total)
+            i.substituteRelationships(relationshipsList)
             
     # Simplified method for the user in order to operate a browsing in the SEEK API
     def browse(self):
 
+        """Runs a browse in the API
+
+        This method prints the results before returning 
+
+        :returns: whether the search is successful or not
+        :rtype: bool
+        """
         self.APISearch()
 
         # Create the request list of the form [{'id':'x', 'type':'y'}]
@@ -960,7 +1033,7 @@ class read(object):
 
         print("\n" + str(PS.requestFails) + " ommited results (" + str(int(self.time['end'] - self.time['start'])) + " s elapsed)")
 
-        ps.substituteRelationshipsForSearchResults(PS.requestList, totalNumberRelationships)
+        ps.substituteRelationshipsForSearchResults(PS.requestList)
 
         self.requestList = ps.requestList
         print("\n\n                                        --SEARCH RESULTS--\n\n")
@@ -982,6 +1055,8 @@ class read(object):
         return results
 
     def download(self):
+
+        """Downloads a content blob in the file"""
 
         if hasattr(self.data.attributes, 'content_blobs') == False:
             print("This method can be called from data files only")
@@ -1016,7 +1091,13 @@ class read(object):
 
 
 class write:
+    """
+    This class provides methods and functions for writing into the SEEK
 
+    :param auth: FairdomHub credentials; can be left empty 
+    :type auth: SEEK.auth()
+
+    """
     def __init__(self, auth = None):
 
         self.base_url = 'https://testing.sysmo-db.org'
@@ -1055,6 +1136,8 @@ class write:
     
     def selectResearchType(self):
 
+        """Mandatory"""
+
         display(HTML('<h3>SEEK FORM</h3>'))
         print('\nYou need to complete the following form in order to succesfully upload your information to SEEK')
 
@@ -1065,7 +1148,8 @@ class write:
                             self.type])
 
     def fillSEEKForm(self):
-
+        
+        """Mandatory"""
         
         if self.type.value == 'assays':
             self.JSON = _assayFormat(self.assayKind.value,
@@ -1083,6 +1167,8 @@ class write:
 
     def fillDescription(self):
 
+        """Mandatory"""
+
         self.description = widgets.Textarea(disabled=False,
                                             layout=PROT_TEXTAREA_LAYOUT)
         
@@ -1092,6 +1178,8 @@ class write:
                             self.description])
 
     def selectAssayKind(self):
+
+        """Mandatory for assays"""
 
         self.assayKind = widgets.Dropdown(
             options=[
@@ -1108,6 +1196,8 @@ class write:
                 self.assayKind])
 
     def selectPolicyAccess(self):
+
+        """Mandatory"""
 
         self.policyAccess = widgets.Dropdown(
             options=[
@@ -1128,6 +1218,30 @@ class write:
 
 
     def post(self):
+        """Uses python requests to post the object created previously and saved in the JSON attribute to the SEEK
+
+        :returns: whether the post is successful or not
+        :rtype: bool
+
+        :Example:
+
+        >>> import SEEK as S
+        >>> request = S.write()
+        >>> request.post()
+        False
+        >>> request.selectResearchType()
+        ...
+        >>> request.selectAssayKind()
+        ...
+        >>> request.fillDescription()
+        ...
+        >>> request.selectPolicyAccess()
+        ...
+        >>> request.fillSEEKForm()
+        ...
+        >>> request.post()
+        True
+        """
         r = None
 
         try:
@@ -1145,6 +1259,3 @@ class write:
 
         except Exception as e:
             print(str(e))
-
-
-# if __name__ == '__main__':

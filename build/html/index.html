@@ -98,6 +98,40 @@ interpretaion. Process the request and retrieve the JSON</p>
 </dd></dl>
 
 <dl class="method">
+<dt id="SEEK.read.browse">
+<code class="descname">browse</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#SEEK.read.browse" title="Permalink to this definition">¶</a></dt>
+<dd><p>Runs a browse in the API</p>
+<p>This method prints the results before returning</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">whether the search is successful or not</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">bool</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="SEEK.read.createRelationshipList">
+<code class="descname">createRelationshipList</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#SEEK.read.createRelationshipList" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create the relationship list by parsing the search result list</p>
+<p>This method fills the relationshipList array attribute before returning</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">number of relationships found</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">int</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
 <dt id="SEEK.read.createRequestList">
 <code class="descname">createRequestList</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#SEEK.read.createRequestList" title="Permalink to this definition">¶</a></dt>
 <dd><p>Creates the list of requests by parsing a RAW Search Result JSON by searching 
@@ -106,7 +140,7 @@ for each pair of (id, type) present in the string.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">list of pairs of {id, type} form</td>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">list of tuples</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">list</td>
 </tr>
@@ -123,6 +157,92 @@ for each pair of (id, type) present in the string.</p>
 <span class="go">132 </span>
 </pre></div>
 </div>
+</dd></dl>
+
+<dl class="method">
+<dt id="SEEK.read.download">
+<code class="descname">download</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#SEEK.read.download" title="Permalink to this definition">¶</a></dt>
+<dd><p>Downloads a content blob in the file</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="SEEK.read.getRelationshipsFrom">
+<code class="descname">getRelationshipsFrom</code><span class="sig-paren">(</span><em>request</em><span class="sig-paren">)</span><a class="headerlink" href="#SEEK.read.getRelationshipsFrom" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates the relationships list by parsing the data attribute of the specified object</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>request</strong> (<a class="reference internal" href="#SEEK.read" title="SEEK.read"><em>SEEK.read</em></a>) – object to extract relationships from</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">unprocessed relationships</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">list of tuples</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="SEEK.read.parallelRequest">
+<code class="descname">parallelRequest</code><span class="sig-paren">(</span><em>requests</em>, <em>requestPerThread</em><span class="sig-paren">)</span><a class="headerlink" href="#SEEK.read.parallelRequest" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates a list of processed request from an unprocessed list</p>
+<p>Uses multithreading to read a number of request and retrieve results 
+from the API</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>requests</strong> (<em>list</em>) – list of request to process</li>
+<li><strong>requestPerThread</strong> (<em>int</em>) – specifies how many requests each thread is supposed to handle and, therefore, how many threads are there going to be created</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="SEEK.read.printBrowse">
+<code class="descname">printBrowse</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#SEEK.read.printBrowse" title="Permalink to this definition">¶</a></dt>
+<dd><p>Prints the results of a browse</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="SEEK.read.printSearch">
+<code class="descname">printSearch</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#SEEK.read.printSearch" title="Permalink to this definition">¶</a></dt>
+<dd><p>Prints a search result</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="SEEK.read.removeDuplicateRelationships">
+<code class="descname">removeDuplicateRelationships</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#SEEK.read.removeDuplicateRelationships" title="Permalink to this definition">¶</a></dt>
+<dd><p>Loops through the relationshipList array attribute and removes the duplicated entries for further modifications</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="SEEK.read.search">
+<code class="descname">search</code><span class="sig-paren">(</span><em>TYPE</em>, <em>ID</em><span class="sig-paren">)</span><a class="headerlink" href="#SEEK.read.search" title="Permalink to this definition">¶</a></dt>
+<dd><p>Searches and retrieves a specific object from the API along with it’s relationships</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>TYPE</strong> (<em>string</em>) – eg: assays / studies / investigations etc.</li>
+<li><strong>ID</strong> (<em>int</em>) – identification number</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">whether the search is successful or not</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">bool</p>
+</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="method">
@@ -158,6 +278,101 @@ it will run slow(2 threads).</p>
 <span class="gp">&gt;&gt;&gt; </span><span class="mi">1</span>
 </pre></div>
 </div>
+</dd></dl>
+
+<dl class="method">
+<dt id="SEEK.read.substituteRelationships">
+<code class="descname">substituteRelationships</code><span class="sig-paren">(</span><em>relationshipsList</em><span class="sig-paren">)</span><a class="headerlink" href="#SEEK.read.substituteRelationships" title="Permalink to this definition">¶</a></dt>
+<dd><p>Loops through the search results and substitutes the raw relationships with requested objects</p>
+<p>This method relaces the relationships from the data.relationships attribute with objects from the first parameter</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>relationshipsList</strong> (<em>list</em>) – the processed relationships used to substitute the raw ones</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="SEEK.write">
+<em class="property">class </em><code class="descclassname">SEEK.</code><code class="descname">write</code><span class="sig-paren">(</span><em>auth=None</em><span class="sig-paren">)</span><a class="headerlink" href="#SEEK.write" title="Permalink to this definition">¶</a></dt>
+<dd><p>This class provides methods and functions for writing into the SEEK</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>auth</strong> (<em>SEEK.auth</em><em>(</em><em>)</em>) – FairdomHub credentials; can be left empty</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="SEEK.write.fillDescription">
+<code class="descname">fillDescription</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#SEEK.write.fillDescription" title="Permalink to this definition">¶</a></dt>
+<dd><p>Mandatory</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="SEEK.write.fillSEEKForm">
+<code class="descname">fillSEEKForm</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#SEEK.write.fillSEEKForm" title="Permalink to this definition">¶</a></dt>
+<dd><p>Mandatory</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="SEEK.write.post">
+<code class="descname">post</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#SEEK.write.post" title="Permalink to this definition">¶</a></dt>
+<dd><p>Uses python requests to post the object created previously and saved in the JSON attribute to the SEEK</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">whether the post is successful or not</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">bool</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Example:</th><td class="field-body"></td>
+</tr>
+</tbody>
+</table>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">SEEK</span> <span class="k">as</span> <span class="nn">S</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">request</span> <span class="o">=</span> <span class="n">S</span><span class="o">.</span><span class="n">write</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">request</span><span class="o">.</span><span class="n">post</span><span class="p">()</span>
+<span class="go">False</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">request</span><span class="o">.</span><span class="n">selectResearchType</span><span class="p">()</span>
+<span class="gp">...</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">request</span><span class="o">.</span><span class="n">selectAssayKind</span><span class="p">()</span>
+<span class="gp">...</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">request</span><span class="o">.</span><span class="n">fillDescription</span><span class="p">()</span>
+<span class="gp">...</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">request</span><span class="o">.</span><span class="n">selectPolicyAccess</span><span class="p">()</span>
+<span class="gp">...</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">request</span><span class="o">.</span><span class="n">fillSEEKForm</span><span class="p">()</span>
+<span class="gp">...</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">request</span><span class="o">.</span><span class="n">post</span><span class="p">()</span>
+<span class="go">True</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="SEEK.write.selectAssayKind">
+<code class="descname">selectAssayKind</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#SEEK.write.selectAssayKind" title="Permalink to this definition">¶</a></dt>
+<dd><p>Mandatory for assays</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="SEEK.write.selectPolicyAccess">
+<code class="descname">selectPolicyAccess</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#SEEK.write.selectPolicyAccess" title="Permalink to this definition">¶</a></dt>
+<dd><p>Mandatory</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="SEEK.write.selectResearchType">
+<code class="descname">selectResearchType</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#SEEK.write.selectResearchType" title="Permalink to this definition">¶</a></dt>
+<dd><p>Mandatory</p>
 </dd></dl>
 
 </dd></dl>
