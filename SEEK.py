@@ -971,6 +971,7 @@ class read(object):
     # Adds a 'newData' attribute in each search result relation
     def substituteRelationshipsForSearchResults(self, relationshipsList):
         
+        """Used when browsing"""
         print("\nSubstituting relationships into original search results: ")
         self.percentageLoaded = 0
 
@@ -1085,7 +1086,8 @@ class read(object):
             print(str(e))
     
     def view(self, columnForHeader, page):
-
+        
+        """View the downloaded file"""
         csv = pd.read_excel(self.fileName, header=columnForHeader, sheet_name=page)
         return csv
 
