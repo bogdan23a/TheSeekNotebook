@@ -21,7 +21,7 @@ python:
   pip-install: true
   version: 3.7
   extra-requirements:
-    - IPython
+    - nbsphinx
     - ipywidgets
   # install:
     # - requirements: docs/requirements.txt
