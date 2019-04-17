@@ -131,4 +131,4 @@ Use the [Testing](https://testing.sysmo-db.org/) platform for testing writing / 
 
 ## Contributing
 
-**HELP WANTED** check out the [Contribution](Contributing.md] instructions.
+**HELP WANTED** check out the [Contribution](Contributing.md) instructions.
