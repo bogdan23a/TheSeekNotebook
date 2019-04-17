@@ -3,7 +3,6 @@ ipykernel
 nbsphinx
 ipywidgets
 pandas
-pydoc
 requests
 time
 threading
