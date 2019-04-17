@@ -104,6 +104,8 @@ import SEEK
 
 ## Documentation
 
+Read the [documentation](https://theseeknotebook.readthedocs.io/en/latest/) for some other examples and further tips about the usage.
+
 ## Usage
 
 ## Testing
