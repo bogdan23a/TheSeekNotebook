@@ -1,6 +1,5 @@
 # The Seek Notebook
 
-<img src="https://github.com/bogdan23a/TheSeekNotebook/blob/master/docs/Peek%202019-04-17%2021-29.gif" width="1000px" height="400px" align="right">
 
 <a href='https://coveralls.io/github/bogdan23a/TheSeekNotebook'><img src='https://coveralls.io/repos/github/bogdan23a/TheSeekNotebook/badge.svg' alt='Coverage Status' /></a><a href='https://theseeknotebook.readthedocs.io/en/latest/?badge=latest'><img src='https://readthedocs.org/projects/theseeknotebook/badge/?version=latest' alt='Documentation Status' />
 </a><img src="https://camo.githubusercontent.com/2091d99fb3b1ea0dcacb2ce564d5a3fc099c9ee7/68747470733a2f2f6261646765732e66726170736f66742e636f6d2f6f732f76322f6f70656e2d736f757263652e7376673f763d313032" width="120" height="20">
@@ -113,6 +112,9 @@ import SEEK
 Read the [documentation](https://theseeknotebook.readthedocs.io/en/latest/) for some other examples and further tips about the usage.
 
 ## Usage
+
+
+<img src="https://github.com/bogdan23a/TheSeekNotebook/blob/master/docs/Peek%202019-04-17%2021-29.gif" width="1000px" height="400px">
 
 ## Testing
 
