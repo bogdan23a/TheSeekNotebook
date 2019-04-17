@@ -1,0 +1,58 @@
+Abstract - 500 words
+
+Introduction - 500 words
+
+
+
+Acknowledgements
+
+    Mention Carole and the team
+
+Part 1 - Context - 285/ 1000 words
+
+    Firstly, I am going to give some abstract background about the project by clarifying the area in which the tool will be utilized,  naming the user that will work with it, describing the users need for this tool and finally underline, in large, the facilities that the application is going to offer.
+
+    Afterwards, I will give details about the certain technologies and tools used to develop this project and how it was all implemented using a platform called SEEK and a web app named Jupyter Notebook.
+
+    The topic area to which the work applies? - 360 words
+ 
+    Who is the client?
+        
+        This project aims to satisfy the needs of people working in the field of bioinformatics. More specifically, people that work with scientific data towards a more analytical outcome and have less overall knowledge about programming but need to work with computational tools in order to get a conclusive view on their input.
+
+        For example, a biochemist working in developing pharmaceutical products might work with actual substances using chemical formulas. An example of the work of a bioinformatician would be using biological data trying to develop methods for understanding a genetic basis of diseases.
+
+    Clients needs - 360 words
+
+        This project is going to support the users by making the viewing, browsing and writing of reports, research, studies, etc, more accessible. 
+
+        As these users have less overall knowledge about programming, this need is, therefore, obvious and the application should be intuitive to use and as straightforward as possible. This leverage is due in order to facilitate a focus on the research instead of targeting the learning of computer science or programming language related technologies, information or other details.
+
+    What the work was aiming to achieve? - 340 words
+
+        The aim of this project is to build a basic functionality for an electronic notebook that would allow the users three basic functionalities. Firstly, the user should be capable of reading documents and data representing other studies, research, investigations, etc. that are already done by other researchers and bioinformaticians. Browsing for multiple results of this kind is a feature build on top of the reading. It should prompt the user for the information that he is looking for and retrieve all the resuslts that match the query. And finally, the user should be able to post a possible papper or piece of data so that other are able to read or search for it and possibly use it in further documentation.
+
+Part 2 - Development - 2000 words
+
+    Introduction - Use cases - 400 words
+    Read Case + Download - 600 words
+    Browse Case - 600 words
+    Write Case - 400 words
+
+    Diagrams --> Apendix
+
+Part 3 - Evaluation - 1000 words
+
+    Discussing various types of testing that have been performed and code coverage.
+
+Part 4 - Reflection - 1000 words
+
+    How the timing and number of milestones changed from those originally planned, and why this happened.
+    What new knowledge have you gained from both the viewpoint of the context within which your project sits and particular technical knowledge needed to complete your project.
+    What TO DO better?
+
+Conclusion - 500 words
+
+References
+
+Apendix
