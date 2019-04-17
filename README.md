@@ -19,6 +19,8 @@ description_here
 - [The Docs](#documentation)
 - [Examples](#usage)
 - [Testing](#testing)
+- [Contributing](#contributing)
+- [License](#license)
 
 <!-- tocstop -->
 
@@ -126,3 +128,7 @@ View your documentation via sphinx.py with the following command(root dir):
 make clean html
 google-chrome docs/build/html/index.html
 ```
+
+## Contributing
+
+## License
