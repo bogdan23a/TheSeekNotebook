@@ -43,54 +43,12 @@ These instructions will show you how to get you a copy of the project up and how
 
 Before you get this package make sure that you have pip, conda, jupyter notebook, ipywidgets, pandas, requests and tabulate.
 ```bash
-pip --version
-conda --v
-jupyter notebook --version
-pip3 show ipywidgets
-pip3 show pandas
-pip3 show requests
-pip3 show tabulate
-```
-And if you don't, install them.
-
-#### The pip way
-
-Get pip.
-```bash
-sudo apt update
-sudo apt install python3-pip
-pip3 --version
+python setup.py install --user
 ```
 
-Then all the others.
+Or you could use this command if you got the full copy of the project. 
 ```bash
-pip3 install jupyter
-pip3 install ipywidgets
-pip3 install pandas
-pip3 install requests
-pip3 install tabulate
-```
-
-#### The conda way
-
-Get conda.
-```bash
-curl -O https://repo.anaconda.com/archive/Anaconda3-5.2.0-Linux-x86_64.sh
-bash Anaconda3-5.2.0-Linux-x86_64.sh
-```
-
-After you complete the installation quick-check it.
-```bash
-conda --version
-```
-
-Then all the others.
-```bash
-conda install jupyter
-conda install ipywidgets
-conda install pandas
-conda install requests
-conda install tabulate
+pip install -r docs/requirements.txt
 ```
 
 ## Cloning
@@ -113,6 +71,34 @@ Read the [documentation](https://theseeknotebook.readthedocs.io/en/latest/) for 
 
 ## Usage
 
+* Authentication
+
+Use the auth() method in order to create a login form and store them into a variable to use the credentials on the way.
+```python
+auth = SEEK.auth()
+>>> Username: 
+>>> Password:
+```
+
+* Reading
+
+Use the read() class to create a reading object and use it to read, browse and download data from the HUB.
+```python
+r = SEEK.read(auth)
+```
+
+* DEFAULT Writing (on the testing DB)
+
+Use the write() class to create a writing object and use it to write data to the testing HUB.
+```python
+w = SEEK.write(auth)
+```
+
+* OFFICIAL Writing
+
+```python
+w = SEEK.write(auth, "https://fairdomhub.org/")
+```
 
 <img src="https://github.com/bogdan23a/TheSeekNotebook/blob/master/docs/Peek%202019-04-17%2021-29.gif" width="1000px" height="400px">
 
@@ -144,3 +130,5 @@ More examples for the [SEEK API](https://github.com/bogdan23a/seekAPIexamples)
 Use the [Testing](https://testing.sysmo-db.org/) platform for testing writing / creating capabilities.
 
 ## Contributing
+
+** HELP WANTED ** 
