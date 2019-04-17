@@ -43,6 +43,11 @@ These instructions will show you how to get you a copy of the project up and how
 
 Before you get this package make sure that you have pip, conda, jupyter notebook, ipywidgets, pandas, requests and tabulate.
 ```bash
+python setup.py install --user
+```
+
+Or you could use this command if you got the full copy of the project. 
+```bash
 pip install -r docs/requirements.txt
 ```
 
