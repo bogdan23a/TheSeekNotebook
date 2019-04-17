@@ -1,25 +1,126 @@
 # The Seek Notebook
 
 
-<img src="https://seek4science.org/assets/images/seek-logo.svg" width="135px" height="132px">
+<img src="https://seek4science.org/assets/images/seek-logo.svg" width="135px" height="132px"><img src="https://upload.wikimedia.org/wikipedia/commons/3/38/Jupyter_logo.svg" width="135px" height="132px">
 
 <a href='https://coveralls.io/github/bogdan23a/TheSeekNotebook'><img src='https://coveralls.io/repos/github/bogdan23a/TheSeekNotebook/badge.svg' alt='Coverage Status' /></a><a href='https://theseeknotebook.readthedocs.io/en/latest/?badge=latest'><img src='https://readthedocs.org/projects/theseeknotebook/badge/?version=latest' alt='Documentation Status' />
 </a><img src="https://camo.githubusercontent.com/2091d99fb3b1ea0dcacb2ce564d5a3fc099c9ee7/68747470733a2f2f6261646765732e66726170736f66742e636f6d2f6f732f76322f6f70656e2d736f757263652e7376673f763d313032" width="120" height="20">
 
-http://docutils.sourceforge.net/rst.html
+description_here
+
+<details>
+  <summary><strong>Table of Contents</strong> (click to expand)</summary>
+
+<!-- toc -->
+- [Background](#background)
+- [Prerequisites](#prerequisites)
+- [Clone](#cloning)
+- [Import](#importing)
+- [The Docs](#documentation)
+- [Examples](#usage)
+- [Testing](#testing)
+
+<!-- tocstop -->
+
+</details>
+
+## Background
+
+Bioinformatics is a broad science that involves working with a considerable supply of biological data and associates various groups of analysts and experts. Its practice involves the use of technology to do activities such as molecular biology modelling, image analysis, comparisons of linear sequences or 3D models and many other related tasks.
+
+This project aims to satisfy the needs of people working in the field of bioinformatics. More specifically, people that work with scientific data towards a more analytical outcome and need to handle computational tools in order to get a conclusive view on their input.
+
+This project intents to support the users by making the viewing, browsing and writing of reports, research, studies, etc, more accessible. 
+
+## Prerequisites
+
+These instructions will show you how to get you a copy of the project up and how to execute the project.
+
+Before you get this package make sure that you have pip, conda, jupyter notebook, ipywidgets, pandas, requests and tabulate.
+```
+pip --version
+conda --v
+jupyter notebook --version
+pip3 show ipywidgets
+pip3 show pandas
+pip3 show requests
+pip3 show tabulate
+```
+And if you don't, install them.
+
+#### The pip way
+
+Get pip.
+```
+sudo apt update
+sudo apt install python3-pip
+pip3 --version
+```
+
+Then all the others.
+```
+pip3 install jupyter
+pip3 install ipywidgets
+pip3 install pandas
+pip3 install requests
+pip3 install tabulate
+```
+
+#### The conda way
+
+Get conda.
+```
+curl -O https://repo.anaconda.com/archive/Anaconda3-5.2.0-Linux-x86_64.sh
+bash Anaconda3-5.2.0-Linux-x86_64.sh
+```
+
+After you complete the installation quick-check it.
+```
+conda --version
+```
+
+Then all the others.
+```
+conda install jupyter
+conda install ipywidgets
+conda install pandas
+conda install requests
+conda install tabulate
+```
+
+## Cloning
+
+Use this command to get a copy of the project:
+```
+git clone https://github.com/bogdan23a/TheSeekNotebook.git
+```
+
+## Importing
+
+In order to run this project you just need to have the SEEK.py file in the root of your project (or wherever). The you just have to import the package in your python or jupyter notebook files like so:
+```
+import SEEK
+```
+
+## Documentation
+
+## Usage
+
+## Testing
 
 Run coverage via coverage.py with the following command(root dir):
+```
+coverage run --source=SEEK test.py TestSEEK
+```
 
-    coverage run test.py
-        or
-    postcoverage (to post to coveralls website)
-    
-View coverage via coverage.py with the following command(root dir):
-
-    coverage html -i
+View your coverage via coverage.py with the following command(root dir):
+```
+coverage html -i
+google-chrome htmlcov/index.html 
+```
  
- 
-View documentation via sphinx.py with the following command(root dir):
-
-    make clean html 
-
+View your documentation via sphinx.py with the following command(root dir):
+```
+make clean html
+google-chrome docs/build/html/index.html
+```
