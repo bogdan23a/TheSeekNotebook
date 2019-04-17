@@ -265,7 +265,7 @@ class TestSEEK(TestCase):
 
         self.testOBJ._request("assays","576")
 
-        self.testOBJ.printAttributes()
+        self.testOBJ._printAttributes()
 
         sys.stdout = sys.__stdout__
 
@@ -280,7 +280,7 @@ class TestSEEK(TestCase):
 
         self.testOBJ._request("assays","945")
 
-        self.testOBJ.printAttributes()
+        self.testOBJ._printAttributes()
 
         sys.stdout = sys.__stdout__
 
@@ -295,7 +295,7 @@ class TestSEEK(TestCase):
 
         self.testOBJ.search("assays","576")
 
-        self.testOBJ.printRelationshipsSearch()
+        self.testOBJ._printRelationshipsSearch()
 
         sys.stdout = sys.__stdout__
 
@@ -310,7 +310,7 @@ class TestSEEK(TestCase):
 
         self.testOBJ.search("people","526")
 
-        self.testOBJ.printRelationshipsSearch()
+        self.testOBJ._printRelationshipsSearch()
 
         sys.stdout = sys.__stdout__
 
@@ -369,7 +369,7 @@ class TestSEEK(TestCase):
 
     def test_makeRequests_Method(self):
         
-        self.testOBJ.makeRequests(self.goodFormat_RequestList, 
+        self.testOBJ._makeRequests(self.goodFormat_RequestList, 
                                   len(self.goodFormat_RequestList))
 
         properties = [
@@ -387,19 +387,19 @@ class TestSEEK(TestCase):
     def test_makeRequests_Method_EmptyList(self):
         
         self.assertRaises(Exception, 
-                         self.testOBJ.makeRequests(self.empty_RequestList, 
+                         self.testOBJ._makeRequests(self.empty_RequestList, 
                                                    len(self.empty_RequestList)))
 
     def test_makeRequests_Method_ListWithBadItem(self):
         
         self.assertRaises(Exception, 
-                          self.testOBJ.makeRequests(self.badRequest_RequestList, 
+                          self.testOBJ._makeRequests(self.badRequest_RequestList, 
                                               len(self.badRequest_RequestList)))
     
     def test_makeRequests_Method_BadFormat(self):
         
         self.assertRaises(Exception, 
-                         self.testOBJ.makeRequests(self.badFormat_RequestList, 
+                         self.testOBJ._makeRequests(self.badFormat_RequestList, 
                                                    len(self.badFormat_RequestList)))
 
     def test_parallelRequest_Method(self):
@@ -502,8 +502,7 @@ class TestSEEK(TestCase):
             thread.join()
         
         self.testOBJ.createRelationshipList()
-        self.testOBJ.substituteRelationships(self.testOBJ.relationshipList,
-                                            len(self.testOBJ.relationshipList))
+        self.testOBJ.substituteRelationships(self.testOBJ.relationshipList)
         self.assertEqual(1,1)
 
     @patch('SEEK._get_input', return_value="liver")
