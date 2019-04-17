@@ -2,3 +2,9 @@ sphinx>=1.4
 ipykernel
 nbsphinx
 ipywidgets
+pandas
+pydoc
+requests
+time
+threading
+tabulate
