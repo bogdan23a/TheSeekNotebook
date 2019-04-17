@@ -20,9 +20,9 @@ sphinx:
 python:
   pip-install: true
   version: 3.7
-  extra-requirements:
-    - nbsphinx
-    - ipywidgets
-  # install:
-    # - requirements: docs/requirements.txt
-    # - method: pip
+  # extra-requirements:
+    # - nbsphinx
+    # - ipywidgets
+  install:
+    - requirements: docs/requirements.txt
+    - method: pip
