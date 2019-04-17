@@ -8,17 +8,25 @@ Acknowledgements
 
     Mention Carole and the team
 
-Part 1 - Context - 1000 words
+Part 1 - Context - 285/ 1000 words
+
+    Firstly, I am going to give some abstract background about the project by clarifying the area in which the tool will be utilized,  naming the user that will work with it, describing the users need for this tool and finally underline, in large, the facilities that the application is going to offer.
+
+    Afterwards, I will give details about the certain technologies and tools used to develop this project and how it was all implemented using a platform called SEEK and a web app named Jupyter Notebook.
 
     The topic area to which the work applies? - 360 words
-
+ 
+    Who is the client?
+        
         This project aims to satisfy the needs of people working in the field of bioinformatics. More specifically, people that work with scientific data towards a more analytical outcome and have less overall knowledge about programming but need to work with computational tools in order to get a conclusive view on their input.
 
         For example, a biochemist working in developing pharmaceutical products might work with actual substances using chemical formulas. An example of the work of a bioinformatician would be using biological data trying to develop methods for understanding a genetic basis of diseases.
-        
-    Why the work is being done? - 360 words
 
-        This project is going to support bioinformaticians by leisuring the viewing, building and writing of reports, research, studies, etc. 
+    Clients needs - 360 words
+
+        This project is going to support the users by making the viewing, browsing and writing of reports, research, studies, etc, more accessible. 
+
+        As these users have less overall knowledge about programming, this need is, therefore, obvious and the application should be intuitive to use and as straightforward as possible. This leverage is due in order to facilitate a focus on the research instead of targeting the learning of computer science or programming language related technologies, information or other details.
 
     What the work was aiming to achieve? - 340 words
 
