@@ -22,7 +22,7 @@ description_here
 - [The Docs](#documentation)
 - [Examples](#usage)
 - [Testing](#testing)
-- [Links](#useful linkks)
+- [Links](#useful links)
 - [Contributing](#contributing)
 
 <!-- tocstop -->
