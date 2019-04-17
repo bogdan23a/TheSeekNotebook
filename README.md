@@ -136,8 +136,11 @@ google-chrome docs/build/html/index.html
 ```
 ## Links
 JSON API to FAIRDOM SEEK on [Swagger Hub](https://app.swaggerhub.com/apis/FAIRDOM/SEEK/0.1).
+
 Examples for the [SEEK API Workshop](https://github.com/FAIRdom/api-workshop).
+
 More examples for the [SEEK API](https://github.com/bogdan23a/seekAPIexamples)
+
 Use the [Testing](https://testing.sysmo-db.org/) platform for testing writing / creating capabilities.
 
 ## Contributing
