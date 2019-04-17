@@ -90,7 +90,7 @@ conda install tabulate
 
 ## Cloning
 
-Use this command to get a copy of the project:
+Just download the archive from git if you want to use just the provided package and the usage examples or use the following command to get a copy of the project if you want to contribute to the repository:
 ```
 git clone https://github.com/bogdan23a/TheSeekNotebook.git
 ```
