@@ -113,6 +113,34 @@ Read the [documentation](https://theseeknotebook.readthedocs.io/en/latest/) for 
 
 ## Usage
 
+* Authentication
+
+Use the auth() method in order to create a login form and store them into a variable to use the credentials on the way.
+```python
+auth = SEEK.auth()
+>>> Username: 
+>>> Password:
+```
+
+* Reading
+
+Use the read() class to create a reading object and use it to read, browse and download data from the HUB.
+```python
+r = SEEK.read(auth)
+```
+
+* DEFAULT Writing (on the testing DB)
+
+Use the write() class to create a writing object and use it to write data to the testing HUB.
+```python
+w = SEEK.write(auth)
+```
+
+* OFFICIAL Writing
+
+```python
+w = SEEK.write(auth, "https://fairdomhub.org/")
+```
 
 <img src="https://github.com/bogdan23a/TheSeekNotebook/blob/master/docs/Peek%202019-04-17%2021-29.gif" width="1000px" height="400px">
 
