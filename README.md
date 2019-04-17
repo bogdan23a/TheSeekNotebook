@@ -6,19 +6,27 @@
 <a href='https://coveralls.io/github/bogdan23a/TheSeekNotebook'><img src='https://coveralls.io/repos/github/bogdan23a/TheSeekNotebook/badge.svg' alt='Coverage Status' /></a><a href='https://theseeknotebook.readthedocs.io/en/latest/?badge=latest'><img src='https://readthedocs.org/projects/theseeknotebook/badge/?version=latest' alt='Documentation Status' />
 </a><img src="https://camo.githubusercontent.com/2091d99fb3b1ea0dcacb2ce564d5a3fc099c9ee7/68747470733a2f2f6261646765732e66726170736f66742e636f6d2f6f732f76322f6f70656e2d736f757263652e7376673f763d313032" width="120" height="20">
 
-http://docutils.sourceforge.net/rst.html
-
-
 ## Introduction
 
+<details>
+  <summary><strong>Table of Contents</strong> (click to expand)</summary>
 
-## Getting Started
+<!-- toc -->
+
+- [Prerequisites](#prerequisites)
+- [Testing](#testing)
+
+<!-- tocstop -->
+
+</details>
+
+
+
+## Prerequisites
 
 These instructions will show you how to get you a copy of the project up and how to execute the project.
 
-### Before getting the package
-
-First make sure that you have pip, conda, jupyter notebook, ipywidgets, pandas, requests and tabulate.
+Before you get this package make sure that you have pip, conda, jupyter notebook, ipywidgets, pandas, requests and tabulate.
 ```
 pip --version
 conda --v
@@ -95,7 +103,7 @@ eg:
 java -cp /home/bogdan/Downloads/mysql-connector-java-5.1.21.jar:./target/classes Main
 ``` 
 
-### Testing
+## Testing
 
 Run coverage via coverage.py with the following command(root dir):
 ```
@@ -105,7 +113,7 @@ coverage run --source=SEEK test.py TestSEEK
 View your coverage via coverage.py with the following command(root dir):
 ```
 coverage html -i
-google-chrome docs/htmlcov/index.html
+google-chrome htmlcov/index.html 
 ```
  
 View your documentation via sphinx.py with the following command(root dir):
