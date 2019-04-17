@@ -22,7 +22,7 @@ description_here
 - [The Docs](#documentation)
 - [Examples](#usage)
 - [Testing](#testing)
-- [Links](#useful links)
+- [Links](#links)
 - [Contributing](#contributing)
 
 <!-- tocstop -->
@@ -119,21 +119,25 @@ Read the [documentation](https://theseeknotebook.readthedocs.io/en/latest/) for 
 ## Testing
 
 Run coverage via coverage.py with the following command(root dir):
-```
+```bash
 coverage run --source=SEEK test.py TestSEEK
 ```
 
 View your coverage via coverage.py with the following command(root dir):
-```
+```bash
 coverage html -i
 google-chrome htmlcov/index.html 
 ```
  
 View your documentation via sphinx.py with the following command(root dir):
-```
+```bash
 make clean html
 google-chrome docs/build/html/index.html
 ```
-## Useful links
+## Links
+JSON API to FAIRDOM SEEK on [Swagger Hub](https://app.swaggerhub.com/apis/FAIRDOM/SEEK/0.1).
+Examples for the [SEEK API Workshop](https://github.com/FAIRdom/api-workshop).
+More examples for the [SEEK API](https://github.com/bogdan23a/seekAPIexamples)
+Use the [Testing](https://testing.sysmo-db.org/) platform for testing writing / creating capabilities.
 
 ## Contributing
