@@ -2,10 +2,4 @@
 __pycache__
 .vscode
 .pytest_cache
-# htmlcov/
 .coverage
-seek-logo.svg
-Untitled-1
-fairdom.svg
-jupyter-logo-featured-image.png
-# htmldocs
