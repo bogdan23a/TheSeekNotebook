@@ -5,7 +5,7 @@
 </a><img src="https://camo.githubusercontent.com/2091d99fb3b1ea0dcacb2ce564d5a3fc099c9ee7/68747470733a2f2f6261646765732e66726170736f66742e636f6d2f6f732f76322f6f70656e2d736f757263652e7376673f763d313032" width="120" height="20">
 
 
-<img src="https://seek4science.org/assets/images/seek-logo.svg" width="135px" height="132px"><img src="https://upload.wikimedia.org/wikipedia/commons/3/38/Jupyter_logo.svg" width="135px" height="132px">
+<img src="https://seek4science.org/assets/images/seek-logo.svg" width="135px" height="132px" align="right"><img src="https://upload.wikimedia.org/wikipedia/commons/3/38/Jupyter_logo.svg" width="135px" height="132px" align="right">
 
 
 
@@ -22,8 +22,8 @@ description_here
 - [The Docs](#documentation)
 - [Examples](#usage)
 - [Testing](#testing)
+- [Links](#links)
 - [Contributing](#contributing)
-- [License](#license)
 
 <!-- tocstop -->
 
@@ -119,22 +119,28 @@ Read the [documentation](https://theseeknotebook.readthedocs.io/en/latest/) for 
 ## Testing
 
 Run coverage via coverage.py with the following command(root dir):
-```
+```bash
 coverage run --source=SEEK test.py TestSEEK
 ```
 
 View your coverage via coverage.py with the following command(root dir):
-```
+```bash
 coverage html -i
 google-chrome htmlcov/index.html 
 ```
  
 View your documentation via sphinx.py with the following command(root dir):
-```
+```bash
 make clean html
 google-chrome docs/build/html/index.html
 ```
+## Links
+JSON API to FAIRDOM SEEK on [Swagger Hub](https://app.swaggerhub.com/apis/FAIRDOM/SEEK/0.1).
+
+Examples for the [SEEK API Workshop](https://github.com/FAIRdom/api-workshop).
+
+More examples for the [SEEK API](https://github.com/bogdan23a/seekAPIexamples)
+
+Use the [Testing](https://testing.sysmo-db.org/) platform for testing writing / creating capabilities.
 
 ## Contributing
-
-## License
