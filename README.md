@@ -43,54 +43,7 @@ These instructions will show you how to get you a copy of the project up and how
 
 Before you get this package make sure that you have pip, conda, jupyter notebook, ipywidgets, pandas, requests and tabulate.
 ```bash
-pip --version
-conda --v
-jupyter notebook --version
-pip3 show ipywidgets
-pip3 show pandas
-pip3 show requests
-pip3 show tabulate
-```
-And if you don't, install them.
-
-#### The pip way
-
-Get pip.
-```bash
-sudo apt update
-sudo apt install python3-pip
-pip3 --version
-```
-
-Then all the others.
-```bash
-pip3 install jupyter
-pip3 install ipywidgets
-pip3 install pandas
-pip3 install requests
-pip3 install tabulate
-```
-
-#### The conda way
-
-Get conda.
-```bash
-curl -O https://repo.anaconda.com/archive/Anaconda3-5.2.0-Linux-x86_64.sh
-bash Anaconda3-5.2.0-Linux-x86_64.sh
-```
-
-After you complete the installation quick-check it.
-```bash
-conda --version
-```
-
-Then all the others.
-```bash
-conda install jupyter
-conda install ipywidgets
-conda install pandas
-conda install requests
-conda install tabulate
+pip install -r docs/requirements.txt
 ```
 
 ## Cloning
