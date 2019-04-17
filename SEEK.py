@@ -29,6 +29,8 @@ PROT_TEXTAREA_LAYOUT = widgets.Layout(flex='0 1 auto',
                                       min_height='40px', 
                                       width='500px')
 
+PROT_WRITING_DNS_DEFAULT = "https://testing.sysmo-db.org/"
+
 def auth():
     """
     Method used externally to get FairdomHub credentials from user
@@ -1097,12 +1099,14 @@ class write:
     This class provides methods and functions for writing into the SEEK
 
     :param auth: FairdomHub credentials; can be left empty 
+    :param DNS: Specify if you are posting to the official HUB or leave empty to write to testing.sysmo-db
     :type auth: SEEK.auth()
-
+    :type DNS: string
     """
-    def __init__(self, auth = None):
+    
+    def __init__(self, auth = None, DNS = PROT_WRITING_DNS_DEFAULT):
 
-        self.base_url = 'https://testing.sysmo-db.org'
+        self.base_url = DNS
             
         self.headers = {"Content-type": "application/vnd.api+json",
             "Accept": "application/vnd.api+json",
