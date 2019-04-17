@@ -130,3 +130,5 @@ More examples for the [SEEK API](https://github.com/bogdan23a/seekAPIexamples)
 Use the [Testing](https://testing.sysmo-db.org/) platform for testing writing / creating capabilities.
 
 ## Contributing
+
+** HELP WANTED ** 
