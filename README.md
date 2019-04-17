@@ -37,7 +37,7 @@ This project intents to support the users by making the viewing, browsing and wr
 These instructions will show you how to get you a copy of the project up and how to execute the project.
 
 Before you get this package make sure that you have pip, conda, jupyter notebook, ipywidgets, pandas, requests and tabulate.
-```
+```bash
 pip --version
 conda --v
 jupyter notebook --version
@@ -51,14 +51,14 @@ And if you don't, install them.
 #### The pip way
 
 Get pip.
-```
+```bash
 sudo apt update
 sudo apt install python3-pip
 pip3 --version
 ```
 
 Then all the others.
-```
+```bash
 pip3 install jupyter
 pip3 install ipywidgets
 pip3 install pandas
@@ -69,18 +69,18 @@ pip3 install tabulate
 #### The conda way
 
 Get conda.
-```
+```bash
 curl -O https://repo.anaconda.com/archive/Anaconda3-5.2.0-Linux-x86_64.sh
 bash Anaconda3-5.2.0-Linux-x86_64.sh
 ```
 
 After you complete the installation quick-check it.
-```
+```bash
 conda --version
 ```
 
 Then all the others.
-```
+```bash
 conda install jupyter
 conda install ipywidgets
 conda install pandas
@@ -91,14 +91,14 @@ conda install tabulate
 ## Cloning
 
 Just download the archive from git if you want to use just the provided package and the usage examples or use the following command to get a copy of the project if you want to contribute to the repository:
-```
+```bash
 git clone https://github.com/bogdan23a/TheSeekNotebook.git
 ```
 
 ## Importing
 
 In order to run this project you just need to have the SEEK.py file in the root of your project (or wherever). The you just have to import the package in your python or jupyter notebook files like so:
-```
+```python
 import SEEK
 ```
 
