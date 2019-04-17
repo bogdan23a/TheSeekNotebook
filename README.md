@@ -6,21 +6,29 @@
 <a href='https://coveralls.io/github/bogdan23a/TheSeekNotebook'><img src='https://coveralls.io/repos/github/bogdan23a/TheSeekNotebook/badge.svg' alt='Coverage Status' /></a><a href='https://theseeknotebook.readthedocs.io/en/latest/?badge=latest'><img src='https://readthedocs.org/projects/theseeknotebook/badge/?version=latest' alt='Documentation Status' />
 </a><img src="https://camo.githubusercontent.com/2091d99fb3b1ea0dcacb2ce564d5a3fc099c9ee7/68747470733a2f2f6261646765732e66726170736f66742e636f6d2f6f732f76322f6f70656e2d736f757263652e7376673f763d313032" width="120" height="20">
 
-## Introduction
+description_here
 
 <details>
   <summary><strong>Table of Contents</strong> (click to expand)</summary>
 
 <!-- toc -->
-
+- [Background](#background)
 - [Prerequisites](#prerequisites)
+- [Clone](#cloning)
+- [Import](#importing)
 - [Testing](#testing)
 
 <!-- tocstop -->
 
 </details>
 
+## Background
 
+Bioinformatics is a broad science that involves working with a considerable supply of biological data and associates various groups of analysts and experts. Its practice involves the use of technology to do activities such as molecular biology modelling, image analysis, comparisons of linear sequences or 3D models and many other related tasks.
+
+This project aims to satisfy the needs of people working in the field of bioinformatics. More specifically, people that work with scientific data towards a more analytical outcome and need to handle computational tools in order to get a conclusive view on their input.
+
+This project intents to support the users by making the viewing, browsing and writing of reports, research, studies, etc, more accessible. 
 
 ## Prerequisites
 
@@ -78,20 +86,18 @@ conda install requests
 conda install tabulate
 ```
 
-In order to run this project you just need to have the SEEK.py file in the root of your project (or wherever).
-
-### Cloning
+## Cloning
 
 Use this command to get a copy of the project:
 ```
 git clone https://github.com/bogdan23a/TheSeekNotebook.git
 ```
 
-### Running from the command line
+## Importing
 
-To compile the project use:
+In order to run this project you just need to have the SEEK.py file in the root of your project (or wherever). The you just have to import the package in your python or jupyter notebook files like so:
 ```
-mvn compile
+import SEEK
 ```
 To run the project use:
 ```
