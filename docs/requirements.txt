@@ -4,5 +4,4 @@ nbsphinx
 ipywidgets
 pandas
 requests
-threading
 tabulate
