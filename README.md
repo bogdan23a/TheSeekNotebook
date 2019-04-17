@@ -16,6 +16,8 @@ description_here
 - [Prerequisites](#prerequisites)
 - [Clone](#cloning)
 - [Import](#importing)
+- [The Docs](#documentation)
+- [Examples](#usage)
 - [Testing](#testing)
 
 <!-- tocstop -->
@@ -99,15 +101,10 @@ In order to run this project you just need to have the SEEK.py file in the root 
 ```
 import SEEK
 ```
-To run the project use:
-```
-java -cp [PATH_TO_MYSQL_JAVA_CONNECTOR_JAR_FILE]:./target/classes Main
-```
 
-eg:
-```
-java -cp /home/bogdan/Downloads/mysql-connector-java-5.1.21.jar:./target/classes Main
-``` 
+## Documentation
+
+## Usage
 
 ## Testing
 
@@ -127,36 +124,3 @@ View your documentation via sphinx.py with the following command(root dir):
 make clean html
 google-chrome docs/build/html/index.html
 ```
-
-## Sample I/O
-
-Test 1:
-```
-Choose exercise (1/2):
-1
-TEST 1
-
-Provide 2 strings to compare
-First String:
-D23W8MCCIZQOP9
-
-Second String:
-D236862CEZQOPS
-5
-
-```
-
-Test 2:
-```
-Choose exercise (1/2):
-2
-TEST 2
-
-Provide the department:
-HQ General Management
-
-Provide the pay type:
-Monthly
-
-Provide the education level:
-Graduate Degree
