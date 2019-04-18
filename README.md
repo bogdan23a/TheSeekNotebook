@@ -133,5 +133,16 @@ Use the [Testing](https://testing.sysmo-db.org/) platform for testing writing / 
 
 **HELP WANTED** check out the [Contribution](CONTRIBUTING.md) instructions.
 
-### Note to self
-Should have taken a look into [FAIRDOMHub](docs/FAIRDOMHub:ARepositoryAndCollaboration.pdf) and [SEEK](docs/SEEK:ASystemsBiologyDataAndModel.pdf) documents from day one, but don't always listen to [me](docs/3YPReportDraftpdf).
+### Notes to self (or future developers)
+
+**Do these from DAY ONE**
+
+Try to understand and have a closer look at the **ISA Structure** and the **JERM Ontology**. They are the building blocks of the SEEK System so understanding these **early on** is going to give you a broader scenery view on this.
+
+Don't stress to much about the API, it is easy to use.
+
+Try to think like a systems biologist.
+
+Seriously, a better understanding of the system is better than just playing around with the API. **Study it!**
+
+Taken a look into [FAIRDOMHub](docs/FAIRDOMHub:ARepositoryAndCollaboration.pdf) and [SEEK](docs/SEEK:ASystemsBiologyDataAndModel.pdf), but don't always listen to [me](docs/3YPReportDraft.pdf).
