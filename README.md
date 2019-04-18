@@ -143,6 +143,6 @@ Don't stress to much about the API, it is easy to use.
 
 Try to think like a systems biologist.
 
-Seriously, a better understanding of the system is better than just playing around with the API. **Study it!**
+Seriously, understanding the system is better than just playing around with the API. **Study it!**
 
 Taken a look into [FAIRDOMHub](docs/FAIRDOMHub:ARepositoryAndCollaboration.pdf) and [SEEK](docs/SEEK:ASystemsBiologyDataAndModel.pdf), but don't always listen to [me](docs/3YPReportDraft.pdf).
