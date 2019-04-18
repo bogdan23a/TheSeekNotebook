@@ -9,7 +9,7 @@
 
 
 
-description_here
+Python Library for Jupyter-Notebook implementing SEEK API.
 
 <details>
   <summary><strong>Table of Contents</strong> (click to expand)</summary>
