@@ -6,7 +6,7 @@ Peek[[:space:]]2019-04-17[[:space:]]21-29.gif filter=lfs diff=lfs merge=lfs -tex
 .gitignore export-ignore
 README.md export-ignore
 CONTRIBUTING.md export-ignore
-
+SEEK\ API.ipynb export-ignore
 .readthedocs.yml export-ignore
 Makefile export-ignore
 test.py export-ignore
