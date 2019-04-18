@@ -132,3 +132,6 @@ Use the [Testing](https://testing.sysmo-db.org/) platform for testing writing / 
 ## Contributing
 
 **HELP WANTED** check out the [Contribution](CONTRIBUTING.md) instructions.
+
+### Note to self
+Should have taken a look into [FAIRDOMHub](docs/FAIRDOMHub:ARepositoryAndCollaboration.pdf) and [SEEK](SEEK:ASystemsBiologyDataAndModel.pdf) documents from day one, but don't always listen to me.
