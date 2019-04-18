@@ -100,7 +100,7 @@ w = SEEK.write(auth)
 w = SEEK.write(auth, "https://fairdomhub.org/")
 ```
 
-<img src="https://github.com/bogdan23a/TheSeekNotebook/blob/master/docs/Peek%202019-04-17%2021-29.gif" width="1000px" height="400px">
+<img src="https://github.com/bogdan23a/TheSeekNotebook/blob/master/docs/Usage.gif" width="1000px" height="400px">
 
 ## Testing
 
