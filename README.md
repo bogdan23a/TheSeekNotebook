@@ -9,7 +9,7 @@
 
 
 
-Python Library for Jupyter-Notebook implementing SEEK API.
+Building a Python Library for an (E)lectronic-Notebook implementing a scientific data catalog.
 
 <details>
   <summary><strong>Table of Contents</strong> (click to expand)</summary>
