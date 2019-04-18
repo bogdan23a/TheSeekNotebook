@@ -134,4 +134,4 @@ Use the [Testing](https://testing.sysmo-db.org/) platform for testing writing / 
 **HELP WANTED** check out the [Contribution](CONTRIBUTING.md) instructions.
 
 ### Note to self
-Should have taken a look into [FAIRDOMHub](docs/FAIRDOMHub:ARepositoryAndCollaboration.pdf) and [SEEK](SEEK:ASystemsBiologyDataAndModel.pdf) documents from day one, but don't always listen to me.
+Should have taken a look into [FAIRDOMHub](docs/FAIRDOMHub:ARepositoryAndCollaboration.pdf) and [SEEK](docs/SEEK:ASystemsBiologyDataAndModel.pdf) documents from day one, but don't always listen to [me](docs/3YPReportDraftpdf).
