@@ -9,7 +9,7 @@
 
 
 
-Building a Python Library for an (E)lectronic-Notebook implementing a scientific data catalog.
+Building a Python Library for an E(lectronic)-Notebook implementing a scientific data catalog.
 
 <details>
   <summary><strong>Table of Contents</strong> (click to expand)</summary>
