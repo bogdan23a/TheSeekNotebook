@@ -121,6 +121,9 @@ make clean html
 google-chrome docs/build/html/index.html
 ```
 ## Links
+
+The [SEEK](https://github.com/seek4science/seek) GitHub Repo.
+
 JSON API to FAIRDOM SEEK on [Swagger Hub](https://app.swaggerhub.com/apis/FAIRDOM/SEEK/0.1).
 
 Examples for the [SEEK API Workshop](https://github.com/FAIRdom/api-workshop).
