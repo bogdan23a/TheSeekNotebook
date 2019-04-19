@@ -100,7 +100,7 @@ w = SEEK.write(auth)
 w = SEEK.write(auth, "https://fairdomhub.org/")
 ```
 
-<img src="https://github.com/bogdan23a/TheSeekNotebook/blob/master/docs/Usage.gif" width="1000px" height="400px">
+<img src="https://github.com/bogdan23a/TheSeekNotebook/blob/master/docs/pictures/Usage.gif" width="1000px" height="400px">
 
 ## Testing
 
@@ -148,4 +148,4 @@ Try to think like a systems biologist.
 
 Seriously, understanding the system is better than just playing around with the API. **Study it!**
 
-Taken a look into [FAIRDOMHub](docs/FAIRDOMHub:ARepositoryAndCollaboration.pdf) and [SEEK](docs/SEEK:ASystemsBiologyDataAndModel.pdf), but don't always listen to [me](docs/3YPReportDraft.pdf).
+Taken a look into [FAIRDOMHub](docs/read/FAIRDOMHub:ARepositoryAndCollaboration.pdf) and [SEEK](docs/read/SEEK:ASystemsBiologyDataAndModel.pdf), but don't always listen to [me](docs/read/3YPReportDraft.pdf).
