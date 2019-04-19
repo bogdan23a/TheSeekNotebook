@@ -37,6 +37,14 @@ This project aims to satisfy the needs of people working in the field of bioinfo
 
 This project intents to support the users by making the viewing, browsing and writing of reports, research, studies, etc, more accessible. 
 
+<img src="https://github.com/bogdan23a/TheSeekNotebook/blob/master/docs/pictures/InvestigationExample.gif" width="1000px" height="400px">
+
+>The FAIRDOMHub interface showing an example of a published research: the investigation of Reverse Engineering Directed Gene Regulatory Networks from Transcriptomics and Proteomics Data of Biomining Bacterial Communities and the individual attributes about it.It displays the hierarchical view showing relationships between this individual investigation and other published pieces of research such as Studies, Assays, Data Files etc. along with the creators of the investigation.
+
+<img src="https://github.com/bogdan23a/TheSeekNotebook/blob/master/docs/pictures/SEEK:design.gif" width="1000px" height="400px">
+
+>The SEEK Components
+
 ## Prerequisites
 
 These instructions will show you how to get you a copy of the project up and how to execute the project.
@@ -136,7 +144,7 @@ The [Testing](https://testing.sysmo-db.org/) platform for testing writing / crea
 
 **HELP WANTED** check out the [Contribution](CONTRIBUTING.md) instructions.
 
-### Notes to self (or future developers)
+## Notes to self (or future developers)
 
 **Do these from DAY ONE**
 
