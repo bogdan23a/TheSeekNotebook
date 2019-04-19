@@ -37,11 +37,11 @@ This project aims to satisfy the needs of people working in the field of bioinfo
 
 This project intents to support the users by making the viewing, browsing and writing of reports, research, studies, etc, more accessible. 
 
-<img src="docs/pictures/InvestigationExample.png" width="700px" height="400px">
+<img src="docs/pictures/InvestigationExample.png" width="900px" height="400px">
 
 >The FAIRDOMHub interface showing an example of a published research: the investigation of Reverse Engineering Directed Gene Regulatory Networks from Transcriptomics and Proteomics Data of Biomining Bacterial Communities and the individual attributes about it.It displays the hierarchical view showing relationships between this individual investigation and other published pieces of research such as Studies, Assays, Data Files etc. along with the creators of the investigation.
 
-<img src="docs/pictures/SEEK:design.png" width="700px" height="400px">
+<img src="docs/pictures/SEEK:design.png" width="700px" height="500px">
 
 >The SEEK Components
 
