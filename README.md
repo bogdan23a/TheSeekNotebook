@@ -124,13 +124,13 @@ google-chrome docs/build/html/index.html
 
 The [SEEK](https://github.com/seek4science/seek) GitHub Repo.
 
-JSON API to FAIRDOM SEEK on [Swagger Hub](https://app.swaggerhub.com/apis/FAIRDOM/SEEK/0.1).
+The [Swagger Hub](https://app.swaggerhub.com/apis/FAIRDOM/SEEK/0.1) JSON API to FAIRDOM SEEK.
 
-Examples for the [SEEK API Workshop](https://github.com/FAIRdom/api-workshop).
+The [SEEK API Workshop](https://github.com/FAIRdom/api-workshop) examples.
 
-More examples for the [SEEK API](https://github.com/bogdan23a/seekAPIexamples)
+More [SEEK API](https://github.com/bogdan23a/seekAPIexamples) examples.
 
-Use the [Testing](https://testing.sysmo-db.org/) platform for testing writing / creating capabilities.
+The [Testing](https://testing.sysmo-db.org/) platform for testing writing / creating capabilities.
 
 ## Contributing
 
